@@ -29,6 +29,42 @@ module "service-{{service_name}}" {
   # logs_retention_in_days
 }
 
+{% if service_name == "platform" %}
+
+resource "aws_security_group" "platformdb" {
+  name = "platformdb"
+
+  description = "RDS postgres servers (terraform-managed)"
+  vpc_id = "${var.rds_vpc_id}"
+
+  # Only postgres in
+  ingress {
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    cidr_blocks = [module.service-{{service_name}}.aws_security_group.nsg_task.id]
+  }
+
+  # Allow all outbound traffic.
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+module "{{service_name}}-rds" {
+  source = "../rds"
+  vpc_security_group_ids = [aws_security_group.platformdb.id]
+}
+
+output "{{service_name}}_docker_registry" {
+  value = module.{{service_name}}-rds.address
+}
+
+{% endif %}
+
 
 output "{{service_name}}_docker_registry" {
   value = module.service-{{service_name}}.docker_registry
