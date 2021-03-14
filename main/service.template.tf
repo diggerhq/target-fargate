@@ -31,11 +31,20 @@ module "service-{{service_name}}" {
 
 {% if service_name == "platform" %}
 
+resource "aws_vpc" "rds_vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "rds_vpc_subnet" {
+  vpc_id     = aws_vpc.rds_vpc.id
+  cidr_block = "10.0.1.0/24"
+}
+
 resource "aws_security_group" "platformdb" {
   name = "platformdb"
 
   description = "RDS postgres servers (terraform-managed)"
-  vpc_id = module.{{service_name}}-rds.vpc.id
+  vpc_id = aws_vpc.rds_vpc.id
 
   # Only postgres in
   ingress {
@@ -56,6 +65,7 @@ resource "aws_security_group" "platformdb" {
 
 module "{{service_name}}-rds" {
   source = "../rds"
+  db_subnet_group_name = aws_subnet.rds_vpc_subnet.id
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 
