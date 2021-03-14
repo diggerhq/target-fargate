@@ -59,10 +59,6 @@ module "{{service_name}}-rds" {
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 
-output "{{service_name}}_docker_registry" {
-  value = module.{{service_name}}-rds.address
-}
-
 {% endif %}
 
 
