@@ -42,7 +42,7 @@ resource "aws_security_group" "platformdb" {
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
-    cidr_blocks = [module.service-{{service_name}}.task_security_group_id]
+    security_groups = [module.service-{{service_name}}.task_security_group_id]
   }
 
   # Allow all outbound traffic.
