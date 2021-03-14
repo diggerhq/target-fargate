@@ -19,6 +19,9 @@ resource "aws_db_instance" "default" {
 
 }
 
+output  "vpc" {
+  value = aws_db_instance.default.vpc
+}
 
 output "address" {
   value = aws_db_instance.default.address
