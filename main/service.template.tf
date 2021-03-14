@@ -31,15 +31,6 @@ module "service-{{service_name}}" {
 
 {% if service_name == "platform" %}
 
-resource "aws_vpc" "rds_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
-
-resource "aws_subnet" "rds_vpc_subnet" {
-  vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.0.1.0/24"
-}
-
 resource "aws_security_group" "platformdb" {
   name = "platformdb"
 
@@ -51,7 +42,7 @@ resource "aws_security_group" "platformdb" {
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
-    security_groups = [module.service-{{service_name}}.task_security_group_id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Allow all outbound traffic.
@@ -65,7 +56,6 @@ resource "aws_security_group" "platformdb" {
 
 module "{{service_name}}-rds" {
   source = "../rds"
-  db_subnet_group_name = aws_subnet.rds_vpc_subnet.id
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 

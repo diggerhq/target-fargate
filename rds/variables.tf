@@ -1,6 +1,4 @@
 
-variable "db_subnet_group_name" {}
-
 variable "allocated_storage" {
   type        = number
   default     = 10

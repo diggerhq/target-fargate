@@ -6,7 +6,6 @@ resource "random_password" "rds_password" {
 }
 
 resource "aws_db_instance" "default" {
-  db_subnet_group_name = var.db_subnet_group_name
   allocated_storage    = var.allocated_storage
   engine               = var.engine
   engine_version       = var.engine_version
@@ -18,6 +17,10 @@ resource "aws_db_instance" "default" {
   publicly_accessible  = var.publicly_accessible
   vpc_security_group_ids = var.vpc_security_group_ids
 
+}
+
+output  "vpc"  {
+  value = aws_db_instance.default.vpc
 }
 
 output "address" {
