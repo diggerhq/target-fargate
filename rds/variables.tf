@@ -1,4 +1,6 @@
 
+variable "vpc_id" {}
+
 variable "allocated_storage" {
   type        = number
   default     = 10

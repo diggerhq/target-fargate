@@ -6,6 +6,7 @@ resource "random_password" "rds_password" {
 }
 
 resource "aws_db_instance" "default" {
+  vpc_id               = var.vpc_id
   allocated_storage    = var.allocated_storage
   engine               = var.engine
   engine_version       = var.engine_version
@@ -19,7 +20,7 @@ resource "aws_db_instance" "default" {
 
 }
 
-output  "vpc" {
+output  "vpc"  {
   value = aws_db_instance.default.vpc
 }
 
