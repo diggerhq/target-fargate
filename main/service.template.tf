@@ -35,7 +35,7 @@ resource "aws_security_group" "platformdb" {
   name = "platformdb"
 
   description = "RDS postgres servers (terraform-managed)"
-  vpc_id = aws_vpc.rds_vpc.id
+  vpc_id = module.{{service_name}}-rds.vpc.id
 
   # Only postgres in
   ingress {
