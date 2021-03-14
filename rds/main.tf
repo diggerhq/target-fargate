@@ -11,7 +11,7 @@ resource "aws_db_instance" "default" {
   engine_version       = var.engine_version
   instance_class       = var.instance_class
   name                 = var.database_name
-  username             = var.database_usernames
+  username             = var.database_username
   password             = random_password.rds_password.result
   skip_final_snapshot  = true
   publicly_accessible  = var.publicly_accessible
