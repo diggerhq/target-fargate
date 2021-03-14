@@ -6,7 +6,7 @@ resource "random_password" "rds_password" {
 }
 
 resource "aws_db_instance" "default" {
-  vpc_id               = var.vpc_id
+  db_subnet_group_name = var.db_subnet_group_name
   allocated_storage    = var.allocated_storage
   engine               = var.engine
   engine_version       = var.engine_version

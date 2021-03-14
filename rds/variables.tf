@@ -1,5 +1,5 @@
 
-variable "vpc_id" {}
+variable "db_subnet_group_name" {}
 
 variable "allocated_storage" {
   type        = number
