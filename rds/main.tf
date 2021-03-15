@@ -5,16 +5,8 @@ resource "random_password" "rds_password" {
   special          = false
 }
 
-resource "aws_db_subnet_group" "default" {
-  name       = "main"
-  subnet_ids = var.db_subnet_group_ids
-
-  tags = {
-    Name = "My DB subnet group"
-  }
-}
 resource "aws_db_instance" "default" {
-  db_subnet_group_name = aws_db_subnet_group.default.name
+
   allocated_storage    = var.allocated_storage
   engine               = var.engine
   engine_version       = var.engine_version

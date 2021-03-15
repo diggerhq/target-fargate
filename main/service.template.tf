@@ -31,27 +31,10 @@ module "service-{{service_name}}" {
 
 {% if service_name == "platform" %}
 
-resource "aws_vpc" "rds_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
-
-resource "aws_subnet" "rds_vpc_subnet1" {
-  vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.0.5.0/24"
-  availability_zone = var.availabilityZone_a
-}
-
-resource "aws_subnet" "rds_vpc_subnet2" {
-  vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.0.6.0/24"
-  availability_zone = var.availabilityZone_b
-}
-
 resource "aws_security_group" "platformdb" {
   name = "platformdb"
 
   description = "RDS postgres servers (terraform-managed)"
-  vpc_id = aws_vpc.rds_vpc.id
 
   # Only postgres in
   ingress {
@@ -72,7 +55,6 @@ resource "aws_security_group" "platformdb" {
 
 module "{{service_name}}-rds" {
   source = "../rds"
-  db_subnet_group_ids = [aws_subnet.rds_vpc_subnet1.id, aws_subnet.rds_vpc_subnet2.id]
   vpc_security_group_ids = [aws_security_group.platformdb.id]
   publicly_accessible = true
 }
