@@ -57,9 +57,6 @@ variable "replicas" {
 variable "container_name" {
 }
 
-# Container port listening
-variable "container_port" {}
-
 variable "launch_type" {
 }
 
