@@ -27,6 +27,26 @@ resource "aws_db_instance" "default" {
   vpc_security_group_ids = var.vpc_security_group_ids
 }
 
-output "address" {
+
+output "DGVAR_LEXIKO_POSTGRESQL_HOST" {
   value = aws_db_instance.default.address
 }
+
+output "DGVAR_LEXIKO_POSTGRESQL_DB" {
+  value = var.database_name
+}
+
+output "LEXIKO_POSTGRESQL_USER" {
+  value = var.database_username
+}
+
+output "DGVAR_LEXIKO_POSTGRESQL_PASSWORD" {
+  value = aws_db_instance.default.password
+}
+
+output "DGVAR_LEXIKO_POSTGRESQL_PORT" {
+  value = 5432
+}
+
+
+
