@@ -37,13 +37,13 @@ resource "aws_vpc" "rds_vpc" {
 
 resource "aws_subnet" "rds_vpc_subnet1" {
   vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = "10.0.5.0/24"
   availability_zone = var.availabilityZone_a
 }
 
 resource "aws_subnet" "rds_vpc_subnet2" {
   vpc_id     = aws_vpc.rds_vpc.id
-  cidr_block = "10.0.2.0/24"
+  cidr_block = "10.0.6.0/24"
   availability_zone = var.availabilityZone_b
 }
 
