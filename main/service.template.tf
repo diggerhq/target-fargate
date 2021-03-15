@@ -76,6 +76,27 @@ module "{{service_name}}-rds" {
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 
+
+output "DGVAR_LEXIKO_POSTGRESQL_HOST" {
+  value = module.{{service_name}}-rds.database_address
+}
+
+output "DGVAR_LEXIKO_POSTGRESQL_DB" {
+  value = module.{{service_name}}-rds.database_name
+}
+
+output "LEXIKO_POSTGRESQL_USER" {
+  value = module.{{service_name}}-rds.database_username
+}
+
+output "DGVAR_LEXIKO_POSTGRESQL_PASSWORD" {
+  value = module.{{service_name}}-rds.database_password
+}
+
+output "DGVAR_LEXIKO_POSTGRESQL_PORT" {
+  value = module.{{service_name}}-rds.database_port
+}
+
 {% endif %}
 
 

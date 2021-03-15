@@ -28,23 +28,23 @@ resource "aws_db_instance" "default" {
 }
 
 
-output "DGVAR_LEXIKO_POSTGRESQL_HOST" {
+output "database_address" {
   value = aws_db_instance.default.address
 }
 
-output "DGVAR_LEXIKO_POSTGRESQL_DB" {
+output "database_name" {
   value = var.database_name
 }
 
-output "LEXIKO_POSTGRESQL_USER" {
+output "database_username" {
   value = var.database_username
 }
 
-output "DGVAR_LEXIKO_POSTGRESQL_PASSWORD" {
+output "database_password" {
   value = aws_db_instance.default.password
 }
 
-output "DGVAR_LEXIKO_POSTGRESQL_PORT" {
+output "database_port" {
   value = 5432
 }
 
