@@ -72,7 +72,7 @@ resource "aws_security_group" "platformdb" {
 
 module "{{service_name}}-rds" {
   source = "../rds"
-  db_subnet_group_ids = [aws_subnet.rds_vpc_subnet1.id, aws_subnet.rds_vpc_subnet1.id]
+  db_subnet_group_ids = [aws_subnet.rds_vpc_subnet1.id, aws_subnet.rds_vpc_subnet2.id]
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 
