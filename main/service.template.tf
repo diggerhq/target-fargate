@@ -1,4 +1,5 @@
 
+{% if load_balancer %}
 module "service-{{service_name}}" {
   source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.4"
 
@@ -26,13 +27,32 @@ module "service-{{service_name}}" {
   # ecs_autoscale_max_instances
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
-  # logs_retention_in_days
-  {% if load_balancer %} 
-  load_balancer_enabled = true
-  {% else %}
-  load_balancer_enabled = true
-  {% endif %}
+
 }
+{% else %}
+module "service-{{service_name}}" {
+  source = "../module-fargate-service-nolb"
+
+  ecs_cluster = aws_ecs_cluster.app
+  service_name = "{{service_name}}"
+  region = var.region
+  service_vpc = aws_vpc.vpc
+  # image_tag_mutability
+  lb_subnet_a = aws_subnet.public_subnet_a
+  lb_subnet_b = aws_subnet.public_subnet_b
+  # lb_port
+  # lb_protocol
+  internal = false
+  # replicas
+  container_name = "{{app_name}}-{{environment}}-{{service_name}}"
+  launch_type = "{{launch_type}}"
+  # ecs_autoscale_min_instances
+  # ecs_autoscale_max_instances
+  default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
+  tags = var.tags
+
+}
+{% endif %}
 
 
 output "{{service_name}}_docker_registry" {
