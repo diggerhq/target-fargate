@@ -27,7 +27,11 @@ module "service-{{service_name}}" {
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
   # logs_retention_in_days
-  load_balancer_enabled = {{load_balancer}}
+  {% if load_balancer %} 
+  load_balancer_enabled = true
+  {% else %}
+  load_balancer_enabled = true
+  {% endif %}
 }
 
 
