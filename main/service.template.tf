@@ -1,6 +1,6 @@
 
 module "service-{{service_name}}" {
-  source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.3"
+  source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.4"
 
   ecs_cluster = aws_ecs_cluster.app
   service_name = "{{service_name}}"
@@ -27,6 +27,7 @@ module "service-{{service_name}}" {
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
   # logs_retention_in_days
+  load_balancer_enabled = {{load_balancer}}
 }
 
 
