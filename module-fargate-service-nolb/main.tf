@@ -69,19 +69,13 @@ resource "aws_ecs_service" "app" {
   desired_count   = var.replicas
 
   network_configuration {
-    security_groups = [aws_security_group.nsg_task.id]
+    security_groups = []
     subnets = [
       var.lb_subnet_a.id,
       var.lb_subnet_b.id
     ]
     assign_public_ip = true
     # subnets         = split(",", var.private_subnets)
-  }
-
-  load_balancer {
-    target_group_arn = aws_alb_target_group.main.id
-    container_name   = var.container_name
-    container_port   = var.container_port
   }
 
   # requires manual opt-in
