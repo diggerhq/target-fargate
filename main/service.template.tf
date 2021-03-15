@@ -35,9 +35,16 @@ resource "aws_vpc" "rds_vpc" {
   cidr_block = "10.0.0.0/16"
 }
 
-resource "aws_subnet" "rds_vpc_subnet" {
+resource "aws_subnet" "rds_vpc_subnet1" {
   vpc_id     = aws_vpc.rds_vpc.id
   cidr_block = "10.0.1.0/24"
+  availability_zone = var.availabilityZone_a
+}
+
+resource "aws_subnet" "rds_vpc_subnet2" {
+  vpc_id     = aws_vpc.rds_vpc.id
+  cidr_block = "10.0.2.0/24"
+  availability_zone = var.availabilityZone_b
 }
 
 resource "aws_security_group" "platformdb" {
@@ -65,7 +72,7 @@ resource "aws_security_group" "platformdb" {
 
 module "{{service_name}}-rds" {
   source = "../rds"
-  db_subnet_group_id = aws_subnet.rds_vpc_subnet.id
+  db_subnet_group_ids = [aws_subnet.rds_vpc_subnet1.id, aws_subnet.rds_vpc_subnet1.id]
   vpc_security_group_ids = [aws_security_group.platformdb.id]
 }
 

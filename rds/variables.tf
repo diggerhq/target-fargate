@@ -1,5 +1,5 @@
 
-variable "db_subnet_group_id" {}
+variable "db_subnet_group_ids" {}
 
 variable "allocated_storage" {
   type        = number

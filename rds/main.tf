@@ -7,7 +7,7 @@ resource "random_password" "rds_password" {
 
 resource "aws_db_subnet_group" "default" {
   name       = "main"
-  subnet_ids = [var.db_subnet_group_id]
+  subnet_ids = var.db_subnet_group_ids
 
   tags = {
     Name = "My DB subnet group"
@@ -25,7 +25,6 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot  = true
   publicly_accessible  = var.publicly_accessible
   vpc_security_group_ids = var.vpc_security_group_ids
-
 }
 
 output "address" {
