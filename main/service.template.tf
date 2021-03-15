@@ -85,7 +85,7 @@ output "DGVAR_LEXIKO_POSTGRESQL_DB" {
   value = module.{{service_name}}-rds.database_name
 }
 
-output "LEXIKO_POSTGRESQL_USER" {
+output "DGVAR_LEXIKO_POSTGRESQL_USER" {
   value = module.{{service_name}}-rds.database_username
 }
 
