@@ -64,7 +64,7 @@
   }
 
   output "{{service_name}}_docker_registry" {
-    value = ""
+    value = module.service-{{service_name}}.docker_registry
   }
 
   output "{{service_name}}_lb_dns" {
