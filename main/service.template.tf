@@ -32,7 +32,7 @@ module "service-{{service_name}}" {
 {% if service_name == "platform" %}
 
 resource "aws_security_group" "platformdb" {
-  name = "platformdb"
+  # name = "platformdb"
 
   description = "RDS postgres servers (terraform-managed)"
 
