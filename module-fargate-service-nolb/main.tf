@@ -28,8 +28,8 @@ resource "aws_ecs_task_definition" "app" {
   family                   = var.container_name
   requires_compatibilities = [var.launch_type]
   network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = var.task_cpu
+  memory                   = var.task_memory
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
 
   # defined in role.tf

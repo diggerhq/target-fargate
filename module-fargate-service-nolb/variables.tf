@@ -85,7 +85,13 @@ variable "default_backend_image" {
   default = "quay.io/turner/turner-defaultbackend:0.2.0"
 }
 
+variable "task_cpu" {
+  default = "256"
+}
 
+variable "task_memory" {
+  default = "512"
+}
 
 # == Cloudwatch ==
 
