@@ -61,8 +61,12 @@
     # ecs_autoscale_max_instances
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
     tags = var.tags
-    {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
-    {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
+    {% if task_cpu %}
+    task_cpu = "{{task_cpu}}"
+    {% endif %}
+    {% if task_memory %}
+    task_memory = "{{task_memory}}"
+    {% endif %}
   }
 
   output "{{service_name}}_docker_registry" {
