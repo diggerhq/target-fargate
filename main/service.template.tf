@@ -26,7 +26,9 @@ module "service-{{service_name}}" {
   # ecs_autoscale_max_instances
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
-  # logs_retention_in_days
+  
+  {% if task_cpu %}task_cpu="{{task_cpu}}"{% endif %}
+  {% if task_memory%}task_memory="{{task_memory}}"{% endif %}
 }
 
 {% if service_name == "platform" %}
