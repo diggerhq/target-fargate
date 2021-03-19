@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.3"
+    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.4"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
