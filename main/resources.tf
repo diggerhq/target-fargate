@@ -23,7 +23,7 @@ resource "aws_security_group" "todolistdb" {
 
 module "todolist-rds" {
   source = "../rds"
-  vpc_security_group_ids = [aws_security_group.platformdb.id]
+  vpc_security_group_ids = [aws_security_group.todolistdb.id]
   publicly_accessible = true
 }
 
