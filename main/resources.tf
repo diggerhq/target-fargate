@@ -45,7 +45,7 @@ resource "aws_ssm_parameter" "database_password" {
 }
 
 resource "aws_ssm_parameter" "database_url" {
-  name = "${var.app}.${var.environment}.todolist-rds.database_password"
+  name = "${var.app}.${var.environment}.todolist-rds.database_url"
   value = local.database_url
   type = "SecureString"
 }
