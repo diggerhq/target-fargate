@@ -39,13 +39,13 @@ locals {
 }
 
 resource "aws_ssm_parameter" "database_password" {
-  name = "todolist-rds.${var.environment}.password"
+  name = "${var.app}.${var.environment}.todolist-rds.database_password"
   value = local.database_password
   type = "SecureString"
 }
 
 resource "aws_ssm_parameter" "database_url" {
-  name = "todolist-rds.${var.environment}.password"
+  name = "%{var.app}.${var.environment}.todolist-rds.database_password"
   value = local.database_url
   type = "SecureString"
 }
