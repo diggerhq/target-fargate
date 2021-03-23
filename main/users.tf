@@ -29,8 +29,8 @@ resource "aws_iam_user_policy" "s3_access_models_policy" {
             "Effect": "Allow",
             "Action": "s3:*",
             "Resource": [
-                aws_s3_bucket.csv_bucket.arn,
-                aws_s3_bucket.s3_download_bucket.arn
+                "${aws_s3_bucket.csv_bucket.arn}",
+                "${aws_s3_bucket.s3_download_bucket.arn}"
             ]
         }
     ]
