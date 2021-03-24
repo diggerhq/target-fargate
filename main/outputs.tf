@@ -52,6 +52,10 @@ output "DGVAR_INSIGHT_INDEX" {
 
 # == IAM USER ==
 
+output "DGVAR_AWS_IAM_USER_NAME" {
+  value = aws_iam_user.iam_user.name  
+}
+
 output "DGVAR_AWS_ACCESS_KEY_ID" {
   value = aws_ssm_parameter.iam_user_access_key.arn
   sensitive = true  
