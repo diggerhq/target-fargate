@@ -69,7 +69,7 @@ resource "aws_ecs_service" "app" {
   desired_count   = var.replicas
 
   network_configuration {
-    security_groups = []
+    security_groups = var.service_security_groups
     subnets = [
       var.lb_subnet_a.id,
       var.lb_subnet_b.id

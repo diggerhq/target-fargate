@@ -9,7 +9,7 @@ resource "aws_security_group" "qcdb" {
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.ecs_service_sg.id]
   }
 
   # Allow all outbound traffic.
@@ -23,8 +23,9 @@ resource "aws_security_group" "qcdb" {
 
 module "qc_rds" {
   source = "../rds"
+  db_subnet_group_name = aws_db_subnet_group.private_subnet_group.name
   vpc_security_group_ids = [aws_security_group.qcdb.id]
-  publicly_accessible = true
+  publicly_accessible = false
 }
 
 

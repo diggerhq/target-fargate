@@ -12,6 +12,10 @@ variable "image_tag_mutability" {
 
 variable "service_vpc" {}
 
+variable "service_security_groups" {
+  default = []
+}
+
 variable "region" {}
 
 variable "tags" {}
