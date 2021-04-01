@@ -30,7 +30,6 @@
     publicly_accessible = false
   }
 
-
   locals {
     database_address = module.qc_rds.database_address
     database_name = module.qc_rds.database_name
@@ -52,4 +51,6 @@
     value = local.database_url
     type = "SecureString"
   }
+
+
 {% endif %}
