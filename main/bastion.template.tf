@@ -31,7 +31,7 @@
   }
 
   resource "aws_instance" "bastion" {
-    vpc_id                      = aws_vpc.vpc.id
+    subnet_id                   = aws_subnet.public_subnet_a.id
     ami                         = "ami-969ab1f6"
     key_name                    = aws_key_pair.bastion_key.key_name
     instance_type               = "t2.micro"
