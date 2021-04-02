@@ -2,8 +2,8 @@
 {% else %}
 
   resource "aws_security_group" "qcdb" {
-    # name = "platformdb"
-
+    name_prefix = "${var.app}-${var.environment}-qcdb-sg"
+    vpc_id = aws_vpc.vpc.id
     description = "RDS postgres servers (terraform-managed)"
 
     # Only postgres in
