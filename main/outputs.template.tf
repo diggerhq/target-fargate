@@ -99,6 +99,12 @@ output "DGVAR_MARIO_AUTH0_DOMAIN" {
   value = "quantcopy.eu.auth0.com"
 }
 
+# == BASTION ==
+
+output "BASTION_PUBLIC_IP" {
+  value = aws_eip.bastion.public_ip
+}
+
 # == OTHER == 
 
 output "DGVAR_MARIO_DOWNSTREAM" {
