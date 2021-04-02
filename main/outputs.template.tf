@@ -43,6 +43,12 @@
   output "DGVAR_POSTGRES_PORT" {
     value = module.qc_rds.database_port
   }
+
+  # == BASTION ==
+  output "BASTION_PUBLIC_IP" {
+    value = aws_eip.bastion.public_ip
+  }
+    
 {% endif %}
 
 # == BUCKETS ==
@@ -99,11 +105,6 @@ output "DGVAR_MARIO_AUTH0_DOMAIN" {
   value = "quantcopy.eu.auth0.com"
 }
 
-# == BASTION ==
-
-output "BASTION_PUBLIC_IP" {
-  value = aws_eip.bastion.public_ip
-}
 
 # == OTHER == 
 
