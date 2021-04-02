@@ -17,6 +17,7 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot  = true
   publicly_accessible  = var.publicly_accessible
   vpc_security_group_ids = var.vpc_security_group_ids
+  db_subnet_group_name  = var.db_subnet_group_name
 }
 
 
