@@ -2,7 +2,7 @@
 {% else %}
 
   resource "aws_key_pair" "bastion_key" {
-    key_prefix = "${var.app}-${var.environment}" 
+    key_name_prefix = "${var.app}-${var.environment}" 
     public_key = "{{environment_config.bastion_public_key}}"
   }
 
