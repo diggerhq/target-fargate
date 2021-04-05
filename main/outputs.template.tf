@@ -41,7 +41,7 @@
   }
 
   output "DGVAR_LEXIKO_POSTGRESQL_PORT" {
-    value = module.qc_rds.database_port
+    value = module.lex_rds.database_port
   }
 
   # == BASTION ==
