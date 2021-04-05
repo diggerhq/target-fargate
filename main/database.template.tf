@@ -1,8 +1,8 @@
 {% if environment_config.no_database is sameas True %}
 {% else %}
 
-  resource "aws_security_group" "qcdb" {
-    name_prefix = "${var.app}-${var.environment}-qcdb-sg"
+  resource "aws_security_group" "platformdb" {
+    name_prefix = "${var.app}-${var.environment}-platformdb-sg"
     vpc_id = aws_vpc.vpc.id
     description = "RDS postgres servers (terraform-managed)"
 
@@ -26,7 +26,7 @@
   module "qc_rds" {
     source = "../rds"
     db_subnet_group_name = aws_db_subnet_group.private_subnet_group.name
-    vpc_security_group_ids = [aws_security_group.qcdb.id]
+    vpc_security_group_ids = [aws_security_group.platformdb.id]
     publicly_accessible = false
   }
 
