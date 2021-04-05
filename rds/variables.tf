@@ -14,7 +14,7 @@ variable "engine_version" {
 }
 
 variable "instance_class" {
-  default = "db.t3.micro"
+  default = "db.m5.large"
 }
 
 variable "database_name" {
