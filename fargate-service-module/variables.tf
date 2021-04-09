@@ -56,7 +56,7 @@ variable "health_check" {
 }
 
 variable "health_check_protocol" {
-  default = "HTTP"
+  default = "TCP"
 }
 
 # How often to check the liveliness of the container
