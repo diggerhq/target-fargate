@@ -62,8 +62,6 @@ resource "aws_lb_target_group" "main" {
   tags = var.tags
 }
 
-data "aws_elb_service_account" "main" {
-}
 
 # bucket for storing NLB access logs
 resource "aws_s3_bucket" "lb_access_logs" {
@@ -111,7 +109,7 @@ resource "aws_s3_bucket_policy" "lb_access_logs" {
         "${aws_s3_bucket.lb_access_logs.arn}/*"
       ],
       "Principal": {
-        "AWS": [ "${data.aws_elb_service_account.main.arn}" ]
+        "AWS": [ "${aws_lb.main.arn}" ]
       }
     }
   ]
