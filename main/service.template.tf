@@ -1,6 +1,6 @@
 
 module "service-{{service_name}}" {
-  source = "../fargate-service.git"
+  source = "../fargate-service"
 
   ecs_cluster = aws_ecs_cluster.app
   service_name = "{{service_name}}"
