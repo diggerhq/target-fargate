@@ -118,7 +118,6 @@ resource "aws_db_subnet_group" "private_subnet_group" {
 }
 
 resource "aws_eip" "nat" {
-  instance = aws_instance.web.id
   vpc      = true
 }
 
