@@ -1,6 +1,3 @@
-locals {
-  namespace = "${var.app}-${var.environment}"
-}
 
 resource "aws_api_gateway_vpc_link" "main" {
   name        = "${var.ecs_cluster.name}-${var.service_name}"
