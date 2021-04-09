@@ -22,7 +22,6 @@ resource "aws_lb" "main" {
   #   ",",
   #   var.internal == true ? var.private_subnets : var.public_subnets,
   # )
-  security_groups = [aws_security_group.nsg_lb.id]
   tags            = var.tags
 
   # enable access logs in order to get support from aws
