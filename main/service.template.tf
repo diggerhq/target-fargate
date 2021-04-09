@@ -8,11 +8,11 @@ module "service-{{service_name}}" {
   service_vpc = aws_vpc.vpc
   service_security_groups = [aws_security_group.ecs_service_sg.id]
   # image_tag_mutability
-  lb_subnet_a = aws_subnet.public_subnet_a
-  lb_subnet_b = aws_subnet.public_subnet_b
+  lb_subnet_a = aws_subnet.private_subnet_a
+  lb_subnet_b = aws_subnet.private_subnet_b
   # lb_port
   # lb_protocol
-  internal = false
+  internal = true
   # deregistration_delay
   health_check = "{{health_check}}"
   # health_check_interval
