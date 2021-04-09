@@ -1,6 +1,6 @@
 
 module "service-{{service_name}}" {
-  source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.5"
+  source = "../fargate-service.git"
 
   ecs_cluster = aws_ecs_cluster.app
   service_name = "{{service_name}}"
