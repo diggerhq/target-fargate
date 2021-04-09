@@ -53,7 +53,6 @@ resource "aws_lb_target_group" "main" {
   health_check {
     path                = var.health_check
     interval            = var.health_check_interval
-    timeout             = var.health_check_timeout
     healthy_threshold   = 5
     unhealthy_threshold = 5
   }

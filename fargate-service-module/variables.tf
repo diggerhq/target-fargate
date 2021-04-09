@@ -64,11 +64,6 @@ variable "health_check_interval" {
   default = "30"
 }
 
-# How long to wait for the response on the health check path
-variable "health_check_timeout" {
-  default = "10"
-}
-
 variable "lb_access_logs_expiration_days" {
   default = "3"
 }
