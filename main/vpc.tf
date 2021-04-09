@@ -117,23 +117,6 @@ resource "aws_db_subnet_group" "private_subnet_group" {
   }
 }
 
-resource "aws_eip" "nata" {
-  vpc      = true
-}
-
-resource "aws_eip" "natb" {
-  vpc      = true
-}
-
-resource "aws_nat_gateway" "nat_gwa" {
-  allocation_id = aws_eip.nata.id
-  subnet_id     = aws_subnet.private_subnet_a.id
-}
-
-resource "aws_nat_gateway" "nat_gwb" {
-  allocation_id = aws_eip.natb.id
-  subnet_id     = aws_subnet.private_subnet_a.id
-}
 
 resource "aws_internet_gateway" "vpc_ig" {
   vpc_id = aws_vpc.vpc.id
