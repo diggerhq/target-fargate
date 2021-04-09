@@ -26,7 +26,7 @@ resource "aws_lb" "main" {
 
   # enable access logs in order to get support from aws
   access_logs {
-    enabled = true
+    enabled = false
     bucket  = aws_s3_bucket.lb_access_logs.bucket
   }
 }
