@@ -144,11 +144,24 @@ resource "aws_route_table" "route_table_public" {
     gateway_id      = aws_internet_gateway.vpc_ig.id
   }
 
-  tags = {
-    Name = "My VPC Public Route Table"
-  }
 }
 
+resource "aws_route_table" "route_table_private" {
+  vpc_id = aws_vpc.vpc.id
+
+  # Note: "local" VPC record is implicitly specified
+
+  route {
+    cidr_block      = "0.0.0.0/0"
+    gateway_id      =  aws_nat_gateway.nata.id
+  }
+
+}
+
+resource "aws_route_table_association" "privatea" {
+  subnet_id      = aws_subnet.private_subnet_a.id
+  route_table_id = aws_route_table.route_table_private.id
+}
 
 resource "aws_route_table_association" "publica" {
   subnet_id      = aws_subnet.public_subnet_a.id
