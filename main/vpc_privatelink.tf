@@ -10,7 +10,7 @@ resource "aws_security_group" "vpc_endpoint_security" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [
-      aws_security_group.ecs_service_sg.id
+      "0.0.0.0"
     ]
   }
 }
