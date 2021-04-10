@@ -21,6 +21,11 @@ resource "aws_vpc_endpoint" "ssm" {
   service_name      = "com.amazonaws.eu-west-1.ssm"
   vpc_endpoint_type = "Interface"
 
+  subnet_ids = [
+    aws_subnet.private_subnet_a.id,
+    aws_subnet.private_subnet_b.id
+  ]
+
   security_group_ids = [
     aws_security_group.vpc_endpoint_security.id,
   ]
