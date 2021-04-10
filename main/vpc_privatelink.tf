@@ -10,14 +10,13 @@ resource "aws_security_group" "vpc_endpoint_security" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [
-      aws_subnet.private_subnet_a.id,
-      aws_subnet.private_subnet_b.id
+      aws_security_group.ecs_service_sg.id
     ]
   }
 }
 
 # for fargate access to ssm secrets
-resource "aws_vpc_endpoint" "ec2" {
+resource "aws_vpc_endpoint" "ssm" {
   vpc_id            = aws_vpc.vpc.id
   service_name      = "com.amazonaws.eu-west-1.ssm"
   vpc_endpoint_type = "Interface"
