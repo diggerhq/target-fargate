@@ -32,3 +32,10 @@ resource "aws_vpc_endpoint" "ssm_parameter_store" {
 
   private_dns_enabled = true
 }
+
+# Include the gateway endpoint to s3 (required by ssm)
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.eu-west-1.s3"
+  vpc_endpoint_type = "Gateway"
+}
