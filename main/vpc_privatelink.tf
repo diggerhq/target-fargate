@@ -9,7 +9,10 @@ resource "aws_security_group" "vpc_endpoint_security" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["com.amazonaws.eu-west-1.ssm"]
+    cidr_blocks = [
+      aws_subnet.private_subnet_a.id,
+      aws_subnet.private_subnet_b.id
+    ]
   }
 }
 
