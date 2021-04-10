@@ -118,20 +118,6 @@ resource "aws_db_subnet_group" "private_subnet_group" {
 }
 
 
-
-# for fargate access to ssm secrets
-resource "aws_vpc_endpoint" "ec2" {
-  vpc_id            = aws_vpc.vpc.id
-  service_name      = "com.amazonaws.eu-west-1.ssm"
-  vpc_endpoint_type = "Interface"
-
-  security_group_ids = [
-    aws_security_group.sg1.id,
-  ]
-
-  private_dns_enabled = true
-}
-
 resource "aws_internet_gateway" "vpc_ig" {
   vpc_id = aws_vpc.vpc.id
   tags = {
