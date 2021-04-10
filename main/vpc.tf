@@ -123,7 +123,7 @@ resource "aws_eip" "nata" {
 
 resource "aws_nat_gateway" "nat_gwa" {
   allocation_id = aws_eip.nata.id
-  subnet_id     = aws_subnet.private_subnet_a.id
+  subnet_id     = aws_subnet.public_subnet_a.id
 }
 
 resource "aws_internet_gateway" "vpc_ig" {
@@ -159,6 +159,11 @@ resource "aws_route_table" "route_table_private" {
 }
 
 resource "aws_route_table_association" "privatea" {
+  subnet_id      = aws_subnet.private_subnet_a.id
+  route_table_id = aws_route_table.route_table_private.id
+}
+
+resource "aws_route_table_association" "privateb" {
   subnet_id      = aws_subnet.private_subnet_a.id
   route_table_id = aws_route_table.route_table_private.id
 }
