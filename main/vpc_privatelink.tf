@@ -16,9 +16,9 @@ resource "aws_security_group" "vpc_endpoint_security" {
 }
 
 # for fargate access to ssm secrets
-resource "aws_vpc_endpoint" "ssm" {
+resource "aws_vpc_endpoint" "ssm_parameter_store" {
   vpc_id            = aws_vpc.vpc.id
-  service_name      = "com.amazonaws.eu-west-1.ssm"
+  service_name      = "com.amazonaws.eu-west-1.kms"
   vpc_endpoint_type = "Interface"
 
   subnet_ids = [
