@@ -17,6 +17,9 @@ availabilityZone_b = "{{region}}b"
 dns_hosted_zone = "{{environment_config.dns_hosted_zone}}"
 certificate_arn = "{{environment_config.certificate_arn}}"
 
+# auth
+cognito_user_pools_arn = "{{environment_config.cognito_user_pools_arn}}"
+
 # aws_profile = "default"
 # container_port = "{{container_port}}"
 # replicas = "1"

@@ -31,6 +31,7 @@ module "service-{{service_name}}" {
   zone = "lexiko.io."
   certificate_arn = var.certificate_arn
   domain = "{{service_name}}-{{environment}}.lexiko.io"
+  cognito_user_pools_arn = var.cognito_user_pools_arn
   {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
   {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
 }

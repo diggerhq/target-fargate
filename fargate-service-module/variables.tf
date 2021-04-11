@@ -145,6 +145,12 @@ variable "certificate_arn" {
   description = "ARN of the domain certificate"
 }
 
+# == auth ==
+variable "cognito_user_pools_arn" {
+  type = string
+  description = "ARN of cognito user pools"
+}
+
 # == Cloudwatch ==
 
 
