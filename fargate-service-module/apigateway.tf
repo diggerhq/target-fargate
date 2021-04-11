@@ -19,13 +19,20 @@ resource "aws_api_gateway_resource" "main" {
   path_part   = "{proxy+}"
 }
 
+resource "aws_api_gateway_authorizer" "cognito_auth" {
+  name = "Example"
+  rest_api_id = aws_api_gateway_rest_api.example.id
+  type = "COGNITO_USER_POOLS"
+  provider_arns = [var.cognito_user_pools_arn]
+}
+
 
 resource "aws_api_gateway_method" "main" {
   rest_api_id      = aws_api_gateway_rest_api.main.id
   resource_id      = aws_api_gateway_resource.main.id
   http_method      = "ANY"
   authorization    = "COGNITO_USER_POOLS"
-  provider_arns = [var.cognito_user_pools_arn]
+  authorizer_id = aws_api_gateway_authorizer.cognito_auth.id
   api_key_required = false
   request_parameters = {
     "method.request.path.proxy" = true
