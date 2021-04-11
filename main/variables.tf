@@ -24,6 +24,21 @@ variable "environment" {
 # ecs derived variable names
 variable "ecs_cluster_name" {}
 
+# 
+variable "dns_hosted_zone" {
+  type        = string
+  description = "The Route53 zone in which to add the DNS entry"
+}
+
+variable "domain" {
+  type        = string
+  description = "The domain name for your API Gateway endpoint"
+}
+
+variable "certificate_arn" {
+  type = string
+  description = "ARN of the domain certificate"
+}
 
 # Network configuration
 

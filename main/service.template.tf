@@ -28,6 +28,9 @@ module "service-{{service_name}}" {
   # lb_ssl_certificate_arn = "arn:aws:acm:eu-west-1:262499071169:certificate/411063e8-cd77-4498-921a-23adb15a1b9b"
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
+  zone = var.dns_hosted_zone
+  certificate_arn = var.certificate_arn
+  domain = "{{service_name}}-{{environment}}.lexiko.io"
   {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
   {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
 }
@@ -38,5 +41,9 @@ output "{{service_name}}_docker_registry" {
 
 output "{{service_name}}_lb_dns" {
   value = module.service-{{service_name}}.lb_dns
+}
+
+output "{{service_name}}_api_gateway_endpoint" {
+  value = module.service-{{service_name}}.api_gateway_endpoint
 }
 

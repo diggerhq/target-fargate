@@ -13,6 +13,10 @@ region = "{{region}}"
 availabilityZone_a = "{{region}}a"
 availabilityZone_b = "{{region}}b"
 
+# dns
+dns_hosted_zone = "{{environment_config.dns_hosted_zone}}"
+certificate_arn = "{{environment_config.certificate_arn}}"
+
 # aws_profile = "default"
 # container_port = "{{container_port}}"
 # replicas = "1"

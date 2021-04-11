@@ -127,6 +127,24 @@ variable "task_memory" {
   default = "512"
 }
 
+
+# == DNS ==
+
+variable "zone" {
+  type        = string
+  description = "The Route53 zone in which to add the DNS entry"
+}
+
+variable "domain" {
+  type        = string
+  description = "The domain name for your API Gateway endpoint"
+}
+
+variable "certificate_arn" {
+  type = string
+  description = "ARN of the domain certificate"
+}
+
 # == Cloudwatch ==
 
 
