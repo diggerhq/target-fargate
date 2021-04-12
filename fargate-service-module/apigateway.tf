@@ -20,7 +20,7 @@ resource "aws_api_gateway_resource" "main" {
 }
 
 resource "aws_api_gateway_authorizer" "cognito_auth" {
-  name = "Example"
+  name = "cognito"
   rest_api_id = aws_api_gateway_rest_api.main.id
   type = "COGNITO_USER_POOLS"
   provider_arns = [var.cognito_user_pools_arn]
