@@ -12,6 +12,8 @@ resource "aws_lb" "main" {
   internal = var.internal
   enable_cross_zone_load_balancing = "true"
 
+  security_groups    = [aws_security_group.nsg_lb.id]
+
   subnets = [
     var.lb_subnet_a.id,
     var.lb_subnet_b.id

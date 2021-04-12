@@ -1,4 +1,11 @@
 
+resource "aws_security_group" "nsg_lb" {
+  name        = "${var.ecs_cluster.name}-${var.service_name}-lb"
+  description = "Allow connections from external resources while limiting connections from ${var.ecs_cluster.name}-lb to internal resources"
+  vpc_id      = var.service_vpc.id
+
+  tags = var.tags
+}
 
 resource "aws_security_group" "nsg_task" {
   name        = "${var.ecs_cluster.name}-${var.service_name}-task"
