@@ -10,6 +10,7 @@ module "service-{{service_name}}" {
   # image_tag_mutability
   lb_subnet_a = aws_subnet.private_subnet_a
   lb_subnet_b = aws_subnet.private_subnet_b
+  vpcCIDRblock = var.vpcCIDRblock
   # lb_port
   # lb_protocol
   internal = true

@@ -1,12 +1,4 @@
 
-resource "aws_security_group" "nsg_lb" {
-  name        = "${var.ecs_cluster.name}-${var.service_name}-lb"
-  description = "Allow connections from external resources while limiting connections from ${var.ecs_cluster.name}-lb to internal resources"
-  vpc_id      = var.service_vpc.id
-
-  tags = var.tags
-}
-
 resource "aws_security_group" "nsg_task" {
   name        = "${var.ecs_cluster.name}-${var.service_name}-task"
   description = "Limit connections from internal resources while allowing ${var.ecs_cluster.name}-task to connect to all external resources"
@@ -22,7 +14,7 @@ resource "aws_security_group_rule" "nsg_task_ingress_rule" {
   from_port                = var.container_port
   to_port                  = var.container_port
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.nsg_lb.id
+  cidr_blocks = [var.vpcCIDRblock]
 
   security_group_id = aws_security_group.nsg_task.id
 }
