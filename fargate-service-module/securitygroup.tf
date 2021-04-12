@@ -9,7 +9,16 @@ resource "aws_security_group" "nsg_task" {
 }
 
 # Rules for the LB (Targets the task SG)
+resource "aws_security_group_rule" "nsg_task_ingress_rule" {
+  description              = "Only allow connections from SG ${var.ecs_cluster.name}-lb on port ${var.container_port}"
+  type                     = "ingress"
+  from_port                = var.container_port
+  to_port                  = var.container_port
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.nsg_lb.id
 
+  security_group_id = aws_security_group.nsg_task.id
+}
 
 resource "aws_security_group_rule" "nsg_task_egress_rule" {
   description = "Allows task to establish connections to all resources"
