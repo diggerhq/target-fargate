@@ -117,6 +117,10 @@ resource "aws_api_gateway_integration_response" "main" {
   response_templates = {
     "application/json" = ""
   }
+
+  depends_on = [
+    aws_api_gateway_integration.main
+  ]
 }
 
 resource "aws_api_gateway_deployment" "main" {
