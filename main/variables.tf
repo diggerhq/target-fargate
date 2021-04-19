@@ -8,11 +8,6 @@ variable "region" {
   default = "us-east-1"
 }
 
-# Tags for the infrastructure
-variable "tags" {
-  type = map(string)
-}
-
 # The application's name
 variable "app" {
 }
