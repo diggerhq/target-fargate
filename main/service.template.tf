@@ -16,6 +16,7 @@
     internal = false
     # deregistration_delay
     health_check = "{{health_check}}"
+    health_check_matcher = "200,301"
     # health_check_interval
     # health_check_timeout
     # health_check_matcher
