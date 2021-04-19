@@ -47,18 +47,19 @@ output "DGVAR_REDIS_URL" {
     value = aws_ssm_parameter.database_url.arn
     sensitive = true
   }
-
-  # == BASTION ==
-  output "BASTION_PUBLIC_IP" {
-    value = aws_eip.bastion.public_ip
-  }
     
 {% endif %}
+
+# == BASTION ==
+output "BASTION_PUBLIC_IP" {
+  value = aws_eip.bastion.public_ip
+}
 
 # == BUCKETS ==
 
 output "DGVAR_DIGGER_MEDIA_BUCKET_NAME" {
   value = aws_s3_bucket.digger_media.id
+}
 
 output "DGVAR_TFORM_BACKEND_BUCKET_NAME" {
   value = aws_s3_bucket.digger_terraform_states.id
