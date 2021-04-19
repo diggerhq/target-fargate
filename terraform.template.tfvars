@@ -17,7 +17,7 @@ availabilityZone_b = "{{region}}b"
 rds_instance_class= "{{environment_config.rds_instance_class}}"
 {% endif %}
 
-{% if environment_config.rds_node_type %}
-rds_node_type= "{{environment_config.rds_node_type}}"
+{% if environment_config.redis_node_type %}
+redis_node_type= "{{environment_config.redis_node_type}}"
 {% endif %}
 

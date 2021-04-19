@@ -27,6 +27,6 @@ variable "rds_instance_class" {
 
 # redis
 
-variable "rds_node_type" {
+variable "redis_node_type" {
   default = "cache.m4.large"
 }
