@@ -129,7 +129,7 @@ output "DGVAR_DJANGO_CORS_ORIGIN_WHITELIST" {
 }
 
 output "DGVAR_DJANGO_ADMIN_URL" {
-  value = "admin${random_string.admin_str_random}"
+  value = "admin${random_string.admin_str_random.result}"
 }
 
 output "DGVAR_GITHUB_KEY" {
