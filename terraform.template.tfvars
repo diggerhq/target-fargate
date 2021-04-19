@@ -25,6 +25,10 @@ tags = {
   contact-email = "me@domain.com"
 }
 
+{% if environment_config.lb_ssl_certificate_arn %}
+lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
+{% endif %}
+
 # internal = false
 
 # launch_type = "{{launch_type}}"

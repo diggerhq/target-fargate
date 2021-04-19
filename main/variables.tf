@@ -27,6 +27,11 @@ variable "ecs_cluster_name" {}
 
 # Network configuration
 
+
+variable "lb_ssl_certificate_arn" {
+  default = null
+}
+
 # The VPC to use for the Fargate cluster
 # variable "vpc" {
 # }

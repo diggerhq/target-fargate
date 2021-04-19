@@ -1,6 +1,6 @@
 
 module "service-{{service_name}}" {
-  source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.3"
+  source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.6"
 
   ecs_cluster = aws_ecs_cluster.app
   service_name = "{{service_name}}"
@@ -26,7 +26,7 @@ module "service-{{service_name}}" {
   # ecs_autoscale_max_instances
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
-  
+  lb_ssl_certificate_arn = var.lb_ssl_certificate_arn
   {% if task_cpu %}task_cpu="{{task_cpu}}"{% endif %}
   {% if task_memory%}task_memory="{{task_memory}}"{% endif %}
 }
