@@ -28,7 +28,7 @@
     # ecs_autoscale_max_instances
     # lb_ssl_certificate_arn = "arn:aws:acm:eu-west-1:262499071169:certificate/411063e8-cd77-4498-921a-23adb15a1b9b"
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
-    tags = var.tags
+    tags = {}
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
   }
@@ -63,7 +63,7 @@
     # ecs_autoscale_min_instances
     # ecs_autoscale_max_instances
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
-    tags = var.tags
+    tags = {}
     {% if task_cpu %}
     task_cpu = "{{task_cpu}}"
     {% endif %}

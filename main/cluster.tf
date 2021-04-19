@@ -6,7 +6,6 @@ resource "aws_ecs_cluster" "app" {
     name  = "containerInsights"
     value = "enabled"
   }
-  tags = var.tags
 }
 
 resource "aws_security_group" "ecs_service_sg" {

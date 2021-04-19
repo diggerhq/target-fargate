@@ -59,7 +59,6 @@ resource "aws_lambda_function" "ecs_event_stream" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   handler          = "index.handler"
   runtime          = "nodejs12.x"
-  tags             = var.tags
 }
 
 resource "aws_lambda_alias" "ecs_event_stream" {
