@@ -115,7 +115,7 @@ resource "aws_db_subnet_group" "private_subnet_group" {
 
 
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
-  name         = "${var.app}-${var.environment}-redis_subnet_group"
+  name         = "${var.app}-${var.environment}-redis-subnet-group"
   subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
 
 }
