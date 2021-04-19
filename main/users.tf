@@ -21,7 +21,7 @@ resource "aws_iam_user_policy" "s3_access_policy" {
             "Action": [
               "s3:GetObject",
               "s3:PutObject"
-            ]
+            ],
             "Resource": [
                 "${aws_s3_bucket.digger_media.arn}",
                 "${aws_s3_bucket.digger_media.arn}/*",
