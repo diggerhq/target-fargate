@@ -25,7 +25,7 @@ resource "aws_iam_user_policy" "s3_access_policy" {
             "Resource": [
                 "${aws_s3_bucket.digger_media.arn}",
                 "${aws_s3_bucket.digger_media.arn}/*",
-                "${aws_s3_bucket.digger_terraform_states.arn}"
+                "${aws_s3_bucket.digger_terraform_states.arn}",
                 "${aws_s3_bucket.digger_terraform_states.arn}/*"
             ]
         }

@@ -111,10 +111,13 @@ resource "aws_subnet" "private_subnet_b" {
 resource "aws_db_subnet_group" "private_subnet_group" {
   name_prefix  = "private_subnet_group"
   subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+}
 
-  tags = {
-    Name = "My DB subnet group"
-  }
+
+resource "aws_subnet_group" "redis_subnet_group" {
+  name_prefix  = "redis_subnet_group"
+  subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+
 }
 
 

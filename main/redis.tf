@@ -35,6 +35,6 @@ resource "aws_elasticache_cluster" "dg_redis" {
   engine_version       = "3.2.10"
   port                 = local.redis_port
   security_group_ids   = [aws_security_group.dgredis.id]
-  availability_zone    = aws_subnet.private_subnet_a.id
+  subnet_group_name    = aws_subnet_group.redis_subnet_group.name
 }
 
