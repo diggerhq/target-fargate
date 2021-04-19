@@ -1,7 +1,7 @@
 
 locals {
   redis_port = 6379
-  redis_url = "${aws_elasticache_cluster.dg_redis.cache_nodes[0]}:${local.redis_port}"
+  redis_url = "${aws_elasticache_cluster.dg_redis.cache_nodes[0].address}:${local.redis_port}"
 }
 
 resource "aws_security_group" "dgredis" {
