@@ -1,47 +1,51 @@
 
+
+# == logging == 
+
+output "DGVAR_AWS_LOG_GROUP" {
+  value = "${var.app}-${var.environment}-paas"
+}
+
+output "DGVAR_AWS_LOG_STREAM" {
+  value = "${var.app}-${var.environment}-backend"
+}
+
+output "DGVAR_AWS_LOGGER_NAME" {
+  value = "watchtower-logger"
+}
+  
+output "DGVAR_CLOUDWATCH_AGENT_ACCESS_KEY_ID" {
+  value = aws_ssm_parameter.iam_user_access_key.arn  
+}
+
+output "DGVAR_CLOUDWATCH_AGENT_SECRET_ACCESS_KEY" {
+  value = aws_ssm_parameter.iam_user_secret.arn
+}
+
+output "DGVAR_CLOUDWATCH_AGENT_REGION" {
+  value = var.region
+}
+
+# == Redis == 
+
+output "DGVAR_REDIS_URL" {
+  value = local.redis_url
+}
+
 # == RDS ==
 
 {% if environment_config.no_database is sameas True %}
-  output "DGVAR_POSTGRES_HOST" {
-    value = "<<POSTGRES_HOST>>"
-  }
 
-  output "DGVAR_POSTGRES_DB" {
-    value = "<<POSTGRES_DB>>"
-  }
-
-  output "DGVAR_POSTGRES_USER" {
-    value = "<<POSTGRES_USER>>"
-  }
-
-  output "DGVAR_POSTGRES_PASSWORD" {
-    value = "<<POSTGRES_PASSWORD>>"
+  output "DGVAR_DATABASE_URL" {
+    value = "<<DATABASE_URL>>"
     sensitive = true
   }
 
-  output "DGVAR_POSTGRES_PORT" {
-    value = "<<POSTGRES_PORT>>"
-  }
 {% else %}
-  output "DGVAR_POSTGRES_HOST" {
-    value = local.database_address
-  }
 
-  output "DGVAR_POSTGRES_DB" {
-    value = local.database_name
-  }
-
-  output "DGVAR_POSTGRES_USER" {
-    value = local.database_username
-  }
-
-  output "DGVAR_POSTGRES_PASSWORD" {
-    value = aws_ssm_parameter.database_password.arn
+  output "DGVAR_DATABASE_URL" {
+    value = aws_ssm_parameter.database_url.arn
     sensitive = true
-  }
-
-  output "DGVAR_POSTGRES_PORT" {
-    value = module.qc_rds.database_port
   }
 
   # == BASTION ==
@@ -53,77 +57,84 @@
 
 # == BUCKETS ==
 
-output "DGVAR_S3_DOWNLOAD_BUCKET" {
-  value = aws_s3_bucket.csv_bucket.id
+output "DGVAR_DIGGER_MEDIA_BUCKET_NAME" {
+  value = aws_s3_bucket.digger_media.id
+
+output "DGVAR_TFORM_BACKEND_BUCKET_NAME" {
+  value = aws_s3_bucket.digger_terraform_states.id
 }
 
-output "DGVAR_CSV_BUCKET" {
-  value = aws_s3_bucket.s3_download_bucket.id
+output "DGVAR_TFORM_BACKEND_KEY_SUFFIX" {
+  value = "project"
 }
 
-output "DGVAR_MODEL_BUCKET" {
-  value = "quantcopy.models"
+# CODEBUILD ==
+
+output "DGVAR_CODEBUILD_RUNNER_PROJECT_NAME" {
+  value = "<<>>"
 }
 
-# == ELASTICSEARCH ==
-
-output "DGVAR_ES_URI" {
-  value = "<<ES_URI>>"
+output "DGVAR_CODEBUILD_RUNNER_BUILDSPEC_ARN" {
+  value = "<<>>"
 }
 
-output "DGVAR_CONTENT_INDEX" {
-  value = "<<CONTENT_INDEX>>"
+output "DGVAR_CODEBUILD_RUNNER_REGION" {
+  value = "<<>>"
 }
 
-output "DGVAR_INSIGHT_INDEX" {
-  value = "<<INSIGHT_INDEX>>"
-}
+# == USERS ==
 
-# == IAM USER ==
-
-output "DGVAR_AWS_IAM_USER_NAME" {
-  value = aws_iam_user.iam_user.name  
-}
-
-output "DGVAR_AWS_ACCESS_KEY_ID" {
+output "DGVAR_MANAGED_AWS_ACCESS_KEY_ID" {
   value = aws_ssm_parameter.iam_user_access_key.arn
-  sensitive = true  
 }
 
-output "DGVAR_AWS_SECRET_ACCESS_KEY" {
+output "DGVAR_MANAGED_AWS_SECRET_ACCESS_KEY" {
   value = aws_ssm_parameter.iam_user_secret.arn
-  sensitive = true  
-}
-
-# == AUTH0 ==
-
-output "DGVAR_MARIO_AUTH0_AUDIENCE" {
-  value = "mario-backend"
-}
-
-output "DGVAR_MARIO_AUTH0_DOMAIN" {
-  value = "quantcopy.eu.auth0.com"
 }
 
 
-# == OTHER == 
+# == MISC ==
 
-output "DGVAR_MARIO_DOWNSTREAM" {
-  value = "<<MARIO_DOWNSTREAM>>"
+output "DGVAR_PORT" {
+  value = "8000"
 }
 
-output "DGVAR_MARIO_ENV" {
-  value = "production"
+output "DGVAR_ENVIRONMENT_NAME" {
+  value = var.environment
 }
 
-output "DGVAR_SPACY_MODEL" {
-  value = "en_core_web_md"
+output "DGVAR_USING_DOCKER_COMPOSE" {
+  value = "false"
 }
 
-output "DGVAR_PYTHONPATH" {
-  value = "."
+output "DGVAR_DJANGO_SECRET_KEY" {
+  value = aws_ssm_parameter.django_secret.arn
+  sensitive = true
 }
 
-output "DGVAR_DATA_PATH" {
-  value = ".data"
+output "DGVAR_DJANGO_SETTINGS_MODULE" {
+  value = "config.settings.production"
+}
+output "DGVAR_DJANGO_CONFIGURATION" {
+  value = "Production"
+}
+
+output "DGVAR_DJANGO_ALLOWED_HOSTS" {
+  value = "*"
+}
+
+output "DGVAR_DJANGO_CORS_ORIGIN_WHITELIST" {
+  value = "https://app.digger.dev,"
+}
+
+output "DGVAR_DJANGO_ADMIN_URL" {
+  value = concat("admin", random_string.admin_str_random)
+}
+
+output "DGVAR_GITHUB_KEY" {
+  value = "<<GH_KEY>>"
+}
+
+output "DGVAR_GITHUB_SECRET" {
+  value = "<<GH_SECRET>>"
 }

@@ -13,20 +13,11 @@ region = "{{region}}"
 availabilityZone_a = "{{region}}a"
 availabilityZone_b = "{{region}}b"
 
-# aws_profile = "default"
-# container_port = "{{container_port}}"
-# replicas = "1"
-# health_check = "{{health_check}}"
-tags = {
-  application   = "{{app_name}}"
-  environment   = "{{environment}}"
-  team          = "{{app_name}}-team"
-  customer      = "{{app_name}}-customer"
-  contact-email = "me@domain.com"
-}
+{% if environment_config.rds_instance_class %}
+rds_instance_class= "{{environment_config.rds_instance_class}}"
+{% endif %}
 
-# internal = false
+{% if environment_config.rds_node_type %}
+rds_node_type= "{{environment_config.rds_node_type}}"
+{% endif %}
 
-# launch_type = "{{launch_type}}"
-
-# default_backend_image = "{{backend_image}}"

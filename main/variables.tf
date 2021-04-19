@@ -24,17 +24,14 @@ variable "environment" {
 # ecs derived variable names
 variable "ecs_cluster_name" {}
 
+# RDS
 
-# Network configuration
+variable "rds_instance_class" {
+  default = "db.t3.micro"
+}
 
-# The VPC to use for the Fargate cluster
-# variable "vpc" {
-# }
+# redis
 
-# The private subnets, minimum of 2, that are a part of the VPC(s)
-# variable "private_subnets" {
-# }
-
-# The public subnets, minimum of 2, that are a part of the VPC(s)
-# variable "public_subnets" {
-# }
+variable "rds_node_type" {
+  default = "cache.m4.large"
+}

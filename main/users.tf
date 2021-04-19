@@ -8,8 +8,8 @@ resource "aws_iam_access_key" "iam_user" {
 }
 
 # access to s3 resources for this user
-resource "aws_iam_user_policy" "s3_access_models_policy" {
-  name = "test"
+resource "aws_iam_user_policy" "s3_access_policy" {
+  name = "s3_access_policy"
   user = aws_iam_user.iam_user.name
 
   policy = <<EOF
@@ -19,23 +19,25 @@ resource "aws_iam_user_policy" "s3_access_models_policy" {
         {
             "Effect": "Allow",
             "Action": [
-                "s3:GetObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::quantcopy.models/*"
+              "s3:GetObject",
+              "s3:PutObject"
             ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": "s3:*",
             "Resource": [
-                "${aws_s3_bucket.csv_bucket.arn}",
-                "${aws_s3_bucket.s3_download_bucket.arn}"
+                "${aws_s3_bucket.digger_media.arn}",
+                "${aws_s3_bucket.digger_media.arn}/*",
+                "${aws_s3_bucket.digger_terraform_states.arn}"
+                "${aws_s3_bucket.digger_terraform_states.arn}/*"
             ]
         }
     ]
 }
 EOF
+}
+
+# cloudwatch logging access
+resource "aws_iam_user_policy_attachment" "cloudwatch_logs_access" {
+  user       =  aws_iam_user.iam_user.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
 resource "aws_ssm_parameter" "iam_user_access_key" {

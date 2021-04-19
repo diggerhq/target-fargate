@@ -1,10 +1,10 @@
 
-resource "aws_s3_bucket" "csv_bucket" {
-  bucket_prefix = "csv-bucket"
+resource "aws_s3_bucket" "digger_media" {
+  bucket_prefix = "digger-media-assets"
   acl           = "private"
 }
 
-resource "aws_s3_bucket" "s3_download_bucket" {
-  bucket_prefix = "s3-download-bucket"
+resource "aws_s3_bucket" "digger_terraform_states" {
+  bucket_prefix = "digger-terraform-states"
   acl           = "private"
 }
