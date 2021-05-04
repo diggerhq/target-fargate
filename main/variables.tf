@@ -11,18 +11,25 @@ variable "region" {
 # Tags for the infrastructure
 variable "tags" {
   type = map(string)
+  default = {
+    "test" = "test"
+  }
 }
 
 # The application's name
 variable "app" {
+  default = "zoko"
 }
 
 # The environment that is being built
 variable "environment" {
+  default = "dev"
 }
 
 # ecs derived variable names
-variable "ecs_cluster_name" {}
+variable "ecs_cluster_name" {
+  default = "default"
+}
 
 
 # Network configuration

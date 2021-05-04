@@ -1,16 +1,14 @@
 
 variable "aws_key" {
+  default = "AKIASW27YCQG67EODSBS"
 }
 
 variable "aws_secret" {
+  default = "t1QpoTtKhixQdrS5HAETYj0GOQaHAIERNCc8NDjv"
 }
 
 terraform {
   required_version = ">= 0.12"
-
-  # vars are not allowed in this block
-  # see: https://github.com/hashicorp/terraform/issues/22088
-  backend "s3" {}
 
   required_providers {
     archive = {
