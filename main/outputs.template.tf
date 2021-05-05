@@ -41,7 +41,7 @@
   }
 
   output "DGVAR_POSTGRES_PORT" {
-    value = module.qc_rds.database_port
+    value = module.zoko_rds.database_port
   }
 
   # == BASTION ==
