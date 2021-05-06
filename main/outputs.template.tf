@@ -53,31 +53,11 @@
 
 # == BUCKETS ==
 
-output "DGVAR_S3_DOWNLOAD_BUCKET" {
-  value = aws_s3_bucket.csv_bucket.id
+output "DGVAR_S3_BUCKET" {
+  value = aws_s3_bucket.zoko_bucket.id
 }
 
-output "DGVAR_CSV_BUCKET" {
-  value = aws_s3_bucket.s3_download_bucket.id
-}
-
-output "DGVAR_MODEL_BUCKET" {
-  value = "quantcopy.models"
-}
-
-# == ELASTICSEARCH ==
-
-output "DGVAR_ES_URI" {
-  value = "<<ES_URI>>"
-}
-
-output "DGVAR_CONTENT_INDEX" {
-  value = "<<CONTENT_INDEX>>"
-}
-
-output "DGVAR_INSIGHT_INDEX" {
-  value = "<<INSIGHT_INDEX>>"
-}
+# == KAFKA ==
 
 # == IAM USER ==
 
@@ -94,36 +74,4 @@ output "DGVAR_AWS_SECRET_ACCESS_KEY" {
   value = aws_ssm_parameter.iam_user_secret.arn
   sensitive = true  
 }
-
-# == AUTH0 ==
-
-output "DGVAR_MARIO_AUTH0_AUDIENCE" {
-  value = "mario-backend"
-}
-
-output "DGVAR_MARIO_AUTH0_DOMAIN" {
-  value = "quantcopy.eu.auth0.com"
-}
-
-
 # == OTHER == 
-
-output "DGVAR_MARIO_DOWNSTREAM" {
-  value = "<<MARIO_DOWNSTREAM>>"
-}
-
-output "DGVAR_MARIO_ENV" {
-  value = "production"
-}
-
-output "DGVAR_SPACY_MODEL" {
-  value = "en_core_web_md"
-}
-
-output "DGVAR_PYTHONPATH" {
-  value = "."
-}
-
-output "DGVAR_DATA_PATH" {
-  value = ".data"
-}
