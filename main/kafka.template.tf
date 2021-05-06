@@ -65,8 +65,8 @@ resource "aws_msk_cluster" "example" {
     instance_type   = "kafka.m5.large"
     ebs_volume_size = 1000
     client_subnets = [
-      aws_subnet.public_subnet_a.id,
-      aws_subnet.public_subnet_b.id,
+      aws_subnet.private_subnet_a.id,
+      aws_subnet.private_subnet_b.id,
     ]
     security_groups = [aws_security_group.msk_sg.id]
   }
