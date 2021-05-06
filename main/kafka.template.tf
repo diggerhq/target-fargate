@@ -12,7 +12,7 @@ resource "aws_cloudwatch_log_group" "msk-cloudwatch" {
 }
 
 resource "aws_s3_bucket" "kafka_bucket" {
-  bucket-prefix = "${var.app}-msk-broker-logs-${var.environment}"
+  bucket_prefix = "${var.app}-msk-broker-logs-${var.environment}"
   acl    = "private"
 }
 

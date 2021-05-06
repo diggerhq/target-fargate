@@ -32,7 +32,7 @@
 
   resource "aws_instance" "bastion" {
     subnet_id                   = aws_subnet.public_subnet_a.id
-    ami                         = "ami-01720b5f421cf0179"
+    ami                         = "ami-010aff33ed5991201"
     key_name                    = aws_key_pair.bastion_key.key_name
     instance_type               = "t2.micro"
     associate_public_ip_address = true

@@ -8,6 +8,6 @@ resource "aws_instance" "cassandra" {
 
   ebs_block_device {
     device_name = "main_device"
-    size = 120
+    volume_size = 120
   }
 }
