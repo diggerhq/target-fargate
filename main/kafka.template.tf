@@ -57,7 +57,7 @@ resource "aws_kinesis_firehose_delivery_stream" "msk_stream" {
 }
 
 resource "aws_msk_cluster" "example" {
-  cluster_name           = "example"
+  cluster_name           = "${var.app}-${var.environment}-msk"
   kafka_version          = "2.8.0"
   number_of_broker_nodes = 2
 
