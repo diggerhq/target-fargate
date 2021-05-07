@@ -14,6 +14,7 @@ resource "aws_cloudwatch_log_group" "msk-cloudwatch" {
 resource "aws_s3_bucket" "kafka_bucket" {
   bucket_prefix = "${var.app}-msk-broker-logs-${var.environment}"
   acl    = "private"
+  force_destroy = true
 }
 
 resource "aws_iam_role" "firehose_role" {
