@@ -4,6 +4,11 @@
   resource "aws_key_pair" "bastion_key" {
     key_name_prefix = "${var.app}-${var.environment}" 
     public_key = "{{environment_config.bastion_public_key}}"
+
+    tags = {
+      Name = "${var.project}-${var.environment}-bastion"
+    }
+
   }
 
   resource "aws_security_group" "bastion_sg" {

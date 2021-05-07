@@ -5,6 +5,10 @@ resource "aws_instance" "cassandra" {
   instance_type = "m5.large"
   subnet_id = aws_subnet.private_subnet_a.id
 
+  tags = {
+    Name = "${var.project}-${var.environment}-cassandra${count.index}"
+  }
+
   ebs_block_device {
     device_name = "/dev/sda1"
     volume_size = 120
