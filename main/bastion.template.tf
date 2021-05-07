@@ -6,7 +6,7 @@
     public_key = "{{environment_config.bastion_public_key}}"
 
     tags = {
-      Name = "${var.project}-${var.environment}-bastion"
+      Name = "${var.app}-${var.environment}-bastion"
     }
 
   }

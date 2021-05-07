@@ -6,7 +6,7 @@ resource "aws_instance" "cassandra" {
   subnet_id = aws_subnet.private_subnet_a.id
 
   tags = {
-    Name = "${var.project}-${var.environment}-cassandra${count.index}"
+    Name = "${var.app}-${var.environment}-cassandra${count.index}"
   }
 
   ebs_block_device {
