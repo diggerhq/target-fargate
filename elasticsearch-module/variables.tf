@@ -8,11 +8,11 @@ variable "instance_type" {
 }
 
 variable "dedicated_master_enabled" {
-  default = true
+  default = false
 }
 
 variable "dedicated_master_count" {
-  default = 1 
+  default = 3
 }
 
 variable "dedicated_master_type" {
