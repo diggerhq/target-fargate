@@ -1,8 +1,6 @@
-resource "random_pet" "server" {
-}
+
 
 locals {
-  app_env = "${random_pet.server.id}-es"
   es_username = "digger"
   es_password = random_password.es_password
 }
@@ -14,7 +12,7 @@ resource "random_password" "es_password" {
 }
 
 resource "aws_elasticsearch_domain" "es" {
-  domain_name           = local.app_env
+  domain_name           = var.domain_name
   elasticsearch_version = "7.1"
 
   cluster_config {
@@ -85,7 +83,7 @@ resource "aws_elasticsearch_domain" "es" {
   # }
 
   tags = {
-    Domain = local.app_env
+    Domain = var.domain_name
   }
 
   # depends_on = [

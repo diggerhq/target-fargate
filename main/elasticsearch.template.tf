@@ -2,6 +2,8 @@
 {% if environment_config.needs_elasticsearch %}
   module "elasticsearch" {
     source = "../elasticsearch-module"
+
+    domain_name = "${var.ecs_cluster_name}-${var.environment}"
   }
 
   output "DGVAR_ES_DOMAIN" {

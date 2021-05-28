@@ -1,3 +1,5 @@
+variable "domain_name" {
+}
 
 variable "instance_count" {
   default = 1
