@@ -1,6 +1,6 @@
 
 output "domain" {
-  value = local.app_env
+  value = var.app_env
 }
 
 output "master_username" {
