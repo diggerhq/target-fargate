@@ -4,11 +4,11 @@
   locals {
     account_id = data.aws_caller_identity.current.account_id
     es_domain_name = "${var.ecs_cluster_name}-${var.environment}"
+    event_stream = aws_cloudwatch_event_rule.ecs_event_stream.name
   }
 
   module "elasticsearch" {
     source = "../elasticsearch-module"
-    event_stream = aws_cloudwatch_event_rule.ecs_event_stream.name
     domain_name = local.es_domain_name
   }
 
