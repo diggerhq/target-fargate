@@ -57,16 +57,13 @@
   }
 
   # map to cloudwatch stream
-  resource "aws_cloudwatch_log_subscription_filter" "test_lambdafunction_logfilter" {
-    name            = "${var.ecs_cluster_name}-${var.environment}-elasticsearch-stream"
-    role_arn        = aws_iam_role.es_lambda_role.arn
-    log_group_name  = local.event_stream
-    filter_pattern  = "{ $.path != \"/api/v1/hello\" }"
-    destination_arn = module.elasticsearch.domain_arn
-  }
-
-  
-
+  # resource "aws_cloudwatch_log_subscription_filter" "test_lambdafunction_logfilter" {
+  #   name            = "${var.ecs_cluster_name}-${var.environment}-elasticsearch-stream"
+  #   role_arn        = aws_iam_role.es_lambda_role.arn
+  #   log_group_name  = local.event_stream
+  #   filter_pattern  = "{ $.path != \"/api/v1/hello\" }"
+  #   destination_arn = module.elasticsearch.domain_arn
+  # }
 
 
   output "DGVAR_ES_DOMAIN" {
