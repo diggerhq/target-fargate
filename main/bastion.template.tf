@@ -37,6 +37,10 @@
     instance_type               = "t2.micro"
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+
+    tags = {
+      Name = "${var.ecs_cluster_name}-${var.environment}"
+    }
   }
 
 {% endif %}
