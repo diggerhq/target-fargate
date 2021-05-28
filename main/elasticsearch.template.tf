@@ -26,17 +26,34 @@
                 "Effect": "Allow",
                 "Principal": {"Service": "lambda.amazonaws.com"},
                 "Action": "sts:AssumeRole"
-            },
-            {
-                "Action": [
-                    "es:*"
-                ],
-                "Effect": "Allow",
-                "Resource": "arn:aws:es:${var.region}:${local.account_id}:domain/${local.es_domain_name}/*"
             }
         ]
     }
     EOF
+  }
+
+  data "aws_iam_policy_document" "cloudwatch" {
+      version = "2012-10-17"
+      statement {
+        sid = "${var.app}-${var.environment}-es-cloudwatch-policy-document"
+        actions = [
+          "es:*"
+        ]
+        effect = "Allow"
+        resources = [
+          "arn:aws:es:${var.region}:${local.account_id}:domain/${local.es_domain_name}/*"            
+        ]
+    }
+  }
+
+  resource "aws_iam_policy" "cloudwatch" {
+      name   = "${var.app}-${var.environment}-es-cloudwatch-policy"
+      policy = data.aws_iam_policy_document.cloudwatch.json
+  }
+
+  resource "aws_iam_role_policy_attachment" "gateway_connections" {
+      role       = aws_iam_role.es_lambda_role.name
+      policy_arn = aws_iam_policy.cloudwatch.arn
   }
 
   # map to cloudwatch stream
