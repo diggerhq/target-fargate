@@ -35,7 +35,7 @@
   data "aws_iam_policy_document" "cloudwatch" {
       version = "2012-10-17"
       statement {
-        sid = "${var.app}-${var.environment}-es-cloudwatch-policy-document"
+        sid = "${var.app}${var.environment}EsCloudwatchPolicyDocument"
         actions = [
           "es:*"
         ]
