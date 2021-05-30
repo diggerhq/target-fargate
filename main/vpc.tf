@@ -3,13 +3,11 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-variable "availabilityZone_a" {
-  default = data.aws_availability_zones.available.names[0]
+locals {
+  availabilityZone_a = data.aws_availability_zones.available.names[0]
+  availabilityZone_b = data.aws_availability_zones.available.names[1]
 }
 
-variable "availabilityZone_b" {
-  default = data.aws_availability_zones.available.names[1]
-}
 
 variable "instanceTenancy" {
   default = "default"
@@ -75,7 +73,7 @@ resource "aws_subnet" "public_subnet_a" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.publicSubnetaCIDRblock
   map_public_ip_on_launch = true
-  availability_zone       = var.availabilityZone_a
+  availability_zone       = local.availabilityZone_a
   tags = {
     Name = "public_vpc_subneta"
   }
@@ -85,7 +83,7 @@ resource "aws_subnet" "public_subnet_b" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.publicSubnetbCIDRblock
   map_public_ip_on_launch = true
-  availability_zone       = var.availabilityZone_b
+  availability_zone       = local.availabilityZone_b
   tags = {
     Name = "public_vpc_subnetb"
   }
