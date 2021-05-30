@@ -10,8 +10,6 @@ environment = "{{environment}}"
 ecs_cluster_name = "{{app_name}}-{{environment}}"
 
 region = "{{region}}"
-availabilityZone_a = "{{region}}a"
-availabilityZone_b = "{{region}}b"
 
 # aws_profile = "default"
 # container_port = "{{container_port}}"

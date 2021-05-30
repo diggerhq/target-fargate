@@ -1,11 +1,14 @@
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
 variable "availabilityZone_a" {
-  default = "us-east-1a"
+  default = data.aws_availability_zones.available.names[0]
 }
 
 variable "availabilityZone_b" {
-  default = "us-east-1b"
+  default = data.aws_availability_zones.available.names[1]
 }
 
 variable "instanceTenancy" {
