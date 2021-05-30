@@ -2,7 +2,7 @@
 
 locals {
   es_username = "digger"
-  es_password = random_password.es_password
+  es_password = random_password.es_password.result
 }
 
 resource "random_password" "es_password" {
@@ -47,7 +47,7 @@ resource "aws_elasticsearch_domain" "es" {
     internal_user_database_enabled = true
     master_user_options {
       master_user_name = "digger"
-      master_user_password = random_password.es_password.result
+      master_user_password = local.es_password
     }
   }
 
