@@ -56,6 +56,13 @@
       policy_arn = aws_iam_policy.cloudwatch.arn
   }
 
+
+  resource "aws_iam_role_policy_attachment" "lambda_basic_exec_role" {
+      role       = aws_iam_role.es_lambda_role.name
+      policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  }
+  
+
   # map to cloudwatch stream
   # resource "aws_cloudwatch_log_subscription_filter" "test_lambdafunction_logfilter" {
   #   name            = "${var.ecs_cluster_name}-${var.environment}-elasticsearch-stream"
