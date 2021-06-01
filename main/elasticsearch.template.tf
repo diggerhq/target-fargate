@@ -10,6 +10,39 @@
   module "elasticsearch" {
     source = "../elasticsearch-module"
     domain_name = local.es_domain_name
+
+    {% if environment_config.es_instance_count %}
+    instance_count = "{{environment_config.es_instance_count}}"
+    {% endif %}
+
+    {% if environment_config.es_instance_type %}
+    instance_type = "{{environment_config.es_instance_type}}"
+    {% endif %}
+
+    {% if environment_config.es_dedicated_master_enabled %}
+    dedicated_master_enabled = "{{environment_config.es_dedicated_master_enabled}}"
+    {% endif %}
+
+    {% if environment_config.es_dedicated_master_count %}
+    dedicated_master_count = "{{environment_config.es_dedicated_master_count}}"
+    {% endif %}
+
+    {% if environment_config.es_ebs_enabled %}
+    ebs_enabled = "{{environment_config.es_ebs_enabled}}"
+    {% endif %}
+
+    {% if environment_config.es_ebs_volume_size %}
+    ebs_volume_size = "{{environment_config.es_ebs_volume_size}}"
+    {% endif %}
+
+    {% if environment_config.es_zone_awareness_enabled %}
+    zone_awareness_enabled = "{{environment_config.es_zone_awareness_enabled}}"
+    {% endif %}
+
+    {% if environment.es_availability_zone_count %}
+    availability_zone_count = "{{environment_config.es_availability_zone_count}}"
+    {% endif %}
+
   }
 
   data "aws_caller_identity" "current" {}
