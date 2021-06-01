@@ -20,7 +20,7 @@
     {% endif %}
 
     {% if environment_config.es_dedicated_master_enabled %}
-    dedicated_master_enabled = "{{environment_config.es_dedicated_master_enabled}}"
+    dedicated_master_enabled = {{environment_config.es_dedicated_master_enabled}}
     {% endif %}
 
     {% if environment_config.es_dedicated_master_count %}
@@ -28,7 +28,7 @@
     {% endif %}
 
     {% if environment_config.es_ebs_enabled %}
-    ebs_enabled = "{{environment_config.es_ebs_enabled}}"
+    ebs_enabled = {{environment_config.es_ebs_enabled}}
     {% endif %}
 
     {% if environment_config.es_ebs_volume_size %}
@@ -36,7 +36,7 @@
     {% endif %}
 
     {% if environment_config.es_zone_awareness_enabled %}
-    zone_awareness_enabled = "{{environment_config.es_zone_awareness_enabled}}"
+    zone_awareness_enabled = {{environment_config.es_zone_awareness_enabled}}
     {% endif %}
 
   }
