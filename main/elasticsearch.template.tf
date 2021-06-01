@@ -39,10 +39,6 @@
     zone_awareness_enabled = "{{environment_config.es_zone_awareness_enabled}}"
     {% endif %}
 
-    {% if environment.es_availability_zone_count %}
-    availability_zone_count = "{{environment_config.es_availability_zone_count}}"
-    {% endif %}
-
   }
 
   data "aws_caller_identity" "current" {}

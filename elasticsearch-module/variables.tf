@@ -25,9 +25,6 @@ variable "zone_awareness_enabled" {
   default = false
 }
 
-variable "availability_zone_count" {
-  default = 1
-}
 
 variable "ebs_enabled" {
   default = true

@@ -24,9 +24,6 @@ resource "aws_elasticsearch_domain" "es" {
     zone_awareness_enabled   = var.zone_awareness_enabled
   }
 
-  zone_awareness_config {
-    availability_zone_count = var.availability_zone_count
-  }
 
   ebs_options {
     ebs_enabled = var.ebs_enabled
