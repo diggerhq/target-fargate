@@ -6,7 +6,7 @@ locals {
 }
 
 resource "random_password" "es_password" {
-  length           = 16
+  length           = 20
   special          = true
   upper            = true
   number           = true
