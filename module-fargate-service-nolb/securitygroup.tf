@@ -32,7 +32,3 @@ resource "aws_security_group_rule" "nsg_task_egress_rule" {
 
   security_group_id = aws_security_group.nsg_task.id
 }
-
-output "task_security_group_id" {
-  value = aws_security_group.nsg_task.id
-}
