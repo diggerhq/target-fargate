@@ -9,7 +9,7 @@ resource "aws_security_group" "nsg_task" {
 
 resource "aws_security_group_rule" "nsg_task_ingress_rule" {
   description = "Allows task to establish connections to all resources"
-  type        = "ingrss"
+  type        = "ingress"
   from_port   = "0"
   to_port     = "0"
   protocol    = "-1"
