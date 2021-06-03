@@ -5,7 +5,8 @@
     # peer_owner_id = var.peer_owner_id
     peer_vpc_id   = "{{environment_config.peer_vpc}}"
     vpc_id        = aws_vpc.vpc.id
-
+    auto_accept   = true
+    
     {% if environment_config.peer_vpc_region %}
     peer_region = "{{environment_config.peer_vpc_region}}"
     {% endif %}
