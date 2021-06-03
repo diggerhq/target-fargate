@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.4"
+    source = "../module-fargate-service.git"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
@@ -36,6 +36,10 @@
   }
 
   output "{{service_name}}_lb_dns" {
+    value = module.service-{{service_name}}.lb_dns
+  }
+
+  output "DGVAR_{{service_name}}_url" {
     value = module.service-{{service_name}}.lb_dns
   }
 
