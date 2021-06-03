@@ -42,6 +42,7 @@
 
   # Accepter's side of the connection.
   resource "aws_vpc_peering_connection_accepter" "peer" {
+    provider = aws.accepter
     vpc_peering_connection_id = aws_vpc_peering_connection.peer_{{environment_config.peer_vpc}}.id
     auto_accept               = true
   }  
