@@ -1,6 +1,10 @@
 
 {% if environment_config.peer_vpc %}
   # fetch data about the requester VPC
+
+  data "aws_vpc" "accepter" {
+    id = "{{environment_config.peer_vpc}}"
+  }
   resource "aws_vpc_peering_connection" "peer_{{environment_config.peer_vpc}}" {
     # peer_owner_id = var.peer_owner_id
     peer_vpc_id   = "{{environment_config.peer_vpc}}"
@@ -27,9 +31,9 @@
     auto_accept               = true
   }  
 
-  resource "aws_route" "requestor_{{peer_vpc}}" {
+  resource "aws_route" "requestor_{{environment_config.peer_vpc}}" {
     route_table_id = aws_route_table.route_table_public.id
-    destination_cidr_block = var.vpcCIDRblock
+    destination_cidr_block = data.aws_vpc.accepter.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.peer_{{environment_config.peer_vpc}}.id
   }
 
