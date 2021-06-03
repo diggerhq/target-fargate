@@ -1,5 +1,5 @@
 
-{% if environment_config.peer_subnets %}
+{% if environment_config.peer_vpcs %}
   {% set peer_vpcs = environment_config.peer_vpcs.split(",") %}
 
   {% for peer_vpc in peer_vpcs %}
