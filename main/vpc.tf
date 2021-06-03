@@ -89,6 +89,15 @@ resource "aws_subnet" "public_subnet_b" {
   }
 }
 
+resource "aws_db_subnet_group" "private_subnet_group" {
+  name_prefix  = "private_subnet_group"
+  subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+
+  tags = {
+    Name = "My DB subnet group"
+  }
+}
+
 
 resource "aws_internet_gateway" "vpc_ig" {
   vpc_id = aws_vpc.vpc.id
