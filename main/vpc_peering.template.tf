@@ -11,9 +11,9 @@
     peer_region = "{{environment_config.peer_vpc_region}}"
     {% endif %}
 
-    accepter {
-      allow_remote_vpc_dns_resolution = true
-    }
+    # accepter {
+    #   allow_remote_vpc_dns_resolution = true
+    # }
 
     # requester {
     #   allow_remote_vpc_dns_resolution = true
