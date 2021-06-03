@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "../module-fargate-service.git"
+    source = "../module-fargate-service"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
