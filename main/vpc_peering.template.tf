@@ -2,9 +2,19 @@
 {% if environment_config.peer_vpc %}
   # fetch data about the requester VPC
 
+  # additional provider
+  provider "aws" {
+    alias  = "accepter"
+    {% if environment_config.peer_vpc_region %}
+    region = "{{environment_config.peer_vpc_region}}"
+    {% endif %}
+  }
+
   data "aws_vpc" "accepter" {
+    provider = "aws.accepter"
     id = "{{environment_config.peer_vpc}}"
   }
+
   resource "aws_vpc_peering_connection" "peer_{{environment_config.peer_vpc}}" {
     # peer_owner_id = var.peer_owner_id
     peer_vpc_id   = "{{environment_config.peer_vpc}}"
