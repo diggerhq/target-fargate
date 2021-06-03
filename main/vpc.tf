@@ -93,7 +93,7 @@ resource "aws_subnet" "private_subnet_a" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.privateSubnetaCIDRblock
   map_public_ip_on_launch = false
-  availability_zone       = var.availabilityZone_a
+  availability_zone       = local.availabilityZone_a
   tags = {
     Name = "private_vpc_subneta"
   }
@@ -103,7 +103,7 @@ resource "aws_subnet" "private_subnet_b" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.privateSubnetbCIDRblock
   map_public_ip_on_launch = false
-  availability_zone       = var.availabilityZone_b
+  availability_zone       = local.availabilityZone_b
   tags = {
     Name = "private_vpc_subnetb"
   }
