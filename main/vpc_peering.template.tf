@@ -7,7 +7,12 @@
     alias  = "accepter"
     {% if environment_config.peer_vpc_region %}
     region = "{{environment_config.peer_vpc_region}}"
+    {% else %}
+    region  = var.region
     {% endif %}
+    # profile = var.aws_profile
+    access_key = var.aws_key
+    secret_key = var.aws_secret      
   }
 
   data "aws_vpc" "accepter" {
