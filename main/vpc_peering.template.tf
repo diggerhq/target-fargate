@@ -11,7 +11,7 @@
   }
 
   data "aws_vpc" "accepter" {
-    provider = "aws.accepter"
+    provider = aws.accepter
     id = "{{environment_config.peer_vpc}}"
   }
 
