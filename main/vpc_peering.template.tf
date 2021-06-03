@@ -1,14 +1,6 @@
 
 {% if environment_config.peer_vpc %}
   # fetch data about the requester VPC
-  data "aws_vpc" "requester" {
-    id    = aws_vpc.vpc.id
-  }
-
-  data "aws_route_tables" "requester" {
-    vpc_id = aws_vpc.vpc.id
-  }
-
   resource "aws_vpc_peering_connection" "peer_{{peer_vpc}}" {
     # peer_owner_id = var.peer_owner_id
     peer_vpc_id   = "{{peer_vpc}}"
@@ -28,8 +20,7 @@
   }
 
   resource "aws_route" "requestor_{{peer_vpc}}" {
-    count = length(data.aws_route_tables.requester.ids)
-    route_table_id = data.aws_route_tables.requester.ids[count.index]
+    route_table_id = aws_route_table.route_table_public.id
     destination_cidr_block = var.vpcCIDRblock
     vpc_peering_connection_id = aws_vpc_peering_connection.peer_{{peer_vpc}}.id
   }
