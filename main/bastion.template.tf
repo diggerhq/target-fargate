@@ -46,8 +46,8 @@ data "aws_ami" "ubuntu" {
 }
 
   resource "aws_instance" "bastion" {
-    subnet_id                   = data.aws_ami.ubuntu.id
-    ami                         = "ami-01720b5f421cf0179"
+    subnet_id                   = aws_subnet.public_subnet_a.id
+    ami                         = data.aws_ami.ubuntu.id
     key_name                    = aws_key_pair.bastion_key.key_name
     instance_type               = "t2.micro"
     associate_public_ip_address = true
