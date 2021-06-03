@@ -31,7 +31,7 @@
     count = length(data.aws_route_tables.requester.ids)
     route_table_id = data.aws_route_tables.requester.ids[count.index]
     destination_cidr_block = var.vpcCIDRblock
-    vpc_peering_cononection_id = aws_vpc_peering_connection.peer_{{peer_vpc}}.id
+    vpc_peering_connection_id = aws_vpc_peering_connection.peer_{{peer_vpc}}.id
   }
 
 
