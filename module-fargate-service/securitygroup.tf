@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "nsg_lb_ingress_rule" {
   from_port                = var.container_port
   to_port                  = var.container_port
   protocol                 = "tcp"
-  scidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id        = aws_security_group.nsg_lb.id
 }
 
