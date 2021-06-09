@@ -1,28 +1,28 @@
 
+resource "aws_security_group" "bastion_sg" {
+  name   = "bastion-security-group"
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 22
+    to_port     = 22
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    protocol    = -1
+    from_port   = 0 
+    to_port     = 0 
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 {% if environment_config.needs_bastion is sameas True %}
 
   resource "aws_key_pair" "bastion_key" {
     key_name_prefix = "${var.app}-${var.environment}" 
     public_key = "{{environment_config.bastion_public_key}}"
-  }
-
-  resource "aws_security_group" "bastion_sg" {
-    name   = "bastion-security-group"
-    vpc_id = aws_vpc.vpc.id
-
-    ingress {
-      protocol    = "tcp"
-      from_port   = 22
-      to_port     = 22
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-      protocol    = -1
-      from_port   = 0 
-      to_port     = 0 
-      cidr_blocks = ["0.0.0.0/0"]
-    }
   }
 
   resource "aws_eip" "bastion" {
