@@ -38,7 +38,7 @@
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.bastion_sg.id]
 
-    tags {
+    tags = {
       Name = "${var.app}-${var.environment} Bastion"
     }
   }
