@@ -1,6 +1,16 @@
 
 {% if environment_config.needs_postgres is sameas True %}
 
+
+    resource "aws_db_subnet_group" "rds_private_subnet_group" {
+      name_prefix  = "rds_private_subnet_group"
+      subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+
+      tags = {
+        Name = "${var.app}-${var.environment}-rds-subnet-group"
+      }
+    }
+
   resource "aws_security_group" "rds" {
     name_prefix = "${var.app}-${var.environment}-rds-sg"
     vpc_id = aws_vpc.vpc.id
@@ -25,7 +35,7 @@
 
   module "app_rds" {
     source = "../rds"
-    db_subnet_group_name = aws_db_subnet_group.rds.name
+    db_subnet_group_name = aws_db_subnet_group.rds_private_subnet_group.name
     vpc_security_group_ids = [aws_security_group.rds.id]
     publicly_accessible = false
   }
