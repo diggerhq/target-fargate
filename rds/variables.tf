@@ -3,7 +3,7 @@ variable "allocated_storage" {
   type        = number
   default     = 10
   description = "The default storage for the RDS instance"
-}
+} 
 
 variable "engine" {
   default = "postgres"
@@ -31,4 +31,9 @@ variable "publicly_accessible" {
 
 variable "vpc_security_group_ids" {
   default = []
+}
+
+variable "db_subnet_group_name" {
+  default = null
+  description = "The subnet group associated with RDS instance"
 }
