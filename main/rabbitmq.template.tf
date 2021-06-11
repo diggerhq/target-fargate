@@ -52,7 +52,7 @@ resource "aws_mq_broker" "rabbitmq" {
   storage_type       = "ebs"
   host_instance_type = "mq.m5.large"
   security_groups    = [aws_security_group.rabbitmq.id]
-  subnet_ids         = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+  subnet_ids         = [aws_subnet.private_subnet_a.id]
 
   user {
     username = local.rabbitmq_username
