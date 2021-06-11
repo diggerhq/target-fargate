@@ -48,6 +48,7 @@ resource "aws_mq_broker" "rabbitmq" {
 
   engine_type        = "RabbitMQ"
   engine_version     = "3.8.11"
+  deployment_mode    = "SINGLE_INSTANCE"
   storage_type       = "ebs"
   host_instance_type = "mq.m5.large"
   security_groups    = [aws_security_group.rabbitmq.id]
