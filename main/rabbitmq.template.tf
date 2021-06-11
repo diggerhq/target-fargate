@@ -2,6 +2,25 @@
 {% if environment_config.needs_rabbitmq is sameas True %}
 
 
+locals {
+  rabbitmq_username = "zebra"
+  rabbitmq_password = random_password.rabbitmq_password.result
+}
+
+resource "random_password" "rabbitmq_password" {
+  length           = 21
+  min_lower        = 1
+  min_upper        = 1
+  min_numeric      = 1
+  min_special      = 1
+  special          = true
+  lower            = true
+  upper            = true
+  number           = true
+  override_special = "_%@"
+}
+
+
 resource "aws_security_group" "rabbitmq" {
   name_prefix = "${var.app}-${var.environment}-rabbitmq-sg"
   vpc_id = aws_vpc.vpc.id
