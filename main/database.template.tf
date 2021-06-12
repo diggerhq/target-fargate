@@ -47,6 +47,7 @@
     database_password = module.app_rds.database_password
     database_port = module.app_rds.database_port
     database_url = "postgres://${local.database_username}:${local.database_password}@${local.database_address}:${local.database_port}/${local.database_name}"
+    database_endpoint = "postgres://${local.database_username}:${local.database_password}@${local.database_address}:${local.database_port}/"
   }
 
   resource "aws_ssm_parameter" "database_password" {
@@ -61,7 +62,18 @@
     type = "SecureString"
   }
 
+  resource "aws_ssm_parameter" "database_endpoint" {
+    name = "${var.app}.${var.environment}.app_rds.database_endpoint"
+    value = local.database_endpoint
+    type = "SecureString"
+  }
+
   output "DGVAR_TYPEORM_URL" {
     value = aws_ssm_parameter.database_url.arn
   }
+
+  output "DGVAR_TYPEORM_URL_UNIT_TESTING_URL" {
+    value = aws_ssm_parameter.database_endpoint.arn
+  }
+
 {% endif %}
