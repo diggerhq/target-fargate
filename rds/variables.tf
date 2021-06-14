@@ -5,6 +5,8 @@ variable "allocated_storage" {
   description = "The default storage for the RDS instance"
 } 
 
+variable "identifier_prefix" {}
+
 variable "engine" {
   default = "postgres"
 }

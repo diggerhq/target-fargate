@@ -35,6 +35,8 @@
 
   module "app_rds" {
     source = "../rds"
+
+    identifier_prefix = "${var.app}-${var.environment}"
     db_subnet_group_name = aws_db_subnet_group.rds_private_subnet_group.name
     vpc_security_group_ids = [aws_security_group.rds.id]
     publicly_accessible = false
