@@ -23,6 +23,13 @@ tags = {
   contact-email = "me@domain.com"
 }
 
+{% if environment_config.vpcCIDRblock %}
+vpcCIDRblock = "{{environment_config.vpcCIDRblock}}"
+publicSubnetaCIDRblock = "{{environment_config.publicSubnetaCIDRblock}}"
+publicSubnetbCIDRblock = "{{environment_config.publicSubnetbCIDRblock}}"
+privateSubnetaCIDRblock = "{{environment_config.privateSubnetaCIDRblock}}"
+privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
+{% endif %}
 # internal = false
 
 # launch_type = "{{launch_type}}"
