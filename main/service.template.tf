@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.6"
+    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.7"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
@@ -36,6 +36,25 @@
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
   }
 
+  {% if environment_config.create_dns_record %} 
+    resource "aws_route53_record" "{{service_name}}_r53" {
+      zone_id = aws_route53_zone.primary.zone_id
+      name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.hostname}}"
+      type    = "A"
+
+      alias {
+        name                   = module.service-{{service_name}}.lb_dns
+        zone_id                = module.service-{{service_name}}.lb_zone_id
+        evaluate_target_health = false
+      }
+    }
+
+    output "{{service_name}}_dns" {
+        value = aws_route53_record.{{service_name}}_r53.fqdn
+    }
+
+  {% endif %}
+
   output "{{service_name}}_docker_registry" {
     value = module.service-{{service_name}}.docker_registry
   }
@@ -44,6 +63,9 @@
     value = module.service-{{service_name}}.lb_dns
   }
 
+  output "{{service_name}}" {
+    value = ""
+  }
 
 {% else %}
   module "service-{{service_name}}" {
