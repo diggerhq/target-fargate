@@ -38,7 +38,7 @@
 
   {% if environment_config.create_dns_record %} 
     resource "aws_route53_record" "{{service_name}}_r53" {
-      zone_id = aws_route53_zone.primary.zone_id
+      zone_id = "{{environment_config.dns_zone_id}}"
       name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.hostname}}"
       type    = "A"
 
