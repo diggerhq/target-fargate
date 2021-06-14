@@ -61,7 +61,7 @@ resource "aws_mq_broker" "rabbitmq" {
 }
 
 output "DGVAR_CLOUDAMQP_URL" {
-  value = aws_mq_broker.rabbitmq.instances.0.endpoints
+  value = aws_mq_broker.rabbitmq.instances.0.endpoints.0
 }
 
 {% endif %}
