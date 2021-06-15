@@ -14,7 +14,7 @@
   resource "aws_security_group" "rds" {
     name_prefix = "${var.app}-${var.environment}-rds-sg"
     vpc_id = aws_vpc.vpc.id
-    description = "RDS postgres servers"
+    description = "RDS postgres servers (terraform-managed)"
 
     # Only postgres in
     ingress {
