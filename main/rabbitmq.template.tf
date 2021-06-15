@@ -17,7 +17,7 @@ resource "aws_security_group" "rabbbtmq" {
     from_port = 5672
     to_port = 5672
     protocol = "tcp"
-    security_groups = [aws_security_group.rabbbtmq.id]
+    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
   }
 
   # Allow all outbound traffic.
@@ -53,7 +53,7 @@ resource "aws_security_group" "rabbitmq" {
     from_port = 5672
     to_port = 5672
     protocol = "tcp"
-    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
+    security_groups = [aws_security_group.rabbbtmq.id]
   }
 
   # Allow all outbound traffic.
