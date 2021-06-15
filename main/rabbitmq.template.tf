@@ -7,6 +7,28 @@ locals {
   rabbitmq_password = random_password.rabbitmq_password.result
 }
 
+resource "aws_security_group" "rabbbtmq" {
+  name_prefix = "${var.app}-${var.environment}-mq-sg"
+  vpc_id = aws_vpc.vpc.id
+  description = "RabbitMQ SG"
+
+  # Only postgres in
+  ingress {
+    from_port = 5672
+    to_port = 5672
+    protocol = "tcp"
+    security_groups = [aws_security_group.rabbbtmq.id]
+  }
+
+  # Allow all outbound traffic.
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "random_password" "rabbitmq_password" {
   length           = 21
   min_lower        = 1
