@@ -30,6 +30,9 @@
     peer_region = "{{environment_config.peer_vpc_region}}"
     {% endif %}
 
+    tags = {
+      Name = "${var.ecs_cluster_name}-${var.environment}-PeerVPC"
+    }
     # accepter {
     #   allow_remote_vpc_dns_resolution = true
     # }

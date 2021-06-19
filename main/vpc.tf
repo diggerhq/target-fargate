@@ -65,8 +65,12 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = var.dnsSupport
   enable_dns_hostnames = var.dnsHostNames
   tags = {
-    Name = "My VPC"
+    Name = "${var.ecs_cluster_name}-${var.environment}-VPC"
   }
+
+  lifecycle {
+    ignore_changes = [tags["Changed"]]
+  }  
 }
 
 resource "aws_subnet" "public_subnet_a" {
@@ -75,7 +79,7 @@ resource "aws_subnet" "public_subnet_a" {
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_a
   tags = {
-    Name = "public_vpc_subneta"
+    Name = "${var.ecs_cluster_name}-${var.environment}-public_vpc_subneta"
   }
 }
 
@@ -85,7 +89,7 @@ resource "aws_subnet" "public_subnet_b" {
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_b
   tags = {
-    Name = "public_vpc_subnetb"
+    Name = "${var.ecs_cluster_name}-${var.environment}-public_vpc_subnetb"
   }
 }
 
@@ -95,7 +99,7 @@ resource "aws_subnet" "private_subnet_a" {
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_a
   tags = {
-    Name = "private_vpc_subneta"
+    Name = "${var.ecs_cluster_name}-${var.environment}-private_vpc_subneta"
   }
 }
 
@@ -105,7 +109,7 @@ resource "aws_subnet" "private_subnet_b" {
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_b
   tags = {
-    Name = "private_vpc_subnetb"
+    Name = "${var.ecs_cluster_name}-${var.environment}-private_vpc_subnetb"
   }
 }
 
