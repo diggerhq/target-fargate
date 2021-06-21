@@ -1,5 +1,5 @@
 
-{% if service_type = "webapp" %}
+{% if service_type == "webapp" %}
 
 locals {
   {{service_name}}_website_domain = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.hostname}}"
