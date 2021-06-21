@@ -93,7 +93,7 @@ resource "aws_subnet" "public_subnet_a" {
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_a
   tags = {
-    Name = "${var.ecs_cluster_name}-${var.environment}-public_vpc_subneta"
+    Name = "${var.app}-${var.environment}-public_vpc_subneta"
   }
 }
 
@@ -103,7 +103,7 @@ resource "aws_subnet" "public_subnet_b" {
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_b
   tags = {
-    Name = "${var.ecs_cluster_name}-${var.environment}-public_vpc_subnetb"
+    Name = "${var.app}-${var.environment}-public_vpc_subnetb"
   }
 }
 
@@ -113,7 +113,7 @@ resource "aws_subnet" "private_subnet_a" {
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_a
   tags = {
-    Name = "${var.ecs_cluster_name}-${var.environment}-private_vpc_subneta"
+    Name = "${var.app}-${var.environment}-private_vpc_subneta"
   }
 }
 
@@ -123,7 +123,7 @@ resource "aws_subnet" "private_subnet_b" {
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_b
   tags = {
-    Name = "${var.ecs_cluster_name}-${var.environment}-private_vpc_subnetb"
+    Name = "${var.app}-${var.environment}-private_vpc_subnetb"
   }
 }
 
