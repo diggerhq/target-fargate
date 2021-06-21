@@ -67,7 +67,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   default_root_object = "index.html"
 
   logging_config {
-    bucket = aws_s3_bucket.website_logs.bucket_domain_name
+    bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket_domain_name
     prefix = "${local.{{service_name}}_website_domain}/"
   }
 
