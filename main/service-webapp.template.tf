@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "{{service_name}}_website_root" {
   force_destroy = true
 
   logging {
-    target_bucket = aws_s3_bucket.website_logs.bucket
+    target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
     target_prefix = "${local.{{service_name}}_website_domain}/"
   }
 
