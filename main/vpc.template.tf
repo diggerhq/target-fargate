@@ -131,6 +131,8 @@ resource "aws_subnet" "private_subnet_b" {
 {% if environment_config.vpc_id %}
   data "aws_internet_gateway" "vpc_ig" {
     filter {
+      # filter by vpc ID
+      name   = "attachment.vpc-id"
       values = ["{{environment_config.vpc_id}}"]
     }
   }
