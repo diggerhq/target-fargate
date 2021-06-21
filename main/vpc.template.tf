@@ -128,7 +128,17 @@ resource "aws_subnet" "private_subnet_b" {
 }
 
 # if user is attaching to existing VPC we assume they already have a gateway attached!
-{% if not environment_config.vpc_id %}
+{% if environment_config.vpc_id %}
+  data "aws_internet_gateway" "vpc_ig" {
+    filter {
+      values = ["{{environment_config.vpc_id}}"]
+    }
+  }
+
+  locals {
+    vpc_ig = data.aws_internet_gateway.vpc_ig
+  }
+{% else %}
   resource "aws_internet_gateway" "vpc_ig" {
     vpc_id = local.vpc.id
     tags = {
@@ -136,22 +146,25 @@ resource "aws_subnet" "private_subnet_b" {
     }
   }
 
-
-  resource "aws_route_table" "route_table_public" {
-    vpc_id = local.vpc.id
-
-    # Note: "local" VPC record is implicitly specified
-
-    route {
-      cidr_block      = "0.0.0.0/0"
-      gateway_id      = aws_internet_gateway.vpc_ig.id
-    }
-
-    tags = {
-      Name = "My VPC Public Route Table"
-    }
+  locals {
+    vpc_ig = aws_internet_gateway.vpc_ig
   }
 {% endif %}
+
+resource "aws_route_table" "route_table_public" {
+  vpc_id = local.vpc.id
+
+  # Note: "local" VPC record is implicitly specified
+
+  route {
+    cidr_block      = "0.0.0.0/0"
+    gateway_id      = local.vpc_ig.id
+  }
+
+  tags = {
+    Name = "${var.app}-${var.environment} Public Route Table"
+  }
+}
 
 resource "aws_route_table_association" "publica" {
   subnet_id      = aws_subnet.public_subnet_a.id
@@ -162,4 +175,3 @@ resource "aws_route_table_association" "publicb" {
   subnet_id      = aws_subnet.public_subnet_b.id
   route_table_id = aws_route_table.route_table_public.id
 }
-
