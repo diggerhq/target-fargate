@@ -98,7 +98,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = "{{}}"
+    acm_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
     ssl_support_method  = "sni-only"
   }
 
