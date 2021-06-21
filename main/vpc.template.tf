@@ -58,7 +58,15 @@ variable "mapPublicIP" {
   default = false
 }
 
+{% if environment_config.vpc_id %}
+data "aws_vpc" "vpc" {
+  id = "{{environment_config.vpc_id}}"
+}
 
+locals {
+  vpc = data.aws_vpc.vpc
+}
+{% else %}
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpcCIDRblock
   instance_tenancy     = var.instanceTenancy
@@ -73,8 +81,13 @@ resource "aws_vpc" "vpc" {
   }  
 }
 
+locals {
+  vpc = aws_vpc.vpc
+}
+{% endif %}
+
 resource "aws_subnet" "public_subnet_a" {
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = local.vpc.id
   cidr_block              = var.publicSubnetaCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_a
@@ -84,7 +97,7 @@ resource "aws_subnet" "public_subnet_a" {
 }
 
 resource "aws_subnet" "public_subnet_b" {
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = local.vpc.id
   cidr_block              = var.publicSubnetbCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_b
@@ -94,7 +107,7 @@ resource "aws_subnet" "public_subnet_b" {
 }
 
 resource "aws_subnet" "private_subnet_a" {
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = local.vpc.id
   cidr_block              = var.privateSubnetaCIDRblock
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_a
@@ -104,7 +117,7 @@ resource "aws_subnet" "private_subnet_a" {
 }
 
 resource "aws_subnet" "private_subnet_b" {
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = local.vpc.id
   cidr_block              = var.privateSubnetbCIDRblock
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_b
@@ -114,7 +127,7 @@ resource "aws_subnet" "private_subnet_b" {
 }
 
 resource "aws_internet_gateway" "vpc_ig" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc.id
   tags = {
     Name = "${var.app} Internet Gateway"
   }
@@ -122,7 +135,7 @@ resource "aws_internet_gateway" "vpc_ig" {
 
 
 resource "aws_route_table" "route_table_public" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc.id
 
   # Note: "local" VPC record is implicitly specified
 

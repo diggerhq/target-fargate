@@ -6,7 +6,7 @@
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
     region = var.region
-    service_vpc = aws_vpc.vpc
+    service_vpc = local.vpc
     # image_tag_mutability
     lb_subnet_a = aws_subnet.public_subnet_a
     lb_subnet_b = aws_subnet.public_subnet_b
@@ -74,7 +74,7 @@
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
     region = var.region
-    service_vpc = aws_vpc.vpc
+    service_vpc = local.vpc
     # image_tag_mutability
     lb_subnet_a = aws_subnet.public_subnet_a
     lb_subnet_b = aws_subnet.public_subnet_b

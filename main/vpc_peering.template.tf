@@ -23,7 +23,7 @@
   resource "aws_vpc_peering_connection" "peer_{{environment_config.peer_vpc}}" {
     # peer_owner_id = var.peer_owner_id
     peer_vpc_id   = "{{environment_config.peer_vpc}}"
-    vpc_id        = aws_vpc.vpc.id
+    vpc_id        = local.vpc.id
     auto_accept   = false
 
     {% if environment_config.peer_vpc_region %}

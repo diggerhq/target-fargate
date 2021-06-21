@@ -13,7 +13,7 @@
 
   resource "aws_security_group" "rds" {
     name_prefix = "${var.app}-${var.environment}-rds-sg"
-    vpc_id = aws_vpc.vpc.id
+    vpc_id = local.vpc.id
     description = "RDS postgres servers (terraform-managed)"
 
     # Only postgres in

@@ -9,7 +9,7 @@ locals {
 
 resource "aws_security_group" "rabbbtmq" {
   name_prefix = "${var.app}-${var.environment}-mq-sg"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc.id
   description = "RabbitMQ SG"
 
   # Only postgres in
@@ -45,7 +45,7 @@ resource "random_password" "rabbitmq_password" {
 
 resource "aws_security_group" "rabbitmq" {
   name_prefix = "${var.app}-${var.environment}-rabbitmq-sg"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc.id
   description = "RabbitMQ security group"
 
   # Only postgres in
