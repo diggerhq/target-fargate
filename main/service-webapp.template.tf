@@ -158,5 +158,12 @@ resource "aws_s3_bucket_policy" "{{service_name}}_update_website_root_bucket_pol
 POLICY
 }
 
+output "{{service_name}}_docker_registry" {
+  value = ""
+}
+
+output "{{service_name}}_lb_dns" {
+  value = local.{{service_name}}_website_domain 
+}
 
 {% endif %} 
