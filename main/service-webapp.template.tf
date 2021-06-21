@@ -53,7 +53,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
 
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
-    domain_name = aws_s3_bucket.website_root.website_endpoint
+    domain_name = aws_s3_bucket.{{service_name}}_website_root.website_endpoint
 
     custom_origin_config {
       origin_protocol_policy = "http-only"
@@ -156,6 +156,11 @@ resource "aws_s3_bucket_policy" "{{service_name}}_update_website_root_bucket_pol
   ]
 }
 POLICY
+}
+
+
+output "{{service_name}}_bucket_main" {
+  value = aws_s3_bucket.{{service_name}}_website_logs.bucket
 }
 
 output "{{service_name}}_docker_registry" {
