@@ -17,7 +17,7 @@ module "service-{{service_name}}" {
   # deregistration_delay
   health_check = "{{health_check}}"
   {% if environment_config.health_check_interval %}
-  health_check_interval = "environment_config.health_check_interval"
+  health_check_interval = "{{environment_config.health_check_interval}}"
   {% endif %}
 
   # health_check_timeout
