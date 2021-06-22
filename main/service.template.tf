@@ -16,7 +16,10 @@ module "service-{{service_name}}" {
   internal = true
   # deregistration_delay
   health_check = "{{health_check}}"
-  # health_check_interval
+  {% if environment_config.health_check_interval %}
+  health_check_interval = "environment_config.health_check_interval"
+  {% endif %}
+
   # health_check_timeout
   # health_check_matcher
   # lb_access_logs_expiration_days
