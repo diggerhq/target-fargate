@@ -97,10 +97,12 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
     }
   }
 
+  {% if environment_config.acm_certificate_arn_virginia %}
   viewer_certificate {
-    acm_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
+    acm_certificate_arn = "{{environment_config.acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
   }
+  {% endif %}
 
   custom_error_response {
     error_caching_min_ttl = 300
@@ -168,6 +170,10 @@ output "{{service_name}}_docker_registry" {
 }
 
 output "{{service_name}}_lb_dns" {
+  value = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.domain_name
+}
+
+output "{{service_name}}_custom_domain" {
   value = local.{{service_name}}_website_domain 
 }
 
