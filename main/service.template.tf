@@ -49,7 +49,7 @@
       }
     }
 
-    output "{{service_name}}_dns" {
+    output "{{service_name}}_custom_domain" {
         value = aws_route53_record.{{service_name}}_r53.fqdn
     }
 
