@@ -50,7 +50,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  aliases = [local.{{service_name}}_website_domain, {{service_name}}_dggr_website_domain]
+  aliases = [local.{{service_name}}_website_domain, local.{{service_name}}_dggr_website_domain]
 
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
@@ -143,7 +143,9 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   output "{{service_name}}_custom_domain" {
     value = local.{{service_name}}_website_domain 
   }
-{% else %}
+{% endif %}
+
+{% if environment_config.use_dggr_domain}
   # dggr.app domain
   resource "aws_route53_record" "{{service_name}}_dggr_website_cdn_root_record" {
     provider = aws.digger
@@ -162,7 +164,6 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
     value = {{service_name}}_dggr_website_domain
   }
 {% endif %}
-
 
 # Creates policy to allow public access to the S3 bucket
 resource "aws_s3_bucket_policy" "{{service_name}}_update_website_root_bucket_policy" {
