@@ -145,7 +145,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 {% endif %}
 
-{% if environment_config.use_dggr_domain}
+{% if environment_config.use_dggr_domain %}
   # dggr.app domain
   resource "aws_route53_record" "{{service_name}}_dggr_website_cdn_root_record" {
     provider = aws.digger
