@@ -149,7 +149,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   # dggr.app domain
   resource "aws_route53_record" "{{service_name}}_dggr_website_cdn_root_record" {
     provider = aws.digger
-    zone_id = "{{environment_config.dns_zone_id}}"
+    zone_id = "{{environment_config.dggr_zone_id}}"
     name    = local.{{service_name}}_dggr_website_domain
     type    = "A"
 
