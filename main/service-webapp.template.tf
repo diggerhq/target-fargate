@@ -150,7 +150,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   resource "aws_route53_record" "{{service_name}}_dggr_website_cdn_root_record" {
     provider = aws.digger
     zone_id = "{{environment_config.dns_zone_id}}"
-    name    = {{service_name}}_dggr_website_domain
+    name    = local.{{service_name}}_dggr_website_domain
     type    = "A"
 
     alias {
@@ -161,7 +161,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 
   output "{{service_name}}_dggr_domain" {
-    value = {{service_name}}_dggr_website_domain
+    value = local.{{service_name}}_dggr_website_domain
   }
 {% endif %}
 
