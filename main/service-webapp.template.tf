@@ -2,7 +2,8 @@
 {% if service_type == "webapp" %}
 
 locals {
-  {{service_name}}_website_domain = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.hostname}}"
+  {{service_name}}_website_domain = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
+  {{service_name}}_dggr_website_domain = "{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
 }
 
 ## S3
@@ -49,7 +50,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  aliases = [local.{{service_name}}_website_domain]
+  aliases = [local.{{service_name}}_website_domain, {{service_name}}_dggr_website_domain]
 
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
@@ -102,6 +103,11 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
     acm_certificate_arn = "{{environment_config.acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
   }
+  {% else %}
+  viewer_certificate {
+    acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn_virginia}}"
+    ssl_support_method  = "sni-only"
+  }  
   {% endif %}
 
   custom_error_response {
@@ -120,18 +126,42 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 }
 
-# Creates the DNS record to point on the main CloudFront distribution ID
-resource "aws_route53_record" "{{service_name}}_website_cdn_root_record" {
-  zone_id = "{{environment_config.dns_zone_id}}"
-  name    = local.{{service_name}}_website_domain
-  type    = "A"
+{% if environment_config.acm_certificate_arn_virginia %}
+  # Creates the DNS record to point on the main CloudFront distribution ID
+  resource "aws_route53_record" "{{service_name}}_website_cdn_root_record" {
+    zone_id = "{{environment_config.dns_zone_id}}"
+    name    = local.{{service_name}}_website_domain
+    type    = "A"
 
-  alias {
-    name                   = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.domain_name
-    zone_id                = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.hosted_zone_id
-    evaluate_target_health = false
+    alias {
+      name                   = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.domain_name
+      zone_id                = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.hosted_zone_id
+      evaluate_target_health = false
+    }
   }
-}
+
+  output "{{service_name}}_custom_domain" {
+    value = local.{{service_name}}_website_domain 
+  }
+{% else %}
+  # dggr.app domain
+  resource "aws_route53_record" "{{service_name}}_dggr_website_cdn_root_record" {
+    provider = aws.digger
+    zone_id = "{{environment_config.dns_zone_id}}"
+    name    = {{service_name}}_dggr_website_domain
+    type    = "A"
+
+    alias {
+      name                   = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.domain_name
+      zone_id                = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.hosted_zone_id
+      evaluate_target_health = false
+    }
+  }
+
+  output "{{service_name}}_dggr_domain" {
+    value = {{service_name}}_dggr_website_domain
+  }
+{% endif %}
 
 
 # Creates policy to allow public access to the S3 bucket
@@ -173,8 +203,6 @@ output "{{service_name}}_lb_dns" {
   value = aws_cloudfront_distribution.{{service_name}}_website_cdn_root.domain_name
 }
 
-output "{{service_name}}_custom_domain" {
-  value = local.{{service_name}}_website_domain 
-}
+
 
 {% endif %} 

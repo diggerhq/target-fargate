@@ -5,6 +5,9 @@ variable "aws_key" {
 variable "aws_secret" {
 }
 
+variable "digger_aws_key" {}
+variable "digger_aws_secret" {}
+
 terraform {
   required_version = ">= 0.12"
 
@@ -42,29 +45,13 @@ provider "aws" {
   secret_key = var.aws_secret  
 }
 
-# output
-
-# Command to view the status of the Fargate service
-output "status" {
-  value = "fargate service info"
+# digger account provider
+provider "aws" {
+  alias = "digger"
+  version = "= 3.45.0"
+  region  = var.region
+  # profile = var.aws_profile
+  access_key = var.digger_aws_key
+  secret_key = var.digger_aws_secret  
 }
 
-# Command to deploy a new task definition to the service using Docker Compose
-output "deploy" {
-  value = "fargate service deploy -f docker-compose.yml"
-}
-
-# Command to scale up cpu and memory
-output "scale_up" {
-  value = "fargate service update -h"
-}
-
-# Command to scale out the number of tasks (container replicas)
-output "scale_out" {
-  value = "fargate service scale -h"
-}
-
-# Command to set the AWS_PROFILE
-# output "aws_profile" {
-#   value = var.aws_profile
-# }

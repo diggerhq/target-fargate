@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.7"
+    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v1.0.8"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
@@ -31,7 +31,14 @@
     {% if environment_config.lb_ssl_certificate_arn %}
       lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
     {% endif %}
-    
+
+
+    # for *.dggr.app listeners
+    {% if environment_config.dggr_acm_certificate_arn %}
+      dggr_acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn}}"
+    {% endif %}
+
+
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
   }
@@ -39,7 +46,7 @@
   {% if environment_config.create_dns_record %} 
     resource "aws_route53_record" "{{service_name}}_r53" {
       zone_id = "{{environment_config.dns_zone_id}}"
-      name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.hostname}}"
+      name    = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
       type    = "A"
 
       alias {
@@ -53,6 +60,27 @@
         value = aws_route53_record.{{service_name}}_r53.fqdn
     }
 
+  {% endif %}
+
+
+  # *.dggr.app domains
+  {% if environment_config.use_dggr_domain %} 
+    resource "aws_route53_record" "{{service_name}}_dggr_r53" {
+      provider = aws.digger
+      zone_id = "{{environment_config.dggr_zone_id}}"
+      name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
+      type    = "A"
+
+      alias {
+        name                   = module.service-{{service_name}}.lb_dns
+        zone_id                = module.service-{{service_name}}.lb_zone_id
+        evaluate_target_health = false
+      }
+    }
+
+    output "{{service_name}}_dggr_domain" {
+        value = aws_route53_record.{{service_name}}_r53.fqdn
+    }
   {% endif %}
 
   output "{{service_name}}_docker_registry" {
