@@ -79,7 +79,7 @@
     }
 
     output "{{service_name}}_dggr_domain" {
-        value = aws_route53_record.{{service_name}}_r53.fqdn
+        value = aws_route53_record.{{service_name}}_dggr_r53.fqdn
     }
   {% endif %}
 
