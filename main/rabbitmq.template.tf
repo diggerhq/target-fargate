@@ -82,6 +82,17 @@ resource "aws_mq_broker" "rabbitmq" {
   }
 }
 
+resource "aws_ssm_parameter" "rabbibtmq_username" {
+  name = "${var.app}.${var.environment}.rabbbitmq.username"
+  value = local.rabbibtmq_username
+  type = "SecureString"
+}
+
+resource "aws_ssm_parameter" "rabbitmq_password" {
+  name = "${var.app}.${var.environment}.rabbitmq.password"
+  value = local.rabbitmq_password
+  type = "SecureString"
+}
 output "DGVAR_CLOUDAMQP_URL" {
   value = aws_mq_broker.rabbitmq.instances.0.endpoints.0
 }
