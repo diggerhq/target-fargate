@@ -50,10 +50,18 @@ resource "aws_security_group" "rabbitmq" {
 
   # Only postgres in
   ingress {
-    from_port = 5672
-    to_port = 5672
+    from_port = 5671
+    to_port = 5671
     protocol = "tcp"
-    security_groups = [aws_security_group.rabbbtmq.id]
+    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
+  }
+
+  # Only postgres in
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
   }
 
   # Allow all outbound traffic.
@@ -63,6 +71,22 @@ resource "aws_security_group" "rabbitmq" {
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_security_group_rule" "rabbitmq" {
+  type              = "ingress"
+  from_port         = 5671
+  to_port           = 5671
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rabbbtmq.id
+}
+
+resource "aws_security_group_rule" "https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rabbbtmq.id
 }
 
 resource "aws_mq_broker" "rabbitmq" {
@@ -75,6 +99,10 @@ resource "aws_mq_broker" "rabbitmq" {
   host_instance_type = "mq.m5.large"
   security_groups    = [aws_security_group.rabbitmq.id]
   subnet_ids         = [aws_subnet.private_subnet_a.id]
+
+  logs {
+    cloudwatch = true
+  }
 
   user {
     username = local.rabbitmq_username
