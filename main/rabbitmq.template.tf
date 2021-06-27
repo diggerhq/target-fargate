@@ -73,21 +73,6 @@ resource "aws_security_group" "rabbitmq" {
   }
 }
 
-resource "aws_security_group_rule" "rabbitmq" {
-  type              = "ingress"
-  from_port         = 5671
-  to_port           = 5671
-  protocol          = "tcp"
-  security_group_id = aws_security_group.rabbbtmq.id
-}
-
-resource "aws_security_group_rule" "https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.rabbbtmq.id
-}
 
 resource "aws_mq_broker" "rabbitmq" {
   broker_name = "${var.app}-${var.environment}-rabbitmq"
