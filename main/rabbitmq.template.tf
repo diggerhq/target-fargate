@@ -84,7 +84,7 @@ resource "aws_mq_broker" "rabbitmq" {
 
 resource "aws_ssm_parameter" "rabbibtmq_username" {
   name = "${var.app}.${var.environment}.rabbbitmq.username"
-  value = local.rabbibtmq_username
+  value = local.rabbitmq_username
   type = "SecureString"
 }
 
