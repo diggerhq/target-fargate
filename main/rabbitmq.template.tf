@@ -101,7 +101,7 @@ resource "aws_mq_broker" "rabbitmq" {
   subnet_ids         = [aws_subnet.private_subnet_a.id]
 
   logs {
-    cloudwatch = true
+    general = true
   }
 
   user {
