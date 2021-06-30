@@ -15,6 +15,37 @@ resource "aws_docdb_subnet_group" "docdb" {
   }
 }
 
+
+resource "aws_security_group" "mongodb" {
+  name_prefix = "${var.app}-${var.environment}-rabbitmq-sg"
+  vpc_id = local.vpc.id
+  description = "RabbitMQ security group"
+
+  # Only postgres in
+  ingress {
+    from_port = 27017
+    to_port = 27017
+    protocol = "tcp"
+    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
+  }
+
+  # Only postgres in
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
+  }
+
+  # Allow all outbound traffic.
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_docdb_cluster" "docdb" {
   cluster_identifier        = "${var.app}-${var.environment}-docdb"
   engine                    = "docdb"
@@ -25,6 +56,7 @@ resource "aws_docdb_cluster" "docdb" {
   preferred_backup_window   = "07:00-09:00"
   final_snapshot_identifier = "${var.app}-${var.environment}-final-snapshot"
   skip_final_snapshot       = false
+  vpc_security_group_ids    = [aws_security_group.mongodb.id]
 }
 
 resource "aws_docdb_cluster_instance" "cluster_instances" {
