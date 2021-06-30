@@ -26,7 +26,7 @@ resource "random_password" "mongodb" {
   lower            = true
   upper            = true
   number           = true
-  override_special = "/@"
+  override_special = "!?*."
 }
 
 resource "aws_security_group" "mongodb" {
