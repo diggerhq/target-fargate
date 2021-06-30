@@ -74,10 +74,22 @@ resource "aws_docdb_cluster" "docdb" {
 
 resource "aws_docdb_cluster_instance" "cluster_instances" {
   count              = 2
-  identifier         = "docdb-cluster-demo-${count.index}"
+  identifier         = "${var.app}-${var.environment}-${count.index}"
   cluster_identifier = aws_docdb_cluster.docdb.id
   instance_class     = "db.t3.medium"
 }
 
+
+resource "aws_ssm_parameter" "mongodb_username" {
+  name = "${var.app}.${var.environment}.mongodb.username"
+  value = local.mongodb_username
+  type = "SecureString"
+}
+
+resource "aws_ssm_parameter" "mongodb_password" {
+  name = "${var.app}.${var.environment}.mongodb.password"
+  value = local.mongodb_password
+  type = "SecureString"
+}
 
 {% endif %}
