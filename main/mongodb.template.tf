@@ -3,7 +3,7 @@
 
 locals {
   mongodb_username = "digger"
-  mongodb_password = random_password.rabbitmq_password.result
+  mongodb_password = random_password.mongodb.result
 }
 
 resource "aws_docdb_subnet_group" "docdb" {
@@ -15,6 +15,19 @@ resource "aws_docdb_subnet_group" "docdb" {
   }
 }
 
+# Only printable ASCII characters besides '/', '@', '"', ' ' may be used.
+resource "random_password" "mongodb" {
+  length           = 21
+  min_lower        = 1
+  min_upper        = 1
+  min_numeric      = 1
+  min_special      = 1
+  special          = true
+  lower            = true
+  upper            = true
+  number           = true
+  override_special = "/@"
+}
 
 resource "aws_security_group" "mongodb" {
   name_prefix = "${var.app}-${var.environment}-rabbitmq-sg"
