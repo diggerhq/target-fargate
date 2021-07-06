@@ -50,8 +50,12 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  # aliases = [local.{{service_name}}_website_domain, local.{{service_name}}_dggr_website_domain]
-
+  {% if environment_config.hostname %}
+  aliases = [local.{{service_name}}_website_domain]
+  {% elif environment_config.dggr_hostname %}
+  aliases = [local.{{service_name}}_dggr_website_domain]
+  {% endif %}
+   
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
     domain_name = aws_s3_bucket.{{service_name}}_website_root.website_endpoint
