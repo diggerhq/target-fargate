@@ -74,12 +74,9 @@
     type = "SecureString"
   }
 
-  output "DGVAR_TYPEORM_URL" {
+  output "DGVAR_DATABASE_URL" {
     value = aws_ssm_parameter.database_url.arn
   }
 
-  output "DGVAR_TYPEORM_URL_UNIT_TESTING_URL" {
-    value = aws_ssm_parameter.database_endpoint.arn
-  }
 
 {% endif %}
