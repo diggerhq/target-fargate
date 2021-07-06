@@ -193,7 +193,7 @@ POLICY
 
 
 output "{{service_name}}_bucket_main" {
-  value = aws_s3_bucket.{{service_name}}_website_logs.bucket
+  value = aws_s3_bucket.{{service_name}}_website_root.bucket
 }
 
 output "{{service_name}}_docker_registry" {
