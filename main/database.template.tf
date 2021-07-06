@@ -35,7 +35,11 @@
 
   module "app_rds" {
     source = "../rds"
-
+    
+    {% if environment_config.rds_instance_type %}
+    instance_class = "{{environment_config.rds_instance_type}}"
+    {% endif %}
+    
     identifier_prefix = "${var.app}-${var.environment}"
     db_subnet_group_name = aws_db_subnet_group.rds_private_subnet_group.name
     vpc_security_group_ids = [aws_security_group.rds.id]

@@ -1,6 +1,6 @@
 
 resource "aws_security_group" "bastion_sg" {
-  name   = "bastion-security-group"
+  name_prefix   = "bastion-security-group"
   vpc_id = local.vpc.id
 
   ingress {
