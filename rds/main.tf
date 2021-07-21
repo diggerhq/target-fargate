@@ -7,6 +7,7 @@ resource "random_password" "rds_password" {
 resource "aws_db_instance" "default" {
   identifier_prefix    = var.identifier_prefix
   allocated_storage    = var.allocated_storage
+  iops                 = var.iops
   engine               = var.engine
   engine_version       = var.engine_version
   instance_class       = var.instance_class

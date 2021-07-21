@@ -5,6 +5,13 @@ variable "allocated_storage" {
   description = "The default storage for the RDS instance"
 } 
 
+
+variable "iops" {
+  type        = number
+  default     = 1000
+  description = "The default storage for the RDS instance"
+} 
+
 variable "identifier_prefix" {}
 
 variable "engine" {
