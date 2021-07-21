@@ -40,7 +40,10 @@
     instance_class = "{{environment_config.rds_instance_type}}"
     {% endif %}
     
-
+    {% if environment_config.rds_allocated_storage %}
+    allocated_storage = "{{environment_config.rds_allocated_storage}}"    
+    {% endif %}
+    
     {% if environment_config.database_snapshot_identifier %}
     snapshot_identifier = "{{environment_config.database_snapshot_identifier}}"
     {% endif %}
