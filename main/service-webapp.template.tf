@@ -130,7 +130,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 }
 
-{% if (environment_config.acm_certificate_arn_virginia sameas true) and (environment_config.dns_zone_id sameas true) %}
+{% if ((environment_config.acm_certificate_arn_virginia sameas true) and (environment_config.dns_zone_id sameas true)) %}
   # Creates the DNS record to point on the main CloudFront distribution ID
   resource "aws_route53_record" "{{service_name}}_website_cdn_root_record" {
     zone_id = "{{environment_config.dns_zone_id}}"
