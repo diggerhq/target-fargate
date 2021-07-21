@@ -35,6 +35,10 @@ variable "vpc_security_group_ids" {
   default = []
 }
 
+variable "snapshot_identifier" {
+  default = ""
+}
+
 variable "db_subnet_group_name" {
   default = null
   description = "The subnet group associated with RDS instance"

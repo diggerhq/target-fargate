@@ -40,6 +40,11 @@
     instance_class = "{{environment_config.rds_instance_type}}"
     {% endif %}
     
+
+    {% if environment_config.snapshot_identifier %}
+    snapshot_identifier = "{{environment_config.snapshot_identifier}}"
+    {% endif %}
+
     identifier_prefix = "${var.app}-${var.environment}"
     db_subnet_group_name = aws_db_subnet_group.rds_private_subnet_group.name
     vpc_security_group_ids = [aws_security_group.rds.id]
