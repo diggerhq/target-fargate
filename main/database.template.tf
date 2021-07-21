@@ -41,8 +41,8 @@
     {% endif %}
     
 
-    {% if environment_config.snapshot_identifier %}
-    snapshot_identifier = "{{environment_config.snapshot_identifier}}"
+    {% if environment_config.database_snapshot_identifier %}
+    snapshot_identifier = "{{environment_config.database_snapshot_identifier}}"
     {% endif %}
 
     identifier_prefix = "${var.app}-${var.environment}"
