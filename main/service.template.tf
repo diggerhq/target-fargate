@@ -26,6 +26,10 @@
     lb_protocol = "{{environment_config.lb_protocol}}"
     {% endif %}
 
+    {% if environment_config.health_check_matcher %}
+    health_check_matcher = "{{environment_config.health_check_matcher}}"
+    {% endif %}
+    
     # health_check_interval
     # health_check_timeout
     # health_check_matcher
