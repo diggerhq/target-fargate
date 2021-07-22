@@ -17,7 +17,7 @@
     # deregistration_delay
     health_check = "{{health_check}}"
 
-    {% if environment_config.health_check_disabled $}
+    {% if environment_config.health_check_disabled %}
     health_check_enabled = false
     {% endif %}
 
