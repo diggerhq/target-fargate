@@ -1,7 +1,7 @@
 
 {% if load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v2.0.0"
+    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v2.0.1"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
@@ -16,6 +16,16 @@
     internal = false
     # deregistration_delay
     health_check = "{{health_check}}"
+
+    {% if environment_config.health_check_disabled $}
+    health_check_enabled = false
+    {% endif %}
+
+
+    {% if environment_config.lb_protocol %}
+    lb_protocol = "{{environment_config.lb_protocol}}"
+    {% endif %}
+
     # health_check_interval
     # health_check_timeout
     # health_check_matcher
