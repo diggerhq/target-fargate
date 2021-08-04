@@ -1,7 +1,7 @@
 {% if environment_config.tcp_service %}
   
   module "service-{{service_name}}" {
-    source = "../fargate-service-module"
+    source = "../fargate-service-tcp"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
