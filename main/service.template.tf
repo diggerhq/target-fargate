@@ -45,10 +45,6 @@
     value = module.service-{{service_name}}.lb_dns
   }
 
-  output "{{service_name}}_api_gateway_endpoint" {
-    value = module.service-{{service_name}}.api_gateway_endpoint
-  }
-
 {% elif load_balancer %}
   module "service-{{service_name}}" {
     source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v2.0.1"
