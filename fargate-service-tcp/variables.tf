@@ -18,6 +18,9 @@ variable "service_security_groups" {
 
 variable "region" {}
 
+variable "tags" {
+  default = map({})
+}
 
 # === Load Balancer ===
 
