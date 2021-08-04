@@ -60,7 +60,7 @@ resource "aws_lb_target_group" "main" {
 
   stickiness {
     enabled = false
-    type = "lb_cookie"
+    # type = "lb_cookie"
   }
 
   lifecycle {
