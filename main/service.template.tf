@@ -21,6 +21,10 @@
     health_check_interval = "{{environment_config.health_check_interval}}"
     {% endif %}
 
+    {% if environment_config.health_check_grace_period_seconds %}
+    health_check_grace_period_seconds = "{{environment_config.health_check_grace_period_seconds}}"
+    {% endif %}
+
     # health_check_timeout
     # health_check_matcher
     # lb_access_logs_expiration_days
