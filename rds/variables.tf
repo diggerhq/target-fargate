@@ -1,7 +1,7 @@
 
 variable "allocated_storage" {
   type        = number
-  default     = 10
+  default     = 100
   description = "The default storage for the RDS instance"
 } 
 
