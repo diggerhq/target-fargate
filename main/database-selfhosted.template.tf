@@ -64,7 +64,7 @@
   resource "aws_lb_listener" "postgres" {
     load_balancer_arn = aws_lb.selfhosted_db.arn
     port              = "5432"
-    protocol          = "TLS"
+    protocol          = "TCP"
 
     default_action {
       type             = "forward"
