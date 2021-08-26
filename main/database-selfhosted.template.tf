@@ -21,7 +21,7 @@
       from_port = 5432
       to_port = 5432
       protocol = "tcp"
-      security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.nsg_lb, aws_security_group.bastion_sg.id]
+      security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.nsg_lb.id, aws_security_group.bastion_sg.id]
     }
 
     # Allow all outbound traffic.
