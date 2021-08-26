@@ -83,9 +83,9 @@
   }
 
   locals {
-    database_address = module.app_rds.database_address
+    database_address = aws_lb.selfhosted_db.dns_name
     database_name = "digger"
-    database_username = module.app_rds.database_username
+    database_username = "postgres"
     database_password = random_password.rds_password.result
     database_port = 5432
     database_url = "postgres://${local.database_username}:${local.database_password}@${local.database_address}:${local.database_port}/${local.database_name}"
