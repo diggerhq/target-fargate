@@ -61,8 +61,8 @@
   }
 
 
-  resource "aws_lb_listener" "front_end" {
-    load_balancer_arn = aws_lb.front_end.arn
+  resource "aws_lb_listener" "postgres" {
+    load_balancer_arn = aws_lb.selfhosted_db.arn
     port              = "5432"
     protocol          = "TLS"
 
