@@ -37,7 +37,7 @@
     name_prefix        = "selfhosted-postgres"
     internal           = false
     load_balancer_type = "network"
-    subnets            = aws_subnet.public.*.id
+    subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
     security_groups    = [aws_security_group.nsg_lb]
     enable_deletion_protection = false
 
