@@ -57,11 +57,11 @@
     subnet_id                   = aws_subnet.public_subnet_a.id
     ami                         = "ami-0c2b8ca1dad447f8a"
     # key_name                    = aws_key_pair.bastion_key.key_name
-    {% if environment_config.rds_instance_type %}
-      instance_type             = "{{environment_config.rds_instance_type}}"
-    {% else %}
+    # {% if environment_config.rds_instance_type %}
+      # instance_type             = "{{environment_config.rds_instance_type}}"
+    # {% else %}
       instance_type             = "t2.micro"
-    {% endif %}
+    # {% endif %}
     
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.selfhosted_postgres.id]
