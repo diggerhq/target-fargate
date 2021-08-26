@@ -5,7 +5,7 @@
   resource "aws_security_group" "nsg_lb" {
     name_prefix = "postgres-lb-sg"
     description = "Allow connections from external resources"
-    vpc_id      = var.service_vpc.id
+    vpc_id      = local.vpc.id
 
     tags = var.tags
   }
@@ -50,7 +50,7 @@
     name_prefix     = "digger"
     port     = 5432
     protocol = "tcp"
-    vpc_id   = aws_vpc.main.id
+    vpc_id   = local.vpc.id
   }
 
   resource "aws_instance" "postgres" {
