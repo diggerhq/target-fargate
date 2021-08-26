@@ -49,7 +49,7 @@
   resource "aws_lb_target_group" "test" {
     name_prefix     = "digger"
     port     = 5432
-    protocol = "tcp"
+    protocol = "TCP"
     vpc_id   = local.vpc.id
   }
 
