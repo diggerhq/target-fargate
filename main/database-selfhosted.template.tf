@@ -1,5 +1,6 @@
 
-{% if environment_config.needs_postgres is sameas True %}
+# additional argument to support selfhosted
+{% if environment_config.needs_postgres is sameas True and environment_config.rds_selfhosted %}
 
   resource "aws_security_group" "nsg_lb" {
     name_prefix = "postgres-lb-sg"
@@ -41,7 +42,7 @@
     enable_deletion_protection = false
 
     tags = {
-      Environment = ${var.environment}
+      Environment = var.environment
     }
   }
 

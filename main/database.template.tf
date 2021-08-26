@@ -1,5 +1,5 @@
-
-{% if environment_config.needs_postgres is sameas True %}
+# additoinal argument to support self hosted
+{% if environment_config.needs_postgres is sameas True and not environment_config.rds_selfhosted  %}
 
 
     resource "aws_db_subnet_group" "rds_private_subnet_group" {
