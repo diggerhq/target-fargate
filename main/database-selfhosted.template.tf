@@ -34,7 +34,7 @@
   }
 
   resource "aws_lb" "selfhosted_db" {
-    name               = "${var.app}-${var.environment}-rds-lb-selfhosted"
+    name               = "${var.app}-${var.environment}-db-lb"
     internal           = false
     load_balancer_type = "network"
     subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
