@@ -18,7 +18,7 @@ su - postgres
 cd /var/lib/psql
 
 chown -R postgres:postgres /var/lib/pgsql
-su -p -c "psql -c \"alter user postgres with password '3anbzsTQDD2ZB8CnSGtKz7'\"" postgres
+su -p -c "psql -c \"alter user postgres with password '${database_password}'\"" postgres
 su -c "echo \"listen_addresses = '*'\" >> /var/lib/pgsql/12/data/postgresql.conf" postgres
 su -c "echo \"host    samerole        all             0.0.0.0/0               md5\" >> /var/lib/pgsql/12/data/pg_hba.conf" postgres
 # sudo -u postgres psql -c "alter user postgres with password 'StrongPassword'"

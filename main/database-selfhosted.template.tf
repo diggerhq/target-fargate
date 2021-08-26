@@ -53,6 +53,8 @@
     vpc_id   = local.vpc.id
   }
 
+
+
   resource "aws_instance" "postgres" {
     subnet_id                   = aws_subnet.public_subnet_a.id
     ami                         = "ami-0c2b8ca1dad447f8a"
@@ -61,17 +63,58 @@
       # instance_type             = "{{environment_config.rds_instance_type}}"
     # {% else %}
     # {% endif %}
-      instance_type             = "t2.micro"
+    instance_type             = "t2.micro"
     
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.selfhosted_postgres.id]
 
-    user_data = templatefile("../userdata/database_selfhosted.tpl", {})
+    user_data = templatefile("../userdata/database_selfhosted.tpl", {
+      database_password = local.database_password
+    })
 
     tags = {
       Name = "${var.app}-${var.environment} postgres (selfhosted)"
     }
   }
+
+  resource "random_password" "rds_password" {
+    length           = 32
+    special          = false
+  }
+
+  locals {
+    database_address = module.app_rds.database_address
+    database_name = "digger"
+    database_username = module.app_rds.database_username
+    database_password = random_password.rds_password.result
+    database_port = 5432
+    database_url = "postgres://${local.database_username}:${local.database_password}@${local.database_address}:${local.database_port}/${local.database_name}"
+    database_endpoint = "postgres://${local.database_username}:${local.database_password}@${local.database_address}:${local.database_port}/"
+  }
+
+
+  resource "aws_ssm_parameter" "database_password" {
+    name = "${var.app}.${var.environment}.app_rds.database_password"
+    value = local.database_password
+    type = "SecureString"
+  }
+
+  # resource "aws_ssm_parameter" "database_url" {
+  #   name = "${var.app}.${var.environment}.app_rds.database_url"
+  #   value = local.database_url
+  #   type = "SecureString"
+  # }
+
+  resource "aws_ssm_parameter" "database_endpoint" {
+    name = "${var.app}.${var.environment}.app_rds.database_endpoint"
+    value = local.database_endpoint
+    type = "SecureString"
+  }
+
+  output "DGVAR_DATABASE_ENDPOINT" {
+    value = local.database_endpoint
+  }
+
 
 
 {% endif %}
