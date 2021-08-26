@@ -22,6 +22,7 @@
       to_port = 5432
       protocol = "tcp"
       security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.nsg_lb.id, aws_security_group.bastion_sg.id]
+      cidr_blocks = ["0.0.0.0/0"]
     }
 
     # Allow all outbound traffic.
@@ -53,7 +54,23 @@
     vpc_id   = local.vpc.id
   }
 
+  resource "aws_lb_target_group_attachment" "test" {
+    target_group_arn = aws_lb_target_group.test.arn
+    target_id        = aws_instance.postgres.id
+    port             = 5432
+  }
 
+
+  resource "aws_lb_listener" "front_end" {
+    load_balancer_arn = aws_lb.front_end.arn
+    port              = "5432"
+    protocol          = "TLS"
+
+    default_action {
+      type             = "forward"
+      target_group_arn = aws_lb_target_group.test.arn
+    }
+  }
 
   resource "aws_instance" "postgres" {
     subnet_id                   = aws_subnet.public_subnet_a.id
