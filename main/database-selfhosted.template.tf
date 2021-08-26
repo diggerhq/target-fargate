@@ -60,8 +60,8 @@
     # {% if environment_config.rds_instance_type %}
       # instance_type             = "{{environment_config.rds_instance_type}}"
     # {% else %}
-      instance_type             = "t2.micro"
     # {% endif %}
+      instance_type             = "t2.micro"
     
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.selfhosted_postgres.id]
