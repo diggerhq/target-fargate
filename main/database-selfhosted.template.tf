@@ -3,7 +3,7 @@
 {% if environment_config.needs_postgres is sameas True and environment_config.rds_selfhosted %}
 
   resource "aws_security_group" "nsg_lb" {
-    name_prefix = "postgres-lb-sg"
+    name        = "${var.app}-${var.environment}-rds-nsg-lbb"
     description = "Allow connections from external resources"
     vpc_id      = local.vpc.id
 
@@ -12,7 +12,7 @@
 
 
   resource "aws_security_group" "selfhosted_postgres" {
-    name_prefix = "${var.app}-${var.environment}-rds-sg"
+    name = "${var.app}-${var.environment}-rds-sg"
     vpc_id = local.vpc.id
     description = "RDS postgres selfhosted"
 
@@ -34,7 +34,7 @@
   }
 
   resource "aws_lb" "selfhosted_db" {
-    name_prefix        = "selfhosted-postgres"
+    name               = "${var.app}-${var.environment}-rds-lb-selfhosted"
     internal           = false
     load_balancer_type = "network"
     subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
