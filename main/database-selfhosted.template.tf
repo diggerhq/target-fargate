@@ -66,7 +66,7 @@
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.selfhosted_postgres.id]
 
-    user_data = templatefile("../userdata/database_selfhoosted.tpl", {})
+    user_data = templatefile("../userdata/database_selfhosted.tpl", {})
 
     tags = {
       Name = "${var.app}-${var.environment} postgres (selfhosted)"
