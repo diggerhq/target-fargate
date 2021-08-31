@@ -14,7 +14,16 @@
     vpcCIDRblock = var.vpcCIDRblock
     # lb_port
     # lb_protocol
-    internal = false
+
+    # override by environmentconfig but also possible to have service internal be true
+    {% if environment_config.internal is sameas True %}
+      internal = true
+    {% elif initernal is sameas True %}
+      internal = true
+    {% else %}
+      internal = false
+    {% endif %}
+
     # deregistration_delay
     health_check = "{{health_check}}"
     {% if environment_config.health_check_interval %}
