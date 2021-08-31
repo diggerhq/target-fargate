@@ -18,7 +18,7 @@
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
       internal = true
-    {% elif initernal is sameas True %}
+    {% elif internal is sameas True %}
       internal = true
     {% else %}
       internal = false
@@ -72,7 +72,7 @@
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
       internal = true
-    {% elif initernal is sameas True %}
+    {% elif internal is sameas True %}
       internal = true
     {% else %}
       internal = false
