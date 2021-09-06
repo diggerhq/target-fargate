@@ -176,6 +176,10 @@
   output "{{service_name}}_lb_arn" {
     value = module.service-{{service_name}}.lb_arn
   }
+  
+  output "{{service_name}}_lb_http_listener_arn" {
+    value = module.service-{{service_name}}._lb_http_listener_arn
+  }
 
   output "{{service_name}}" {
     value = ""
