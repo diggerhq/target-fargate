@@ -87,7 +87,7 @@ locals {
 }
 {% endif %}
 
-resource "c" "c" {
+resource "aws_subnet" "public_subnet_a" {
   vpc_id                  = local.vpc.id
   cidr_block              = var.publicSubnetaCIDRblock
   map_public_ip_on_launch = true
@@ -177,7 +177,6 @@ resource "aws_route_table_association" "publicb" {
   subnet_id      = aws_subnet.public_subnet_b.id
   route_table_id = aws_route_table.route_table_public.id
 }
-
 
 # output the vpc ids
 output "main_vpc_id" {
