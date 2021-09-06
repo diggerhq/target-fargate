@@ -173,7 +173,7 @@
     value = module.service-{{service_name}}.lb_dns
   }
 
-  output "{{service_name}}_lb_dns" {
+  output "{{service_name}}_lb_arn" {
     value = module.service-{{service_name}}.lb_arn
   }
 
