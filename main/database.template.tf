@@ -25,6 +25,11 @@
 
   module "lex_rds" {
     source = "../rds"
+    
+    {% if environment_config.rds_instance_type %}
+    instance_class = "{{environment_config.rds_instance_type}}"
+    {% endif %}
+    
     db_subnet_group_name = aws_db_subnet_group.private_subnet_group.name
     vpc_security_group_ids = [aws_security_group.platformdb.id]
     publicly_accessible = false
