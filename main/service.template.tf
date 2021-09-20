@@ -96,6 +96,14 @@
     {% if environment_config.health_check_matcher %}
     health_check_matcher = "{{environment_config.health_check_matcher}}"
     {% endif %}
+
+    {% if environment_config.ecs_autoscale_min_instances %}
+      ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
+    {% endif %}
+
+    {% if environment_config.ecs_autoscale_max_instances %}
+      ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
+    {% endif %}
     
     # health_check_interval
     # health_check_timeout
@@ -214,6 +222,15 @@
     {% if task_memory %}
     task_memory = "{{task_memory}}"
     {% endif %}
+
+    {% if environment_config.ecs_autoscale_min_instances %}
+      ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
+    {% endif %}
+
+    {% if environment_config.ecs_autoscale_max_instances %}
+      ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
+    {% endif %}
+    
   }
 
   output "{{service_name}}_docker_registry" {
