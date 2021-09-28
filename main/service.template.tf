@@ -105,7 +105,7 @@
       ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
     {% endif %}
     
-    {% if environment_config.include_ecs_volume %}
+    {% if environment_config.include_efs_volume %}
       resource "aws_efs_file_system" "{{service_name}}" {
         creation_token = "{{service_name}}"
         tags = {
@@ -116,7 +116,7 @@
       volumes = [
         {
           name = "efs_volume"
-          file_system_id = aws_efs_file_system.efs.id
+          file_system_id = aws_efs_file_system.{{service_name}}.id
         }
       ]
     {% endif %}
