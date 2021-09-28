@@ -105,6 +105,22 @@
       ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
     {% endif %}
     
+    {% if environment_config.include_ecs_volume %}
+      resource "aws_efs_file_system" "{{service_name}}" {
+        creation_token = "{{service_name}}"
+        tags = {
+          Name = "{{service_name}}"
+        }
+      }
+
+      volumes = [
+        {
+          name = "efs_volume"
+          file_system_id = aws_efs_file_system.efs.id
+        }
+      ]
+    {% endif %}
+
     # health_check_interval
     # health_check_timeout
     # health_check_matcher
