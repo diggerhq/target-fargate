@@ -131,6 +131,19 @@
 
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
+
+    {% if environment_config.include_efs_volume %}
+      volumes = [
+        {
+          name = "{{environment_config.efs_volume_name}}"
+          file_system_id = aws_efs_file_system.{{service_name}}.id
+          mountPoints = [{
+            path = "{{environment_config.efs_volume_path}}"
+            volume = "{{environment_config.efs_volume_name}}"
+          }]
+        }
+      ]
+    {% endif %}
   }
 
   
@@ -141,17 +154,6 @@
         Name = "{{service_name}}"
       }
     }
-
-    volumes = [
-      {
-        name = "{{environment_config.efs_volume_name}}"
-        file_system_id = aws_efs_file_system.{{service_name}}.id
-        mountPoints = [{
-          path = "{{environment_config.efs_volume_path}}"
-          volume = "{{environment_config.efs_volume_name}}"
-        }]
-      }
-    ]
   {% endif %}
 
   {% if environment_config.create_dns_record %} 
