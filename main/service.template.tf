@@ -115,8 +115,12 @@
 
       volumes = [
         {
-          name = "efs_volume"
+          name = "{{environment_config.efs_volume_name}}"
           file_system_id = aws_efs_file_system.{{service_name}}.id
+          mountPoints = [{
+            path = "{{environment_config.efs_volume_path}}"
+            volume = "{{environment_config.efs_volume_name}}"
+          }]
         }
       ]
     {% endif %}
