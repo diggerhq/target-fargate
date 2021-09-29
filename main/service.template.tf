@@ -104,26 +104,6 @@
     {% if environment_config.ecs_autoscale_max_instances %}
       ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
     {% endif %}
-    
-    {% if environment_config.include_efs_volume %}
-      resource "aws_efs_file_system" "{{service_name}}" {
-        creation_token = "{{service_name}}"
-        tags = {
-          Name = "{{service_name}}"
-        }
-      }
-
-      volumes = [
-        {
-          name = "{{environment_config.efs_volume_name}}"
-          file_system_id = aws_efs_file_system.{{service_name}}.id
-          mountPoints = [{
-            path = "{{environment_config.efs_volume_path}}"
-            volume = "{{environment_config.efs_volume_name}}"
-          }]
-        }
-      ]
-    {% endif %}
 
     # health_check_interval
     # health_check_timeout
@@ -152,6 +132,27 @@
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
   }
+
+  
+  {% if environment_config.include_efs_volume %}
+    resource "aws_efs_file_system" "{{service_name}}" {
+      creation_token = "{{service_name}}"
+      tags = {
+        Name = "{{service_name}}"
+      }
+    }
+
+    volumes = [
+      {
+        name = "{{environment_config.efs_volume_name}}"
+        file_system_id = aws_efs_file_system.{{service_name}}.id
+        mountPoints = [{
+          path = "{{environment_config.efs_volume_path}}"
+          volume = "{{environment_config.efs_volume_name}}"
+        }]
+      }
+    ]
+  {% endif %}
 
   {% if environment_config.create_dns_record %} 
     resource "aws_route53_record" "{{service_name}}_r53" {
