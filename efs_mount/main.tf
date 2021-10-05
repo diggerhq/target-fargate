@@ -11,22 +11,22 @@ resource "aws_efs_file_system" "fs" {
 resource "aws_efs_mount_target" "fs_a" {
   file_system_id  = aws_efs_file_system.fs.id
   subnet_id       = var.subnet_a_id
-  security_groups = []
+  security_groups = [aws_efs_file_system.fs.id]
 }
 
 resource "aws_efs_mount_target" "fs_b" {
   file_system_id  = aws_efs_file_system.fs.id
   subnet_id       = var.subnet_b_id
-  security_groups = []
+  security_groups = [aws_efs_file_system.fs.id]
 }
 
-# resource "aws_efs_backup_policy" "fs" {
-#   file_system_id = aws_efs_file_system.fs.id
+resource "aws_efs_backup_policy" "fs" {
+  file_system_id = aws_efs_file_system.fs.id
 
-#   backup_policy {
-#     status = "ENABLED"
-#   }
-# }
+  backup_policy {
+    status = "ENABLED"
+  }
+}
 
 output "fs_id" {
   value = aws_efs_file_system.fs.id
