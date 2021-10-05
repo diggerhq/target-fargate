@@ -3,8 +3,6 @@ resource "aws_security_group" "efs_sg" {
   name_prefix = "${service_name}-efs"
   description = "EFS SG"
   vpc_id      = var.service_vpc.id
-
-  tags = var.tags
 }
 
 # Rules for the TASK (Targets the LB SG)
