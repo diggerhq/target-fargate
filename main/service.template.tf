@@ -137,12 +137,14 @@
         {
           name = "{{environment_config.efs_volume_name}}"
           file_system_id = aws_efs_file_system.{{service_name}}.id
-          mountPoints = [{
-            path = "{{environment_config.efs_volume_path}}"
-            volume = "{{environment_config.efs_volume_name}}"
-          }]
         }
       ]
+
+      mountPoints = [{
+        path = "{{environment_config.efs_volume_path}}"
+        volume = "{{environment_config.efs_volume_name}}"
+      }]
+
     {% endif %}
   }
 
@@ -153,6 +155,16 @@
       tags = {
         Name = "{{service_name}}"
       }
+    }
+
+    resource "aws_efs_mount_target" "{{service_name}}" {
+      file_system_id = aws_efs_file_system.{{service_name}}.id
+      subnet_id      = aws_subnet.public_subnet_a.id
+    }
+
+    resource "aws_efs_mount_target" "{{service_name}}" {
+      file_system_id = aws_efs_file_system.{{service_name}}.id
+      subnet_id      = aws_subnet.public_subnet_b.id
     }
   {% endif %}
 
