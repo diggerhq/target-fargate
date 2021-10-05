@@ -1,6 +1,6 @@
 
 resource "aws_security_group" "efs_sg" {
-  name_prefix = "${service_name}-efs"
+  name_prefix = "${var.service_name}-efs"
   description = "EFS SG"
   vpc_id      = var.vpc_id
 }
