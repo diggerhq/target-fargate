@@ -20,13 +20,13 @@ resource "aws_efs_mount_target" "fs_b" {
   security_groups = [aws_security_group.efs_sg.id]
 }
 
-resource "aws_efs_backup_policy" "fs" {
-  file_system_id = aws_efs_file_system.fs.id
+# resource "aws_efs_backup_policy" "fs" {
+#   file_system_id = aws_efs_file_system.fs.id
 
-  backup_policy {
-    status = "ENABLED"
-  }
-}
+#   backup_policy {
+#     status = "ENABLED"
+#   }
+# }
 
 output "fs_id" {
   value = aws_efs_file_system.fs.id
