@@ -136,7 +136,7 @@
       volumes = [
         {
           name = "{{environment_config.efs_volume_name}}"
-          file_system_id = aws_efs_file_system.{{service_name}}.id
+          file_system_id = module.{{service_name}}_efs_mount.fs_id
         }
       ]
 
