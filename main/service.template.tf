@@ -157,12 +157,12 @@
       }
     }
 
-    resource "aws_efs_mount_target" "{{service_name}}" {
+    resource "aws_efs_mount_target" "{{service_name}}_a" {
       file_system_id = aws_efs_file_system.{{service_name}}.id
       subnet_id      = aws_subnet.public_subnet_a.id
     }
 
-    resource "aws_efs_mount_target" "{{service_name}}" {
+    resource "aws_efs_mount_target" "{{service_name}}_b" {
       file_system_id = aws_efs_file_system.{{service_name}}.id
       subnet_id      = aws_subnet.public_subnet_b.id
     }
