@@ -117,14 +117,7 @@ resource "aws_db_subnet_group" "private_subnet_group" {
   }
 }
 
-resource "aws_eip" "nata" {
-  vpc      = true
-}
 
-resource "aws_nat_gateway" "nat_gwa" {
-  allocation_id = aws_eip.nata.id
-  subnet_id     = aws_subnet.public_subnet_a.id
-}
 
 resource "aws_internet_gateway" "vpc_ig" {
   vpc_id = aws_vpc.vpc.id
@@ -146,27 +139,6 @@ resource "aws_route_table" "route_table_public" {
 
 }
 
-resource "aws_route_table" "route_table_private" {
-  vpc_id = aws_vpc.vpc.id
-
-  # Note: "local" VPC record is implicitly specified
-
-  route {
-    cidr_block      = "0.0.0.0/0"
-    nat_gateway_id      =  aws_nat_gateway.nat_gwa.id
-  }
-
-}
-
-resource "aws_route_table_association" "privatea" {
-  subnet_id      = aws_subnet.private_subnet_a.id
-  route_table_id = aws_route_table.route_table_private.id
-}
-
-resource "aws_route_table_association" "privateb" {
-  subnet_id      = aws_subnet.private_subnet_b.id
-  route_table_id = aws_route_table.route_table_private.id
-}
 
 resource "aws_route_table_association" "publica" {
   subnet_id      = aws_subnet.public_subnet_a.id
