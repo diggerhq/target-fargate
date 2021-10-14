@@ -133,6 +133,14 @@ variable "task_memory" {
   default = "512"
 }
 
+# == for EFS ==
+variable "volumes" {
+  default = []
+}
+
+variable "mountPoints" {
+  default = []
+}
 
 # == Cloudwatch ==
 

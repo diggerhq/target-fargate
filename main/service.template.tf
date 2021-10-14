@@ -43,7 +43,34 @@
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
+
+    {% if environment_config.include_efs_volume %}
+      volumes = [
+        {
+          name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+          file_system_id = module.{{service_name}}_efs_mount.fs_id
+        }
+      ]
+
+      mountPoints = [{
+        path = "{{environment_config.efs_volume_path}}"
+        volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+      }]
+
+    {% endif %}
   }
+
+  
+  {% if environment_config.include_efs_volume %}
+    module "{{service_name}}_efs_mount" {
+      source = "../efs_mount"
+      service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+      vpc_id = local.vpc.id
+      subnet_a_id = aws_subnet.public_subnet_a.id
+      subnet_b_id = aws_subnet.public_subnet_b.id
+      ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
+    }
+  {% endif %}
 
 
   output "{{service_name}}_docker_registry" {

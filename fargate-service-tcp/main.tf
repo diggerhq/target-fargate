@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "app" {
   # defined in role.tf
   # task_role_arn = aws_iam_role.app_role.arn
 
-  container_definitions = <<DEFINITION
+  container_definitions = <<EOT
 [
   {
     "name": "${var.container_name}",
@@ -65,12 +65,32 @@ resource "aws_ecs_task_definition" "app" {
         "awslogs-region": "${var.region}",
         "awslogs-stream-prefix": "ecs"
       }
-    }
+    },
+    "mountPoints": [
+    %{ for mountPoint in var.mountPoints }
+      {
+        "containerPath": "${mountPoint.path}",
+        "sourceVolume": "${mountPoint.volume}"
+      }
+    %{ endfor }
+    ]
   }
 ]
-DEFINITION
+EOT
 
+  dynamic "volume" {
+    for_each = var.volumes
+    content {
+      name = volume.value.name
 
+      efs_volume_configuration {
+        file_system_id          = volume.value.file_system_id
+        root_directory          = "/"
+        transit_encryption      = "ENABLED"
+      }
+    }
+  }
+  
   tags = var.tags
 }
 
