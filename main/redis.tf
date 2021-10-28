@@ -11,8 +11,8 @@ resource "aws_security_group" "dgredis" {
 
   # Only postgres in
   ingress {
-    from_port = 5432
-    to_port = 5432
+    from_port = 6379
+    to_port = 6379
     protocol = "tcp"
     security_groups = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
   }
