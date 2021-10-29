@@ -28,5 +28,5 @@ variable "rds_instance_class" {
 # redis
 
 variable "redis_node_type" {
-  default = "cache.m4.large"
+  default = "cache.r6g.large"
 }
