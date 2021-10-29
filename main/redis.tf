@@ -31,7 +31,7 @@ resource "aws_elasticache_cluster" "dg_redis" {
   engine               = "redis"
   node_type            = var.redis_node_type
   num_cache_nodes      = 1
-  parameter_group_name = "default.redis3.2"
+  parameter_group_name = "default.redis6.x"
   engine_version       = "6.0.5"
   port                 = local.redis_port
   security_group_ids   = [aws_security_group.dgredis.id]
