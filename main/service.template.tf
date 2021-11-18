@@ -9,8 +9,15 @@
     service_vpc = aws_vpc.vpc
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
-    lb_subnet_a = aws_subnet.public_subnet_a
-    lb_subnet_b = aws_subnet.public_subnet_b
+
+    {% if environment_config.use_subnets_cd %}
+      lb_subnet_a = aws_subnet.public_subnet_c
+      lb_subnet_b = aws_subnet.public_subnet_d      
+    {% else %}
+      lb_subnet_a = aws_subnet.public_subnet_a
+      lb_subnet_b = aws_subnet.public_subnet_b
+    {% endif %}
+
     vpcCIDRblock = var.vpcCIDRblock
     # lb_port
     # lb_protocol
@@ -66,8 +73,13 @@
       source = "../efs_mount"
       service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
       vpc_id = local.vpc.id
-      subnet_a_id = aws_subnet.public_subnet_a.id
-      subnet_b_id = aws_subnet.public_subnet_b.id
+      {% if environment_config.use_subnets_cd %}
+        subnet_a_id = aws_subnet.public_subnet_c.id
+        subnet_b_id = aws_subnet.public_subnet_d.id
+      {% else %}
+        subnet_a_id = aws_subnet.public_subnet_a.id
+        subnet_b_id = aws_subnet.public_subnet_b.id
+      {% endif %}
       ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
     }
   {% endif %}
@@ -91,8 +103,15 @@
     service_vpc = local.vpc
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
-    lb_subnet_a = aws_subnet.public_subnet_a
-    lb_subnet_b = aws_subnet.public_subnet_b
+
+    {% if environment_config.use_subnets_cd %}
+      lb_subnet_a = aws_subnet.public_subnet_c
+      lb_subnet_b = aws_subnet.public_subnet_d      
+    {% else %}
+      lb_subnet_a = aws_subnet.public_subnet_a
+      lb_subnet_b = aws_subnet.public_subnet_b
+    {% endif %}
+
     # lb_port
     # lb_protocol
 
@@ -181,8 +200,13 @@
       source = "../efs_mount"
       service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
       vpc_id = local.vpc.id
-      subnet_a_id = aws_subnet.public_subnet_a.id
-      subnet_b_id = aws_subnet.public_subnet_b.id
+      {% if environment_config.use_subnets_cd %}
+        subnet_a_id = aws_subnet.public_subnet_c.id
+        subnet_b_id = aws_subnet.public_subnet_d.id
+      {% else %}
+        subnet_a_id = aws_subnet.public_subnet_a.id
+        subnet_b_id = aws_subnet.public_subnet_b.id
+      {% endif %}
       ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
     }
   {% endif %}
@@ -258,8 +282,15 @@
     region = var.region
     service_vpc = local.vpc
     # image_tag_mutability
-    lb_subnet_a = aws_subnet.public_subnet_a
-    lb_subnet_b = aws_subnet.public_subnet_b
+
+    {% if environment_config.use_subnets_cd %}
+      lb_subnet_a = aws_subnet.public_subnet_c
+      lb_subnet_b = aws_subnet.public_subnet_d      
+    {% else %}
+      lb_subnet_a = aws_subnet.public_subnet_a
+      lb_subnet_b = aws_subnet.public_subnet_b
+    {% endif %}
+
     # lb_port
     # lb_protocol
     internal = false

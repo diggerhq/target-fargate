@@ -33,6 +33,14 @@ variable "publicSubnetbCIDRblock" {
   default = "10.0.2.0/24"
 }
 
+variable "publicSubnetcCIDRblock" {
+  default = "10.0.5.0/24"
+}
+
+variable "publicSubnetdCIDRblock" {
+  default = "10.0.6.0/24"
+}
+
 variable "privateSubnetaCIDRblock" {
   default = "10.0.3.0/24"
 }
@@ -107,6 +115,26 @@ resource "aws_subnet" "public_subnet_b" {
   }
 }
 
+resource "aws_subnet" "public_subnet_c" {
+  vpc_id                  = local.vpc.id
+  cidr_block              = var.publicSubnetcCIDRblock
+  map_public_ip_on_launch = true
+  availability_zone       = local.availabilityZone_c
+  tags = {
+    Name = "${var.app}-${var.environment}-public_vpc_subnetc"
+  }
+}
+
+resource "aws_subnet" "public_subnet_d" {
+  vpc_id                  = local.vpc.id
+  cidr_block              = var.publicSubnetdCIDRblock
+  map_public_ip_on_launch = true
+  availability_zone       = local.availabilityZone_d
+  tags = {
+    Name = "${var.app}-${var.environment}-public_vpc_subnetd"
+  }
+}
+
 resource "aws_subnet" "private_subnet_a" {
   vpc_id                  = local.vpc.id
   cidr_block              = var.privateSubnetaCIDRblock
@@ -178,6 +206,16 @@ resource "aws_route_table_association" "publicb" {
   route_table_id = aws_route_table.route_table_public.id
 }
 
+resource "aws_route_table_association" "publicc" {
+  subnet_id      = aws_subnet.public_subnet_c.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicd" {
+  subnet_id      = aws_subnet.public_subnet_d.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
 # output the vpc ids
 output "main_vpc_id" {
   value = local.vpc.id
@@ -189,4 +227,12 @@ output "public_subnet_a_id" {
 
 output "public_subnet_b_id" {
   value = aws_subnet.public_subnet_b.id
+}
+
+output "public_subnet_c_id" {
+  value = aws_subnet.public_subnet_c.id
+}
+
+output "public_subnet_d_id" {
+  value = aws_subnet.public_subnet_d.id
 }
