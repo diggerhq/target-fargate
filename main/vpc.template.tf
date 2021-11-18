@@ -6,6 +6,8 @@ data "aws_availability_zones" "available" {
 locals {
   availabilityZone_a = data.aws_availability_zones.available.names[0]
   availabilityZone_b = data.aws_availability_zones.available.names[1]
+  availabilityZone_c = data.aws_availability_zones.available.names[0]
+  availabilityZone_d = data.aws_availability_zones.available.names[1]
 }
 
 
