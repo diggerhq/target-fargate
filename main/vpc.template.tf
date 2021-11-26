@@ -192,7 +192,7 @@ resource "aws_route_table" "route_table_public" {
   }
 }
 
-resource "aws_route" "requestor_{{environment_config.peer_vpc}}" {
+resource "aws_route" "gateway_route" {
   route_table_id = aws_route_table.route_table_public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = local.vpc_ig.id
