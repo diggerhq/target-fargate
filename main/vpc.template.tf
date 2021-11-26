@@ -187,15 +187,15 @@ resource "aws_route_table" "route_table_public" {
   vpc_id = local.vpc.id
 
   # Note: "local" VPC record is implicitly specified
-
-  route {
-    cidr_block      = "0.0.0.0/0"
-    gateway_id      = local.vpc_ig.id
-  }
-
   tags = {
     Name = "${var.app}-${var.environment} Public Route Table"
   }
+}
+
+resource "aws_route" "requestor_{{environment_config.peer_vpc}}" {
+  route_table_id = aws_route_table.route_table_public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = local.vpc_ig.id
 }
 
 resource "aws_route_table_association" "publica" {
