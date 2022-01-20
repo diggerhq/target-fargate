@@ -107,7 +107,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
     acm_certificate_arn = "{{environment_config.acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
   }
-  {% else %}
+  {% elif environment_config.dggr_acm_certificate_arn_virginia %}
   viewer_certificate {
     acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
