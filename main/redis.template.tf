@@ -4,6 +4,12 @@ locals {
   redis_url = "${aws_elasticache_cluster.dg_redis.cache_nodes[0].address}:${local.redis_port}"
 }
 
+
+resource "aws_elasticache_subnet_group" "redis_subnet_group" {
+  name         = "${var.app}-${var.environment}-redis-subnet-group"
+  subnet_ids   = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id ]
+}
+
 resource "aws_security_group" "dgredis" {
   name_prefix = "${var.app}-${var.environment}-dgdb-sg"
   vpc_id = aws_vpc.vpc.id
