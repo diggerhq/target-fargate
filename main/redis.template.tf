@@ -46,7 +46,7 @@ resource "aws_elasticache_cluster" "dg_redis" {
 
 
 output "DGVAR_REDIS_URL" {
-  value = local.redis_url
+  value = "redis://${local.redis_url}"
 }
 
 
