@@ -24,6 +24,15 @@ variable "environment" {
 # ecs derived variable names
 variable "ecs_cluster_name" {}
 
+# rds
+variable "rds_instance_class" {
+  default = "db.t3.micro"
+}
+
+# redis
+variable "redis_node_type" {
+  default = "cache.r6g.large"
+}
 
 # Network configuration
 
