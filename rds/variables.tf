@@ -1,7 +1,14 @@
 
 variable "allocated_storage" {
   type        = number
-  default     = 10
+  default     = 100
+  description = "The default storage for the RDS instance"
+} 
+
+
+variable "iops" {
+  type        = number
+  default     = 1000
   description = "The default storage for the RDS instance"
 } 
 
@@ -33,6 +40,10 @@ variable "publicly_accessible" {
 
 variable "vpc_security_group_ids" {
   default = []
+}
+
+variable "snapshot_identifier" {
+  default = ""
 }
 
 variable "db_subnet_group_name" {

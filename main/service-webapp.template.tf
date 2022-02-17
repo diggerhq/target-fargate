@@ -36,7 +36,7 @@ resource "aws_s3_bucket" "{{service_name}}_website_root" {
 
   website {
     index_document = "index.html"
-    error_document = "404.html"
+    error_document = "index.html"
   }
 
   lifecycle {
@@ -50,8 +50,12 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  aliases = [local.{{service_name}}_website_domain, local.{{service_name}}_dggr_website_domain]
-
+  {% if environment_config.hostname %}
+  aliases = [local.{{service_name}}_website_domain]
+  {% elif environment_config.dggr_hostname %}
+  aliases = [local.{{service_name}}_dggr_website_domain]
+  {% endif %}
+   
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
     domain_name = aws_s3_bucket.{{service_name}}_website_root.website_endpoint
@@ -103,7 +107,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
     acm_certificate_arn = "{{environment_config.acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
   }
-  {% else %}
+  {% elif environment_config.dggr_acm_certificate_arn_virginia %}
   viewer_certificate {
     acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn_virginia}}"
     ssl_support_method  = "sni-only"
@@ -126,7 +130,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   }
 }
 
-{% if environment_config.acm_certificate_arn_virginia %}
+{% if environment_config.dns_zone_id %}
   # Creates the DNS record to point on the main CloudFront distribution ID
   resource "aws_route53_record" "{{service_name}}_website_cdn_root_record" {
     zone_id = "{{environment_config.dns_zone_id}}"
@@ -193,7 +197,7 @@ POLICY
 
 
 output "{{service_name}}_bucket_main" {
-  value = aws_s3_bucket.{{service_name}}_website_logs.bucket
+  value = aws_s3_bucket.{{service_name}}_website_root.bucket
 }
 
 output "{{service_name}}_docker_registry" {

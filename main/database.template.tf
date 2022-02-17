@@ -1,5 +1,5 @@
-
-{% if environment_config.needs_postgres is sameas True %}
+# additoinal argument to support self hosted
+{% if environment_config.needs_postgres is sameas True and not environment_config.rds_selfhosted  %}
 
 
     resource "aws_db_subnet_group" "rds_private_subnet_group" {
@@ -35,6 +35,22 @@
 
   module "app_rds" {
     source = "../rds"
+    
+    {% if environment_config.rds_instance_type %}
+    instance_class = "{{environment_config.rds_instance_type}}"
+    {% endif %}
+    
+    {% if environment_config.rds_allocated_storage %}
+    allocated_storage = "{{environment_config.rds_allocated_storage}}"    
+    {% endif %}
+
+    {% if environment_config.database_snapshot_identifier %}
+    snapshot_identifier = "{{environment_config.database_snapshot_identifier}}"
+    {% endif %}
+
+    {% if environment_config.database_iops %}
+    iops = "{{environment_config.database_iops}}"
+    {% endif %}
 
     identifier_prefix = "${var.app}-${var.environment}"
     db_subnet_group_name = aws_db_subnet_group.rds_private_subnet_group.name
@@ -73,12 +89,9 @@
     type = "SecureString"
   }
 
-  output "DGVAR_TYPEORM_URL" {
+  output "DGVAR_DATABASE_URL" {
     value = aws_ssm_parameter.database_url.arn
   }
 
-  output "DGVAR_TYPEORM_URL_UNIT_TESTING_URL" {
-    value = aws_ssm_parameter.database_endpoint.arn
-  }
 
 {% endif %}
