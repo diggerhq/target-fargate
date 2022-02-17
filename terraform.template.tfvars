@@ -4,7 +4,6 @@ aws_secret = "{{aws_secret}}"
 digger_aws_key = "{{digger_aws_key}}"
 digger_aws_secret = "{{digger_aws_secret}}"
 app = "{{app_name}}"
-# service_name = "{{service_name}}"
 environment = "{{environment}}"
 
 # ecs derived name (doing checks for backward compatability)

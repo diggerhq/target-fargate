@@ -1,3 +1,8 @@
+
+locals {
+  service_name = "{{service_name}}"
+}
+
 {% if environment_config.tcp_service %}
   
   module "service-{{service_name}}" {

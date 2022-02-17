@@ -18,7 +18,6 @@ locals {
   memory_utilization_low_period              = 60
 
   cluster_name = aws_ecs_cluster.app.name
-  service_name = "{{service_name}}"
 
   dimensions_map = {
     "service" = {
