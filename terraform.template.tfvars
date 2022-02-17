@@ -13,7 +13,7 @@ ecs_cluster_name = "{{app_name}}-{{environment}}"
 region = "{{region}}"
 
 alarms_sns_topic_arn = "{{alarms_sns_topic_arn}}"
-monitoring_enabled = "{{monitoring_enabled}}"
+monitoring_enabled = {{monitoring_enabled}}
 
 # aws_profile = "default"
 # container_port = "{{container_port}}"
