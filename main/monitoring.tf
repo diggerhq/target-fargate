@@ -6,7 +6,6 @@ locals {
   cpu_utilization_low_threshold     = 0
   memory_utilization_high_threshold = 100
   memory_utilization_low_threshold  = 0
-  monitoring_sns_topic_arn          = "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:cloudwatch_alarms"
 
   monitoring_enabled                         = var.monitoring_enabled ? 1 : 0
   cpu_utilization_high_evaluation_periods    = 1
