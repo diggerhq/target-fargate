@@ -3,20 +3,13 @@ locals {
   service_name = "{{service_name}}"
 }
 
-resource "null_resource" "null_{{monitoring_enabled}}" {
-  provisioner "local-exec" {
-    command = "echo test"
-  }
-}
-
-{% if monitoring_enabled %}
 module "monitoring" {
+  count = var.monitoring_enabled ? 1 : 0
   source = "./monitoring"
   ecs_cluster_name = aws_ecs_cluster.app.name
   ecs_service_name = local.service_name
   alarms_sns_topic_arn = var.alarms_sns_topic_arn
 }
-{% endif %}
 
 {% if environment_config.tcp_service %}
   
