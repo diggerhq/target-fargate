@@ -1,3 +1,16 @@
+
+locals {
+  service_name = "{{service_name}}"
+}
+
+module "monitoring" {
+  count = var.monitoring_enabled ? 1 : 0
+  source = "./monitoring"
+  ecs_cluster_name = aws_ecs_cluster.app.name
+  ecs_service_name = local.service_name
+  alarms_sns_topic_arn = var.alarms_sns_topic_arn
+}
+
 {% if environment_config.tcp_service %}
   
   module "service-{{service_name}}" {
