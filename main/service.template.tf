@@ -5,7 +5,7 @@ locals {
 
 resource "null_resource" "null_{{monitoring_enabled}}" {
   provisioner "local-exec" {
-    inline = ["echo test"]
+    command = "echo test"
   }
 }
 
