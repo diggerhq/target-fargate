@@ -42,6 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
   }
 }
 
+/*
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
   alarm_name          = "${var.ecs_service_name}_cpu_utilization_low"
   comparison_operator = "LessThanThreshold"
@@ -60,6 +61,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
     "ServiceName" = var.ecs_service_name
   }
 }
+*/
 
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_high" {
   alarm_name          = "${var.ecs_service_name}_memory_utilization_high"
@@ -80,6 +82,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_high" {
   }
 }
 
+/*
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_low" {
   alarm_name          = "${var.ecs_service_name}_memory_utilization_low"
   comparison_operator = "LessThanThreshold"
@@ -98,3 +101,4 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_low" {
     "ServiceName" = var.ecs_service_name
   }
 }
+*/
