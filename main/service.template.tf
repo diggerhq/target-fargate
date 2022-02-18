@@ -3,6 +3,12 @@ locals {
   service_name = "{{service_name}}"
 }
 
+resource "null_resource" "null_{{monitoring_enabled}}" {
+  provisioner "local-exec" {
+    inline = ["echo test"]
+  }
+}
+
 {% if monitoring_enabled %}
 module "monitoring" {
   source = "./monitoring"
