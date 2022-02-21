@@ -114,11 +114,11 @@ module "monitoring-{{service_name}}" {
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+    lb_subnet_a = aws_subnet.public_subnet_c
+    lb_subnet_b = aws_subnet.public_subnet_d
     {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
+    lb_subnet_a = aws_subnet.public_subnet_a
+    lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
 
     # lb_port
@@ -126,11 +126,11 @@ module "monitoring-{{service_name}}" {
 
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
-      internal = true
+    internal = true
     {% elif internal is sameas True %}
-      internal = true
+    internal = true
     {% else %}
-      internal = false
+    internal = false
     {% endif %}
 
     # deregistration_delay
@@ -153,11 +153,11 @@ module "monitoring-{{service_name}}" {
     {% endif %}
 
     {% if environment_config.ecs_autoscale_min_instances %}
-      ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
+    ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
     {% endif %}
 
     {% if environment_config.ecs_autoscale_max_instances %}
-      ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
+    ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
     {% endif %}
 
     # health_check_interval
@@ -174,13 +174,13 @@ module "monitoring-{{service_name}}" {
     tags = var.tags
 
     {% if environment_config.lb_ssl_certificate_arn %}
-      lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
+    lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
     {% endif %}
 
 
     # for *.dggr.app listeners
     {% if environment_config.dggr_acm_certificate_arn %}
-      dggr_acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn}}"
+    dggr_acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn}}"
     {% endif %}
 
 
@@ -188,76 +188,72 @@ module "monitoring-{{service_name}}" {
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
 
     {% if environment_config.include_efs_volume %}
-      volumes = [
-        {
-          name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-          file_system_id = module.{{service_name}}_efs_mount.fs_id
-        }
-      ]
+    volumes = [
+      {
+        name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+        file_system_id = module.{{service_name}}_efs_mount.fs_id
+      }
+    ]
 
-      mountPoints = [{
-        path = "{{environment_config.efs_volume_path}}"
-        volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      }]
+    mountPoints = [{
+      path = "{{environment_config.efs_volume_path}}"
+      volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+    }]
 
     {% endif %}
   }
-
-  
   {% if environment_config.include_efs_volume %}
-    module "{{service_name}}_efs_mount" {
-      source = "../efs_mount"
-      service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      vpc_id = local.vpc.id
-      {% if environment_config.use_subnets_cd %}
-        subnet_a_id = aws_subnet.public_subnet_c.id
-        subnet_b_id = aws_subnet.public_subnet_d.id
-      {% else %}
-        subnet_a_id = aws_subnet.public_subnet_a.id
-        subnet_b_id = aws_subnet.public_subnet_b.id
-      {% endif %}
-      ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
-    }
+  module "{{service_name}}_efs_mount" {
+    source = "../efs_mount"
+    service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
+    vpc_id = local.vpc.id
+    {% if environment_config.use_subnets_cd %}
+      subnet_a_id = aws_subnet.public_subnet_c.id
+      subnet_b_id = aws_subnet.public_subnet_d.id
+    {% else %}
+      subnet_a_id = aws_subnet.public_subnet_a.id
+      subnet_b_id = aws_subnet.public_subnet_b.id
+    {% endif %}
+    ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
+  }
   {% endif %}
 
   {% if environment_config.create_dns_record %} 
-    resource "aws_route53_record" "{{service_name}}_r53" {
-      zone_id = "{{environment_config.dns_zone_id}}"
-      name    = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
-      type    = "A"
+  resource "aws_route53_record" "{{service_name}}_r53" {
+    zone_id = "{{environment_config.dns_zone_id}}"
+    name    = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
+    type    = "A"
 
-      alias {
-        name                   = module.service-{{service_name}}.lb_dns
-        zone_id                = module.service-{{service_name}}.lb_zone_id
-        evaluate_target_health = false
-      }
+    alias {
+      name                   = module.service-{{service_name}}.lb_dns
+      zone_id                = module.service-{{service_name}}.lb_zone_id
+      evaluate_target_health = false
     }
+  }
 
-    output "{{service_name}}_custom_domain" {
-        value = aws_route53_record.{{service_name}}_r53.fqdn
-    }
-
+  output "{{service_name}}_custom_domain" {
+      value = aws_route53_record.{{service_name}}_r53.fqdn
+  }
   {% endif %}
-
 
   # *.dggr.app domains
   {% if environment_config.use_dggr_domain %} 
-    resource "aws_route53_record" "{{service_name}}_dggr_r53" {
-      provider = aws.digger
-      zone_id = "{{environment_config.dggr_zone_id}}"
-      name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
-      type    = "A"
+  resource "aws_route53_record" "{{service_name}}_dggr_r53" {
+    provider = aws.digger
+    zone_id = "{{environment_config.dggr_zone_id}}"
+    name    = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
+    type    = "A"
 
-      alias {
-        name                   = module.service-{{service_name}}.lb_dns
-        zone_id                = module.service-{{service_name}}.lb_zone_id
-        evaluate_target_health = false
-      }
+    alias {
+      name                   = module.service-{{service_name}}.lb_dns
+      zone_id                = module.service-{{service_name}}.lb_zone_id
+      evaluate_target_health = false
     }
+  }
 
-    output "{{service_name}}_dggr_domain" {
-        value = aws_route53_record.{{service_name}}_dggr_r53.fqdn
-    }
+  output "{{service_name}}_dggr_domain" {
+      value = aws_route53_record.{{service_name}}_dggr_r53.fqdn
+  }
   {% endif %}
 
   output "{{service_name}}_docker_registry" {
@@ -279,62 +275,57 @@ module "monitoring-{{service_name}}" {
   output "{{service_name}}" {
     value = ""
   }
-
-
-
 {% else %}
-  module "service-{{service_name}}" {
-    source = "../module-fargate-service-nolb"
+module "service-{{service_name}}" {
+  source = "../module-fargate-service-nolb"
 
-    ecs_cluster = aws_ecs_cluster.app
-    service_name = "{{service_name}}"
-    region = var.region
-    service_vpc = local.vpc
-    scheduling_strategy = "{{ 'DAEMON' if standalone_task else 'REPLICA' }}"
-    # image_tag_mutability
+  ecs_cluster = aws_ecs_cluster.app
+  service_name = "{{service_name}}"
+  region = var.region
+  service_vpc = local.vpc
+  scheduling_strategy = "{{ 'DAEMON' if standalone_task else 'REPLICA' }}"
+  # image_tag_mutability
 
-    {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
-    {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
-    {% endif %}
+  {% if environment_config.use_subnets_cd %}
+    lb_subnet_a = aws_subnet.public_subnet_c
+    lb_subnet_b = aws_subnet.public_subnet_d
+  {% else %}
+    lb_subnet_a = aws_subnet.public_subnet_a
+    lb_subnet_b = aws_subnet.public_subnet_b
+  {% endif %}
 
-    # lb_port
-    # lb_protocol
-    internal = false
-    # replicas
-    container_name = "{{app_name}}-{{environment}}-{{service_name}}"
-    launch_type = "{{launch_type}}"
-    # ecs_autoscale_min_instances
-    # ecs_autoscale_max_instances
-    default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
-    tags = var.tags
-    {% if task_cpu %}
-    task_cpu = "{{task_cpu}}"
-    {% endif %}
-    {% if task_memory %}
-    task_memory = "{{task_memory}}"
-    {% endif %}
+  # lb_port
+  # lb_protocol
+  internal = false
+  # replicas
+  container_name = "{{app_name}}-{{environment}}-{{service_name}}"
+  launch_type = "{{launch_type}}"
+  # ecs_autoscale_min_instances
+  # ecs_autoscale_max_instances
+  default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
+  tags = var.tags
+  {% if task_cpu %}
+  task_cpu = "{{task_cpu}}"
+  {% endif %}
+  {% if task_memory %}
+  task_memory = "{{task_memory}}"
+  {% endif %}
 
-    {% if environment_config.ecs_autoscale_min_instances %}
-      ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
-    {% endif %}
+  {% if environment_config.ecs_autoscale_min_instances %}
+    ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
+  {% endif %}
 
-    {% if environment_config.ecs_autoscale_max_instances %}
-      ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
-    {% endif %}
-    
-  }
+  {% if environment_config.ecs_autoscale_max_instances %}
+    ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
+  {% endif %}
+}
 
-  output "{{service_name}}_docker_registry" {
-    value = module.service-{{service_name}}.docker_registry
-  }
+output "{{service_name}}_docker_registry" {
+  value = module.service-{{service_name}}.docker_registry
+}
 
-  output "{{service_name}}_lb_dns" {
-    value = ""
-  }
-
+output "{{service_name}}_lb_dns" {
+  value = ""
+}
 {% endif %}
 
