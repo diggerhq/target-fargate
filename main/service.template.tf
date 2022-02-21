@@ -290,8 +290,7 @@ module "monitoring-{{service_name}}" {
     service_name = "{{service_name}}"
     region = var.region
     service_vpc = local.vpc
-
-    scheduling_strategy = {{if standalone_task "REPLICA" else "DAEMON"}}
+    scheduling_strategy = {{ "REPLICA" if standalone_task else "DAEMON" }}
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
