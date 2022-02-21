@@ -62,11 +62,12 @@ DEFINITION
 }
 
 resource "aws_ecs_service" "app" {
-  name            = var.service_name
-  cluster         = var.ecs_cluster.id
-  launch_type     = var.launch_type
-  task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = var.replicas
+  name                = var.service_name
+  cluster             = var.ecs_cluster.id
+  launch_type         = var.launch_type
+  task_definition     = aws_ecs_task_definition.app.arn
+  desired_count       = var.replicas
+  scheduling_strategy = var.scheduling_strategy
 
   network_configuration {
     security_groups = []
@@ -75,13 +76,7 @@ resource "aws_ecs_service" "app" {
       var.lb_subnet_b.id
     ]
     assign_public_ip = true
-    # subnets         = split(",", var.private_subnets)
   }
-
-  # requires manual opt-in
-  # tags                    = var.tags
-  # enable_ecs_managed_tags = true
-  # propagate_tags          = "SERVICE"
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634
   depends_on = []
