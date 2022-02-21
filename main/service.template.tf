@@ -20,11 +20,11 @@ module "monitoring-{{service_name}}" {
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
-    lb_subnet_a = aws_subnet.public_subnet_c
-    lb_subnet_b = aws_subnet.public_subnet_d
+      lb_subnet_a = aws_subnet.public_subnet_c
+      lb_subnet_b = aws_subnet.public_subnet_d      
     {% else %}
-    lb_subnet_a = aws_subnet.public_subnet_a
-    lb_subnet_b = aws_subnet.public_subnet_b
+      lb_subnet_a = aws_subnet.public_subnet_a
+      lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
 
     vpcCIDRblock = var.vpcCIDRblock
@@ -287,11 +287,11 @@ module "service-{{service_name}}" {
   # image_tag_mutability
 
   {% if environment_config.use_subnets_cd %}
-  lb_subnet_a = aws_subnet.public_subnet_c
-  lb_subnet_b = aws_subnet.public_subnet_d
+    lb_subnet_a = aws_subnet.public_subnet_c
+    lb_subnet_b = aws_subnet.public_subnet_d
   {% else %}
-  lb_subnet_a = aws_subnet.public_subnet_a
-  lb_subnet_b = aws_subnet.public_subnet_b
+    lb_subnet_a = aws_subnet.public_subnet_a
+    lb_subnet_b = aws_subnet.public_subnet_b
   {% endif %}
 
   # lb_port
