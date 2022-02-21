@@ -202,11 +202,11 @@ module "monitoring-{{service_name}}" {
     service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
     vpc_id = local.vpc.id
     {% if environment_config.use_subnets_cd %}
-      subnet_a_id = aws_subnet.public_subnet_c.id
-      subnet_b_id = aws_subnet.public_subnet_d.id
+    subnet_a_id = aws_subnet.public_subnet_c.id
+    subnet_b_id = aws_subnet.public_subnet_d.id
     {% else %}
-      subnet_a_id = aws_subnet.public_subnet_a.id
-      subnet_b_id = aws_subnet.public_subnet_b.id
+    subnet_a_id = aws_subnet.public_subnet_a.id
+    subnet_b_id = aws_subnet.public_subnet_b.id
     {% endif %}
     ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
   }
@@ -278,7 +278,6 @@ module "service-{{service_name}}" {
   region = var.region
   service_vpc = local.vpc
   scheduling_strategy = "{{ 'DAEMON' if standalone_task else 'REPLICA' }}"
-  # image_tag_mutability
 
   {% if environment_config.use_subnets_cd %}
   lb_subnet_a = aws_subnet.public_subnet_c
@@ -288,14 +287,9 @@ module "service-{{service_name}}" {
   lb_subnet_b = aws_subnet.public_subnet_b
   {% endif %}
 
-  # lb_port
-  # lb_protocol
   internal = false
-  # replicas
   container_name = "{{app_name}}-{{environment}}-{{service_name}}"
   launch_type = "{{launch_type}}"
-  # ecs_autoscale_min_instances
-  # ecs_autoscale_max_instances
   default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
   tags = var.tags
   {% if task_cpu %}
