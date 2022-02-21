@@ -172,15 +172,21 @@ module "monitoring-{{service_name}}" {
     # ecs_autoscale_max_instances
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
     tags = var.tags
+
     {% if environment_config.lb_ssl_certificate_arn %}
     lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
     {% endif %}
-    {% if environment_config.dggr_acm_certificate_arn %}
+
+
     # for *.dggr.app listeners
+    {% if environment_config.dggr_acm_certificate_arn %}
     dggr_acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn}}"
     {% endif %}
+
+
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
+
     {% if environment_config.include_efs_volume %}
     volumes = [
       {
