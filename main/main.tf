@@ -47,7 +47,7 @@ provider "aws" {
 # digger account provider
 provider "aws" {
   alias = "digger"
-  version = "= 3.45.0"
+  version = "~> 3.0"
   region  = var.region
   # profile = var.aws_profile
   access_key = var.digger_aws_key
