@@ -67,7 +67,6 @@ resource "aws_ecs_service" "app" {
   launch_type         = var.launch_type
   task_definition     = aws_ecs_task_definition.app.arn
   desired_count       = var.replicas
-  scheduling_strategy = var.scheduling_strategy
 
   network_configuration {
     security_groups = []
