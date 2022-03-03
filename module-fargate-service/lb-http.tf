@@ -2,7 +2,7 @@
 # (delete this file if you only want https)
 
 resource "aws_alb_listener" "http_redirect" {
-  count = (var.lb_ssl_certificate_arn==null && var.dggr_acm_certificate_arn==null) ? 0 : 1
+  count = (var.lb_ssl_certificate_arn != null || var.dggr_acm_certificate_arn !=null) && var.lb_enable_https_redict ? 1 : 0
   load_balancer_arn = aws_alb.main.id
   port              = var.lb_port
   protocol          = var.lb_protocol
@@ -19,7 +19,7 @@ resource "aws_alb_listener" "http_redirect" {
 }
 
 resource "aws_alb_listener" "http_forward" {
-  count = (var.lb_ssl_certificate_arn==null && var.dggr_acm_certificate_arn==null) ? 1 : 0
+  count = (var.lb_ssl_certificate_arn != null || var.dggr_acm_certificate_arn != null) && !var.lb_enable_https_redict? 1 : 0
   load_balancer_arn = aws_alb.main.id
   port              = var.lb_port
   protocol          = var.lb_protocol
