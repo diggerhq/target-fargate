@@ -69,14 +69,12 @@ resource "aws_s3_bucket_acl" "lb_access_logs_acl" {
   acl    = "private"
 }
 
-/*
 resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule" {
   bucket = aws_s3_bucket.lb_access_logs.id
 
-
   rule {
     id                                     = "cleanup"
-    status = "Enabled"
+    status                                 = "Enabled"
     abort_incomplete_multipart_upload_days = 1
     prefix                                 = ""
 
@@ -84,7 +82,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule"
       days = var.lb_access_logs_expiration_days
     }
   }
-}*/
+}
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lb_access_logs_server_side_encryption" {
   bucket = aws_s3_bucket.lb_access_logs.id
