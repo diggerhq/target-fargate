@@ -89,11 +89,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule"
   bucket = aws_s3_bucket.lb_access_logs.id
 
   rule {
-    id                                     = "cleanup"
-    status                                 = "Enabled"
-    abort_incomplete_multipart_upload_days = 1
-    prefix                                 = ""
+    id     = "cleanup"
+    status = "Enabled"
+    prefix = ""
 
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 1
+    }
     expiration {
       days = var.lb_access_logs_expiration_days
     }
