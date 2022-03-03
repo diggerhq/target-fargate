@@ -79,17 +79,6 @@ resource "aws_s3_bucket" "lb_access_logs" {
   tags          = var.tags
   force_destroy = true
 
-  lifecycle_rule {
-    id                                     = "cleanup"
-    enabled                                = true
-    abort_incomplete_multipart_upload_days = 1
-    prefix                                 = ""
-
-    expiration {
-      days = var.lb_access_logs_expiration_days
-    }
-  }
-
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -103,6 +92,23 @@ resource "aws_s3_bucket_acl" "lb_access_logs_acl" {
   bucket = aws_s3_bucket.lb_access_logs.id
   acl    = "private"
 }
+
+/*
+resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule" {
+  bucket = aws_s3_bucket.lb_access_logs.id
+
+
+  rule {
+    id                                     = "cleanup"
+    status = "Enabled"
+    abort_incomplete_multipart_upload_days = 1
+    prefix                                 = ""
+
+    expiration {
+      days = var.lb_access_logs_expiration_days
+    }
+  }
+}*/
 
 # give load balancing service access to the bucket
 resource "aws_s3_bucket_policy" "lb_access_logs" {
