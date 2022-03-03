@@ -10,7 +10,6 @@ locals {
 # bucket for logs
 resource "aws_s3_bucket" "{{service_name}}_website_logs" {
   bucket_prefix = "{{app_name}}-{{environment}}-{{service_name}}-logs"
-  acl    = "log-delivery-write"
 
   # allow terraform to destroy non-empty bucket
   force_destroy = true
@@ -20,11 +19,15 @@ resource "aws_s3_bucket" "{{service_name}}_website_logs" {
   }
 }
 
+resource "aws_s3_bucket_acl" "{{service_name}}_website_logs_acl" {
+  bucket = aws_s3_bucket.{{service_name}}_website_logs.id
+  acl    = "log-delivery-write"
+}
+
 
 # Creates bucket to store the static website
 resource "aws_s3_bucket" "{{service_name}}_website_root" {
   bucket_prefix = "{{app_name}}-{{environment}}-{{service_name}}-root"
-  acl    = "public-read"
 
   # allow terraform to destroy non-empty bucket
   force_destroy = true
@@ -43,6 +46,12 @@ resource "aws_s3_bucket" "{{service_name}}_website_root" {
     ignore_changes = [tags["Changed"]]
   }
 }
+
+resource "aws_s3_bucket_acl" "{{service_name}}_website_root_acl" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+  acl    = "public-read"
+}
+
 
 ## CloudFront
 # Creates the CloudFront distribution to serve the static website
