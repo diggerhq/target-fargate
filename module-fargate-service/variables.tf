@@ -67,6 +67,10 @@ variable "deregistration_delay" {
 variable "health_check" {
 }
 
+variable "health_check_enabled" {
+  default = true
+}
+
 # How often to check the liveliness of the container
 variable "health_check_interval" {
   default = "30"
@@ -75,6 +79,10 @@ variable "health_check_interval" {
 # How long to wait for the response on the health check path
 variable "health_check_timeout" {
   default = "10"
+}
+
+variable "health_check_grace_period_seconds" {
+  default = "1"
 }
 
 # What HTTP response code to listen for
@@ -96,11 +104,6 @@ variable "lb_access_logs_expiration_days" {
 # Best practice is that this value is higher than 1024 so the container processes
 # isn't running at root.
 
-
-# How many containers to run
-variable "replicas" {
-  default = "1"
-}
 
 # The name of the container to run
 variable "container_name" {
@@ -145,6 +148,15 @@ variable "task_memory" {
   default = "512"
 }
 
+# == for EFS ==
+variable "volumes" {
+  default = []
+}
+
+variable "mountPoints" {
+  default = []
+}
+
 # == Cloudwatch ==
 
 
@@ -153,3 +165,4 @@ variable "logs_retention_in_days" {
   default     = 90
   description = "Specifies the number of days you want to retain log events"
 }
+

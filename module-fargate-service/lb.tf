@@ -39,8 +39,10 @@ resource "aws_alb_target_group" "main" {
   deregistration_delay = var.deregistration_delay
 
   health_check {
+    enabled             = var.health_check_enabled
     path                = var.health_check
     matcher             = var.health_check_matcher
+    protocol            = var.lb_protocol
     interval            = var.health_check_interval
     timeout             = var.health_check_timeout
     healthy_threshold   = 5
