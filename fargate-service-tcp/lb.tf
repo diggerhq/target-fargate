@@ -78,14 +78,6 @@ resource "aws_s3_bucket" "lb_access_logs" {
   bucket_prefix = "${var.ecs_cluster.name}-${var.service_name}"
   tags          = var.tags
   force_destroy = true
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
 }
 
 resource "aws_s3_bucket_acl" "lb_access_logs_acl" {
@@ -109,6 +101,16 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule"
     }
   }
 }*/
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "lb_access_logs_server_side_encryption" {
+  bucket = aws_s3_bucket.lb_access_logs.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
 
 # give load balancing service access to the bucket
 resource "aws_s3_bucket_policy" "lb_access_logs" {
