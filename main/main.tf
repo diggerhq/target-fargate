@@ -30,6 +30,11 @@ terraform {
       version = "= 2.1.2"
       source  = "hashicorp/template"
     }
+
+    aws = {
+      source  = "aws"
+      version = "~> 4.0"
+    }
   }
 }
 
@@ -47,7 +52,6 @@ provider "aws" {
 # digger account provider
 provider "aws" {
   alias = "digger"
-  version = "~> 3.0"
   region  = var.region
   # profile = var.aws_profile
   access_key = var.digger_aws_key
