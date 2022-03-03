@@ -91,7 +91,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule"
   rule {
     id     = "cleanup"
     status = "Enabled"
-    prefix = ""
 
     abort_incomplete_multipart_upload {
       days_after_initiation = 1
