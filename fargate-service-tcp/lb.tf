@@ -76,7 +76,6 @@ data "aws_elb_service_account" "main" {
 # bucket for storing NLB access logs
 resource "aws_s3_bucket" "lb_access_logs" {
   bucket_prefix = "${var.ecs_cluster.name}-${var.service_name}"
-  acl           = "private"
   tags          = var.tags
   force_destroy = true
 
@@ -98,6 +97,11 @@ resource "aws_s3_bucket" "lb_access_logs" {
       }
     }
   }
+}
+
+resource "aws_s3_bucket_acl" "lb_access_logs_acl" {
+  bucket = aws_s3_bucket.lb_access_logs.id
+  acl    = "private"
 }
 
 # give load balancing service access to the bucket
