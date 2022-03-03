@@ -43,14 +43,8 @@ variable "replicas" {
   default = "1"
 }
 
-variable "scheduling_strategy" {
-  default = "REPLICA"
-}
-
 # The name of the container to run
 variable "container_name" {
-  description = "Scheduling strategy to use for the service. The valid values are REPLICA and DAEMON. Defaults to REPLICA"
-  default     = "REPLICA"
 }
 
 variable "launch_type" {
