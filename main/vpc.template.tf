@@ -56,12 +56,12 @@ variable "destinationCIDRblock" {
 }
 
 variable "ingressCIDRblock" {
-  type    = list
+  type    = list(string)
   default = ["0.0.0.0/0"]
 }
 
 variable "egressCIDRblock" {
-  type    = list
+  type    = list(string)
   default = ["0.0.0.0/0"]
 }
 variable "mapPublicIP" {
