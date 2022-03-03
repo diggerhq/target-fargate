@@ -35,20 +35,20 @@ variable "publicSubnetbCIDRblock" {
   default = "10.0.2.0/24"
 }
 
-variable "publicSubnetcCIDRblock" {
-  default = "10.0.5.0/24"
-}
-
-variable "publicSubnetdCIDRblock" {
-  default = "10.0.6.0/24"
-}
-
 variable "privateSubnetaCIDRblock" {
   default = "10.0.3.0/24"
 }
 
 variable "privateSubnetbCIDRblock" {
   default = "10.0.4.0/24"
+}
+
+variable "publicSubnetcCIDRblock" {
+  default = "10.0.5.0/24"
+}
+
+variable "publicSubnetdCIDRblock" {
+  default = "10.0.6.0/24"
 }
 
 variable "destinationCIDRblock" {
@@ -217,6 +217,51 @@ resource "aws_route_table_association" "publicd" {
   subnet_id      = aws_subnet.public_subnet_d.id
   route_table_id = aws_route_table.route_table_public.id
 }
+
+
+//// NAT GATEWAY
+
+locals {
+  nat_gateway_ips = try(aws_eip.nat_eip[*].id, [])
+}
+
+resource "aws_route_table" "route_table_private" {
+  vpc_id = local.vpc.id
+
+  tags = {
+    Name = "${var.app}-${var.environment} Private Route Table"
+  }
+}
+
+resource "aws_eip" "nat_eip" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  vpc = true
+  tags = var.tags
+}
+
+resource "aws_nat_gateway" "nat_gateway" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  allocation_id = element(local.nat_gateway_ips, 0)
+  subnet_id = element(aws_subnet.public[*].id, 0)
+
+  tags = var.tags
+  depends_on = [local.vpc_ig]
+}
+
+resource "aws_route" "private_nat_gateway_route" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  route_table_id         = element(aws_route_table.route_table_private[*].id, count.index)
+  destination_cidr_block = var.nat_gateway_destination_cidr_block
+  nat_gateway_id         = element(aws_nat_gateway.nat_gateway[*].id, count.index)
+
+  timeouts {
+    create = "5m"
+  }
+}
+
 
 # output the vpc ids
 output "main_vpc_id" {
