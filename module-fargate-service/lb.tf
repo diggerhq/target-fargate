@@ -133,7 +133,7 @@ output "lb_arn" {
 }
 
 output "lb_http_listener_arn" {
-  value = try(aws_alb_listener.http_forward[0].arn, null)
+  value = try(aws_alb_listener.http.arn, null)
 }
 
 output "lb_zone_id" {
