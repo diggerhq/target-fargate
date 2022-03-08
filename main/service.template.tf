@@ -120,7 +120,7 @@ module "monitoring-{{service_name}}" {
       lb_subnet_a = aws_subnet.public_subnet_a
       lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
-    private_subnets = [aws_subnet.private_subnet_a, aws_subnet.private_subnet_b]
+    private_subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
     # lb_port
     # lb_protocol
@@ -300,7 +300,7 @@ module "monitoring-{{service_name}}" {
       lb_subnet_a = aws_subnet.public_subnet_a
       lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
-    private_subnets = [aws_subnet.private_subnet_a, aws_subnet.private_subnet_b]
+    private_subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
     # lb_port
     # lb_protocol
