@@ -271,6 +271,13 @@ resource "aws_route" "private_nat_gateway_route" {
   }
 }
 
+# Private Route to Private Route Table for Private Subnets
+resource "aws_route_table_association" "private" {
+  for_each  = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+  subnet_id = each.key
+
+  route_table_id = aws_route_table.route_table_private.id
+}
 
 # output the vpc ids
 output "main_vpc_id" {
@@ -291,4 +298,12 @@ output "public_subnet_c_id" {
 
 output "public_subnet_d_id" {
   value = aws_subnet.public_subnet_d.id
+}
+
+output "private_subnet_a_id" {
+  value = aws_subnet.private_subnet_a.id
+}
+
+output "private_subnet_b_id" {
+  value = aws_subnet.private_subnet_b.id
 }
