@@ -103,12 +103,8 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     security_groups = concat([aws_security_group.nsg_task.id], var.service_security_groups)
-    subnets = [
-      var.lb_subnet_a.id,
-      var.lb_subnet_b.id
-    ]
     assign_public_ip = false
-    # subnets         = split(",", var.private_subnets)
+    subnets         = var.private_subnets
   }
 
   load_balancer {

@@ -70,11 +70,8 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     security_groups = []
-    subnets = [
-      var.lb_subnet_a.id,
-      var.lb_subnet_b.id
-    ]
     assign_public_ip = false
+    subnets         = var.private_subnets
   }
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634

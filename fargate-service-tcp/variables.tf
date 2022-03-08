@@ -28,6 +28,8 @@ variable "tags" {
 variable "lb_subnet_a" {}
 variable "lb_subnet_b" {}
 
+variable "private_subnets" {}
+
 variable "vpcCIDRblock" {
   default = "10.0.0.0/16"
 }
