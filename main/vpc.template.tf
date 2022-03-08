@@ -248,8 +248,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   count = var.enable_nat_gateway ? 1 : 0
 
   allocation_id = element(local.nat_gateway_ips, 0)
-  subnet_id = element(aws_subnet.public[*].id, 0)
-
+  subnet_id = aws_subnet.public_subnet_a.id
   tags = var.tags
   depends_on = [local.vpc_ig]
 }
