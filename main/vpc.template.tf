@@ -72,6 +72,12 @@ variable "enable_nat_gateway" {
   default = true
 }
 
+variable "nat_gateway_destination_cidr_block" {
+  description = "Used to pass a custom destination route for private NAT Gateway. If not specified, the default 0.0.0.0/0 is used as a destination route."
+  type        = string
+  default     = "0.0.0.0/0"
+}
+
 # this config allows creating subbnets in an existing VPC
 {% if environment_config.vpc_id %}
 data "aws_vpc" "vpc" {
