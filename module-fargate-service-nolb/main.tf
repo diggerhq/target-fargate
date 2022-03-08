@@ -74,7 +74,7 @@ resource "aws_ecs_service" "app" {
       var.lb_subnet_a.id,
       var.lb_subnet_b.id
     ]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634
