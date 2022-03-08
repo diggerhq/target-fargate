@@ -68,6 +68,10 @@ variable "mapPublicIP" {
   default = false
 }
 
+variable "enable_nat_gateway" {
+  default = true
+}
+
 # this config allows creating subbnets in an existing VPC
 {% if environment_config.vpc_id %}
 data "aws_vpc" "vpc" {
