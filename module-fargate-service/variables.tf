@@ -26,8 +26,8 @@ variable "tags" {}
 variable "lb_subnet_a" {}
 variable "lb_subnet_b" {}
 
-variable "private_subnets" {}
-variable "public_subnets" {}
+variable "subnets" {}
+variable "assign_public_ip" {}
 
 # The port the load balancer will listen on
 variable "lb_port" {

@@ -67,12 +67,12 @@ resource "aws_ecs_task_definition" "app" {
       }
     },
     "mountPoints": [
-    %{ for mountPoint in var.mountPoints }
+    %{for mountPoint in var.mountPoints}
       {
         "containerPath": "${mountPoint.path}",
         "sourceVolume": "${mountPoint.volume}"
       }
-    %{ endfor }
+    %{endfor}
     ]
   }
 ]
@@ -84,13 +84,13 @@ EOT
       name = volume.value.name
 
       efs_volume_configuration {
-        file_system_id          = volume.value.file_system_id
-        root_directory          = "/"
-        transit_encryption      = "ENABLED"
+        file_system_id     = volume.value.file_system_id
+        root_directory     = "/"
+        transit_encryption = "ENABLED"
       }
     }
   }
-  
+
   tags = var.tags
 }
 
@@ -102,15 +102,9 @@ resource "aws_ecs_service" "app" {
   desired_count   = var.replicas
 
   network_configuration {
-    security_groups = concat([aws_security_group.nsg_task.id], var.service_security_groups)
-
-    {% if environment_config.enable_nat %}
-    assign_public_ip = false
-    subnets         = var.private_subnets
-    {% else %}
-    assign_public_ip = true
-    subnets         = var.public_subnets
-    {% endif %}
+    security_groups  = concat([aws_security_group.nsg_task.id], var.service_security_groups)
+    assign_public_ip = var.assign_public_ip
+    subnets          = var.subnets
   }
 
   load_balancer {
