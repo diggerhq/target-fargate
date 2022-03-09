@@ -123,10 +123,13 @@ module "monitoring-{{service_name}}" {
 
     {% if environment_config.enable_nat %}
       subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+      assign_public_ip = false
     {% elif environment_config.environment_config.use_subnets_cd %}
       subnets = [aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
+      assign_public_ip = true
     {% else %}
       subnets = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+      assign_public_ip = true
     {% endif %}
 
     # lb_port
