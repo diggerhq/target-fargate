@@ -229,6 +229,8 @@ resource "aws_route_table_association" "publicd" {
 }
 
 
+{% if environment_config.enable_nat %}
+
 //// NAT GATEWAY
 
 locals {
@@ -277,6 +279,8 @@ resource "aws_route_table_association" "private" {
   subnet_id = each.value
   route_table_id = aws_route_table.route_table_private.id
 }
+
+{% endif %}
 
 # output the vpc ids
 output "main_vpc_id" {

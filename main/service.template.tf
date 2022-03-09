@@ -115,10 +115,12 @@ module "monitoring-{{service_name}}" {
 
     {% if environment_config.use_subnets_cd %}
       lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+      lb_subnet_b = aws_subnet.public_subnet_d
+      public_subnets = [aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
     {% else %}
       lb_subnet_a = aws_subnet.public_subnet_a
       lb_subnet_b = aws_subnet.public_subnet_b
+      public_subnets = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
     {% endif %}
     private_subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 

@@ -70,8 +70,13 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     security_groups = []
+    {% if environment_config.enable_nat %}
     assign_public_ip = false
     subnets         = var.private_subnets
+    {% else %}
+    assign_public_ip = true
+    subnets         = var.public_subnets
+    {% endif %}
   }
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634
