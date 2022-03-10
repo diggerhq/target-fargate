@@ -70,7 +70,7 @@ variable "mapPublicIP" {
 
 variable "disable_nat_gateway" {
   description = ""
-  default = {{ (environment_config.disable_nat or false) | lower }}
+  default = {{ (environment_config.disable_nat or true) | lower }}
 }
 
 variable "nat_gateway_destination_cidr_block" {
@@ -230,7 +230,7 @@ resource "aws_route_table_association" "publicd" {
 }
 
 
-{% if not environment_config.disable_nat or environment_config.disable_nat is none %}
+{% if not environment_config.disable_nat and environment_config.disable_nat is not none %}
 
 //// NAT GATEWAY
 
