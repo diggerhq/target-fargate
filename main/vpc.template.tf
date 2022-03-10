@@ -230,7 +230,7 @@ resource "aws_route_table_association" "publicd" {
 }
 
 
-{% if environment_config.disable_nat %}
+{% if not environment_config.disable_nat %}
 
 //// NAT GATEWAY
 
