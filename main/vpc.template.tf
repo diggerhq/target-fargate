@@ -230,10 +230,11 @@ resource "aws_route_table_association" "publicd" {
 }
 
 
+
 {% if environment_config.disable_nat is not none %}
 
 //// NAT GATEWAY
-
+{% environment_config.disable_nat %}
 locals {
   nat_gateway_ips = try(aws_eip.nat_eip[*].id, [])
 }
