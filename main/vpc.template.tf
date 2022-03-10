@@ -229,12 +229,10 @@ resource "aws_route_table_association" "publicd" {
   route_table_id = aws_route_table.route_table_public.id
 }
 
-
-
-{% if environment_config.disable_nat is none %}
+{% if environment_config.disable_nat is defined and environment_config.disable_nat is sameas false %}
 
 //// NAT GATEWAY
-{{ environment_config.disable_nat }}
+
 locals {
   nat_gateway_ips = try(aws_eip.nat_eip[*].id, [])
 }
