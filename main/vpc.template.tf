@@ -70,7 +70,7 @@ variable "mapPublicIP" {
 
 variable "disable_nat_gateway" {
   description = ""
-  default = {{ (environment_config.disable_nat is defined and environment_config.disable_nat is sameas false or true) | lower }}
+  default = {{ (environment_config.disable_nat is not defined or environment_config.disable_nat is sameas true) | lower }}
 }
 
 variable "nat_gateway_destination_cidr_block" {
