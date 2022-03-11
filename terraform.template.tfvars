@@ -34,8 +34,8 @@ privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
 {% endif %}
 # internal = false
 
-# launch_type = "{{launch_type}}"
-
-# default_backend_image = "{{backend_image}}"
-
-lb_enable_https_redirect = "{{ (false if environment_config.lb_enable_https_redirect is not defined else environment_config.lb_enable_https_redirect) | lower }}"
+{% if environment_config.lb_enable_https_redirect is defined and environment_config.lb_enable_https_redirect %}
+lb_enable_https_redirect = true
+{% else %}
+lb_enable_https_redirect = false
+{% else %}
