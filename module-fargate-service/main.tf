@@ -124,7 +124,7 @@ resource "aws_ecs_service" "app" {
   # propagate_tags          = "SERVICE"
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634
-  depends_on = [aws_alb_listener.http]
+  depends_on = [aws_alb_listener.http_forward, aws_alb_listener.http_redirect]
 
   # [after initial apply] don't override changes made to task_definition
   # from outside of terraform (i.e.; fargate cli)

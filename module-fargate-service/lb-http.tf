@@ -1,7 +1,23 @@
-# adds an http listener to the load balancer and allows ingress
-# (delete this file if you only want https)
 
-resource "aws_alb_listener" "http" {
+resource "aws_alb_listener" "http_redirect" {
+  count = (var.lb_ssl_certificate_arn != null || var.dggr_acm_certificate_arn !=null) && var.lb_enable_https_redict ? 1 : 0
+  load_balancer_arn = aws_alb.main.id
+  port              = var.lb_port
+  protocol          = var.lb_protocol
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_alb_listener" "http_forward" {
+  count = (var.lb_ssl_certificate_arn != null || var.dggr_acm_certificate_arn != null) && !var.lb_enable_https_redict? 1 : 0
   load_balancer_arn = aws_alb.main.id
   port              = var.lb_port
   protocol          = var.lb_protocol
@@ -10,14 +26,10 @@ resource "aws_alb_listener" "http" {
     target_group_arn = aws_alb_target_group.main.id
     type             = "forward"
   }
-
-  lifecycle {
-    ignore_changes = [port, protocol, default_action]
-  }
 }
 
 resource "aws_lb_listener" "https" {
-  count = (var.lb_ssl_certificate_arn==null && var.dggr_acm_certificate_arn==null) ? 0 : 1
+  count = (var.lb_ssl_certificate_arn != null || var.dggr_acm_certificate_arn != null) ? 1 : 0
   load_balancer_arn = aws_alb.main.arn
   port              = "443"
   protocol          = "HTTPS"

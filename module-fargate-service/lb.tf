@@ -135,7 +135,7 @@ output "lb_arn" {
 }
 
 output "lb_http_listener_arn" {
-  value = try(aws_alb_listener.http.arn, null)
+  value = coalesce(aws_alb_listener.http_redirect, aws_alb_listener.http_forward).arn
 }
 
 output "lb_zone_id" {
