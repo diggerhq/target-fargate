@@ -103,7 +103,7 @@ module "monitoring" {
 
 {% elif load_balancer %}
   module "service-{{service_name}}" {
-    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v2.0.4"
+    source = "git::https://github.com/diggerhq/module-fargate-service.git?ref=v2.0.5"
 
     ecs_cluster = aws_ecs_cluster.app
     service_name = "{{service_name}}"
