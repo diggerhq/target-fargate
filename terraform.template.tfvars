@@ -36,6 +36,4 @@ privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
 
 {% if environment_config.lb_enable_https_redirect is defined and environment_config.lb_enable_https_redirect %}
 lb_enable_https_redirect = true
-{% else %}
-lb_enable_https_redirect = false
-{% else %}
+{% endif %}
