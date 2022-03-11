@@ -29,12 +29,11 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-
-# resource "aws_lb_listener_certificate" "dggr_domain" {
-#   count = (var.dggr_acm_certificate_arn!=null && var.lb_ssl_certificate_arn!=null) ? 0 : 1
-#   listener_arn = aws_lb_listener.https[0].arn
-#   certificate_arn   = var.dggr_acm_certificate_arn
-# }
+resource "aws_lb_listener_certificate" "lb_listener_cert" {
+   count = (var.lb_ssl_certificate_arn==null && var.dggr_acm_certificate_arn==null) ? 0 : 1
+   listener_arn = aws_lb_listener.https[0].arn
+   certificate_arn   = var.lb_ssl_certificate_arn==null ? var.dggr_acm_certificate_arn : var.lb_ssl_certificate_arn
+}
 
 resource "aws_security_group_rule" "ingress_lb_http" {
   type              = "ingress"
