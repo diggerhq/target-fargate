@@ -135,7 +135,7 @@ output "lb_arn" {
 }
 
 output "lb_http_listener_arn" {
-  value = coalesce(aws_alb_listener.http_redirect, aws_alb_listener.http_forward).arn
+  value = var.lb_enable_https_redict ? aws_alb_listener.http_redirect.arn : aws_alb_listener.http_forward.arn
 }
 
 output "lb_zone_id" {
