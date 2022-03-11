@@ -111,6 +111,7 @@ module "monitoring-{{service_name}}" {
     region = var.region
     service_vpc = local.vpc
     service_security_groups = [aws_security_group.ecs_service_sg.id]
+    lb_enable_https_redict = var.lb_enable_https_redict
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
