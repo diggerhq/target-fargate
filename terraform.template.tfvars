@@ -38,4 +38,4 @@ privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
 
 # default_backend_image = "{{backend_image}}"
 
-lb_enable_https_redict = "{{ (false if environment_config.lb_enable_https_redict is not defined else environment_config.lb_enable_https_redict) | lower }}"
+lb_enable_https_redirect = "{{ (false if environment_config.lb_enable_https_redirect is not defined else environment_config.lb_enable_https_redirect) | lower }}"

@@ -42,6 +42,6 @@ variable "monitoring_enabled" {}
 # variable "public_subnets" {
 # }
 
-variable "lb_enable_https_redict" {
+variable "lb_enable_https_redirect" {
   default = false
 }
