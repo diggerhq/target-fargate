@@ -41,3 +41,7 @@ variable "monitoring_enabled" {}
 # The public subnets, minimum of 2, that are a part of the VPC(s)
 # variable "public_subnets" {
 # }
+
+variable "lb_enable_https_redict" {
+  default = false
+}

@@ -37,3 +37,5 @@ privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
 # launch_type = "{{launch_type}}"
 
 # default_backend_image = "{{backend_image}}"
+
+lb_enable_https_redict = "{{ (false if environment_config.lb_enable_https_redict is not defined else environment_config.lb_enable_https_redict) | lower }}"
