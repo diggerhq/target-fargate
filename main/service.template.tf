@@ -121,7 +121,7 @@ module "monitoring-{{service_name}}" {
       lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
 
-    {% if environment_config.disable_nat is defined and environment_config.disable_nat is sameas false %}
+    {% if environment_config.enable_nat is defined and environment_config.enable_nat is sameas true %}
       subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
       assign_public_ip = false
     {% elif environment_config.use_subnets_cd %}

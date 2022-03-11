@@ -68,9 +68,9 @@ variable "mapPublicIP" {
   default = false
 }
 
-variable "disable_nat_gateway" {
+variable "enable_nat_gateway" {
   description = ""
-  default = {{ (true if environment_config.disable_nat is not defined else environment_config.disable_nat) | lower }}
+  default = {{ (false if environment_config.enable_nat is not defined else environment_config.enable_nat) | lower }}
 }
 
 variable "nat_gateway_destination_cidr_block" {
@@ -229,7 +229,7 @@ resource "aws_route_table_association" "publicd" {
   route_table_id = aws_route_table.route_table_public.id
 }
 
-{% if environment_config.disable_nat is defined and environment_config.disable_nat is sameas false %}
+{% if environment_config.enable_nat is defined and environment_config.enable_nat is sameas true %}
 
 //// NAT GATEWAY
 
@@ -246,14 +246,14 @@ resource "aws_route_table" "route_table_private" {
 }
 
 resource "aws_eip" "nat_eip" {
-  count = var.disable_nat_gateway ? 0 : 1
+  count = var.enable_nat_gateway ? 1 : 0
 
   vpc = true
   tags = var.tags
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
-  count = var.disable_nat_gateway ? 0 : 1
+  count = var.enable_nat_gateway ? 1 : 0
 
   allocation_id = element(local.nat_gateway_ips, 0)
   subnet_id = aws_subnet.public_subnet_a.id
@@ -262,7 +262,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 }
 
 resource "aws_route" "private_nat_gateway_route" {
-  count = var.disable_nat_gateway ? 0 : 1
+  count = var.enable_nat_gateway ? 1 : 0
 
   route_table_id         = element(aws_route_table.route_table_private[*].id, count.index)
   destination_cidr_block = var.nat_gateway_destination_cidr_block
