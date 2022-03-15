@@ -239,20 +239,20 @@ output "public_subnet_d_id" {
   value = aws_subnet.public_subnet_d.id
 }
 
-output "private_subnets_ids" {
+output "private_subnet_ids" {
   value = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 }
 
 {%- if environment_config.use_subnets_cd %}
-output "public_subnets_ids" {
+output "public_subnet_ids" {
   value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id, aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
 }
 {% else %}
-output "public_subnets_ids" {
+output "public_subnet_ids" {
   value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
 }
 {% endif %}
 
-output "security_groups_ids" {
+output "security_group_ids" {
   value = [aws_security_group.ecs_service_sg.id]
 }
