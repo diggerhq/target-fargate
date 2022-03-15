@@ -219,7 +219,7 @@ resource "aws_route_table_association" "publicd" {
 }
 
 # output the vpc ids
-output "main_vpc_id" {
+output "vpc_id" {
   value = local.vpc.id
 }
 
