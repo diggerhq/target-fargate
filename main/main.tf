@@ -33,7 +33,7 @@ terraform {
 
     aws = {
       source  = "aws"
-      version = "~> 4.0"
+      version = "~> 3.0"
     }
   }
 }
