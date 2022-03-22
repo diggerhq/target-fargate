@@ -32,20 +32,31 @@ resource "aws_s3_bucket" "{{service_name}}_website_root" {
   # allow terraform to destroy non-empty bucket
   force_destroy = true
 
-  logging {
-    target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
-    target_prefix = "${local.{{service_name}}_website_domain}/"
-  }
-
-  website {
-    index_document = "index.html"
-    error_document = "index.html"
-  }
-
   lifecycle {
     ignore_changes = [tags["Changed"]]
   }
 }
+
+resource "aws_s3_bucket_logging" "{{service_name}}_website_root_logging" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+
+  target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
+  target_prefix = "${local.{{service_name}}_website_domain}/"
+}
+
+resource "aws_s3_bucket_website_configuration" "{{service_name}}_website_root_website" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
+  }
+}
+
+
 
 resource "aws_s3_bucket_acl" "{{service_name}}_website_root_acl" {
   bucket = aws_s3_bucket.{{service_name}}_website_root.id
