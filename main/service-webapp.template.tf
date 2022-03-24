@@ -148,6 +148,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
       viewer_certificate,
     ]
   }
+  depends_on = [aws_s3_bucket.{{service_name}}_website_root]
 }
 
 {% if environment_config.dns_zone_id %}
