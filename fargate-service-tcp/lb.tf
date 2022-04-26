@@ -13,16 +13,7 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = "true"
 
 
-  subnets = [
-    var.lb_subnet_a.id,
-    var.lb_subnet_b.id
-    # aws_subnet.public_subnet_a.id,
-    # aws_subnet.public_subnet_b.id
-  ]
-  # subnets = split(
-  #   ",",
-  #   var.internal == true ? var.private_subnets : var.public_subnets,
-  # )
+  subnets = var.subnets
   tags            = var.tags
 
   # enable access logs in order to get support from aws

@@ -35,9 +35,9 @@ variable "monitoring_enabled" {}
 # }
 
 # The private subnets, minimum of 2, that are a part of the VPC(s)
-# variable "private_subnets" {
-# }
+variable "private_subnets" {
+}
 
 # The public subnets, minimum of 2, that are a part of the VPC(s)
-# variable "public_subnets" {
-# }
+variable "public_subnets" {
+}
