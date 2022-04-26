@@ -68,7 +68,7 @@ locals {
 
 # output the vpc ids
 output "vpc_id" {
-  value = data.aws_vpc.vpc.vpc_id
+  value = data.aws_vpc.vpc.id
 }
 
 
