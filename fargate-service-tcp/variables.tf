@@ -25,7 +25,7 @@ variable "tags" {
 # === Load Balancer ===
 
 # The loadbalancer subnets
-variable "subnets" {}
+variable "subnet_ids" {}
 
 variable "vpcCIDRblock" {
   default = "10.0.0.0/16"

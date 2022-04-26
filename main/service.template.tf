@@ -214,14 +214,7 @@ module "monitoring-{{service_name}}" {
     service_vpc = local.vpc
     # image_tag_mutability
 
-    {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
-    {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
-    {% endif %}
-
+    subnet_ids = var.publi_subnets
     # lb_port
     # lb_protocol
     internal = false
