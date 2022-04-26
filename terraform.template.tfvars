@@ -25,5 +25,5 @@ tags = {
   contact-email = "me@domain.com"
 }
 
-public_subnets = "{{environment_config.public_subnets}}"
-private_subnets = "{{environment_config.private_subnets}}"
+public_subnets = "{{public_subnets}}"
+private_subnets = "{{private_subnets}}"
