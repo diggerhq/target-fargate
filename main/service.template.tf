@@ -19,7 +19,7 @@ module "monitoring-{{service_name}}" {
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
 
-    subnets = var.public_subnets
+    subnet_ids = var.public_subnets
 
     vpcCIDRblock = var.vpcCIDRblock
     # lb_port
@@ -75,7 +75,7 @@ module "monitoring-{{service_name}}" {
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
 
-    subnets = var.public_subnets
+    subnet_ids = var.public_subnets
 
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
@@ -214,7 +214,7 @@ module "monitoring-{{service_name}}" {
     service_vpc = local.vpc
     # image_tag_mutability
 
-    subnet_ids = var.publi_subnets
+    subnet_ids = var.public_subnets
     # lb_port
     # lb_protocol
     internal = false
