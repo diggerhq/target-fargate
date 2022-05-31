@@ -40,7 +40,7 @@ resource "aws_s3_bucket_logging" "{{service_name}}_website_root_logging" {
   bucket = aws_s3_bucket.{{service_name}}_website_root.id
 
   target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
-  target_prefix = "${local.{{service_name}}_website_domain}/"
+  target_prefix = "{{service_name}}/"
 }
 
 resource "aws_s3_bucket_website_configuration" "{{service_name}}_website_root_website" {
