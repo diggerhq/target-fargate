@@ -232,5 +232,5 @@ output "{{service_name}}_lb_dns" {
 {% endif %} 
 
 output "temp_debug_var" {
-  value="{{ environment_config.cloudfront_altname_value }}"
+  value="{{ environment_config }}"
 }
