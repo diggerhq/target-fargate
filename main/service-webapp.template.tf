@@ -70,7 +70,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
   {% if environment_config.cloudfront_altname_value %}
-  aliases = "{{ environment_config.cloudfront_altname_value }}"
+  aliases = ["{{ environment_config.cloudfront_altname_value }}"]
   {% elif environment_config.dggr_hostname %}
   aliases = [local.{{service_name}}_dggr_website_domain]
   {% endif %}
