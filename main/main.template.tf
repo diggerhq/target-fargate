@@ -47,8 +47,8 @@ provider "aws" {
     external_id="{{assume_role_external_id}}"
   }
   {% else %}
-  access_key = var.digger_aws_key
-  secret_key = var.digger_aws_secret
+  access_key = var.aws_key
+  secret_key = var.aws_secret
   {% endif %}
 }
 
