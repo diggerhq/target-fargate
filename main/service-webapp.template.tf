@@ -2,7 +2,6 @@
 {% if service_type == "webapp" %}
 
 locals {
-  {{service_name}}_website_domain = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
   {{service_name}}_dggr_website_domain = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
 }
 
@@ -41,7 +40,7 @@ resource "aws_s3_bucket_logging" "{{service_name}}_website_root_logging" {
   bucket = aws_s3_bucket.{{service_name}}_website_root.id
 
   target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
-  target_prefix = "${local.{{service_name}}_website_domain}/"
+  target_prefix = "{{service_name}}/"
 }
 
 resource "aws_s3_bucket_website_configuration" "{{service_name}}_website_root_website" {
@@ -70,8 +69,8 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  {% if environment_config.hostname %}
-  aliases = [local.{{service_name}}_website_domain]
+  {% if environment_config.cloudfront_altname_value %}
+  aliases = ["{{ environment_config.cloudfront_altname_value }}"]
   {% elif environment_config.dggr_hostname %}
   aliases = [local.{{service_name}}_dggr_website_domain]
   {% endif %}
@@ -93,7 +92,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
 
   logging_config {
     bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket_domain_name
-    prefix = "${local.{{service_name}}_website_domain}/"
+    prefix = "{{service_name}}/"
   }
 
   default_cache_behavior {
