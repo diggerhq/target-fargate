@@ -144,8 +144,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
 
   lifecycle {
     ignore_changes = [
-      tags["Changed"],
-      viewer_certificate,
+      tags["Changed"]
     ]
   }
   depends_on = [aws_s3_bucket.{{service_name}}_website_root]
