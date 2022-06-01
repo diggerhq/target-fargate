@@ -58,3 +58,7 @@ provider "aws" {
   secret_key = var.digger_aws_secret  
 }
 
+output "assume_role_arn" {
+  value="{{assume_role_arn}}"
+}
+
