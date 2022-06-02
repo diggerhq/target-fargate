@@ -28,6 +28,9 @@ variable "tags" {
 variable "lb_subnet_a" {}
 variable "lb_subnet_b" {}
 
+variable "subnets" {}
+variable "assign_public_ip" {}
+
 variable "vpcCIDRblock" {
   default = "10.0.0.0/16"
 }

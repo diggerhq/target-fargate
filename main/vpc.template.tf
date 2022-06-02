@@ -35,20 +35,20 @@ variable "publicSubnetbCIDRblock" {
   default = "10.0.2.0/24"
 }
 
-variable "publicSubnetcCIDRblock" {
-  default = "10.0.5.0/24"
-}
-
-variable "publicSubnetdCIDRblock" {
-  default = "10.0.6.0/24"
-}
-
 variable "privateSubnetaCIDRblock" {
   default = "10.0.3.0/24"
 }
 
 variable "privateSubnetbCIDRblock" {
   default = "10.0.4.0/24"
+}
+
+variable "publicSubnetcCIDRblock" {
+  default = "10.0.5.0/24"
+}
+
+variable "publicSubnetdCIDRblock" {
+  default = "10.0.6.0/24"
 }
 
 variable "destinationCIDRblock" {
@@ -66,6 +66,17 @@ variable "egressCIDRblock" {
 }
 variable "mapPublicIP" {
   default = false
+}
+
+variable "enable_nat_gateway" {
+  description = ""
+  default = {{ (false if environment_config.enable_nat is not defined else environment_config.enable_nat) | lower }}
+}
+
+variable "nat_gateway_destination_cidr_block" {
+  description = "Used to pass a custom destination route for private NAT Gateway. If not specified, the default 0.0.0.0/0 is used as a destination route."
+  type        = string
+  default     = "0.0.0.0/0"
 }
 
 # this config allows creating subbnets in an existing VPC
@@ -217,6 +228,59 @@ resource "aws_route_table_association" "publicd" {
   subnet_id      = aws_subnet.public_subnet_d.id
   route_table_id = aws_route_table.route_table_public.id
 }
+
+{% if environment_config.enable_nat is defined and environment_config.enable_nat is sameas true %}
+
+//// NAT GATEWAY
+
+locals {
+  nat_gateway_ips = try(aws_eip.nat_eip[*].id, [])
+}
+
+resource "aws_route_table" "route_table_private" {
+  vpc_id = local.vpc.id
+
+  tags = {
+    Name = "${var.app}-${var.environment} Private Route Table"
+  }
+}
+
+resource "aws_eip" "nat_eip" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  vpc = true
+  tags = var.tags
+}
+
+resource "aws_nat_gateway" "nat_gateway" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  allocation_id = element(local.nat_gateway_ips, 0)
+  subnet_id = aws_subnet.public_subnet_a.id
+  tags = var.tags
+  depends_on = [local.vpc_ig]
+}
+
+resource "aws_route" "private_nat_gateway_route" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  route_table_id         = element(aws_route_table.route_table_private[*].id, count.index)
+  destination_cidr_block = var.nat_gateway_destination_cidr_block
+  nat_gateway_id         = element(aws_nat_gateway.nat_gateway[*].id, count.index)
+
+  timeouts {
+    create = "5m"
+  }
+}
+
+# Private Route to Private Route Table for Private Subnets
+resource "aws_route_table_association" "private" {
+  for_each  = {a= aws_subnet.private_subnet_a.id, b = aws_subnet.private_subnet_b.id}
+  subnet_id = each.value
+  route_table_id = aws_route_table.route_table_private.id
+}
+
+{% endif %}
 
 # output the vpc ids
 output "vpc_id" {

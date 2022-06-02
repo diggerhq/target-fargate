@@ -115,10 +115,21 @@ module "monitoring-{{service_name}}" {
 
     {% if environment_config.use_subnets_cd %}
       lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+      lb_subnet_b = aws_subnet.public_subnet_d
     {% else %}
       lb_subnet_a = aws_subnet.public_subnet_a
       lb_subnet_b = aws_subnet.public_subnet_b
+    {% endif %}
+
+    {% if environment_config.enable_nat is defined and environment_config.enable_nat is sameas true %}
+      subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+      assign_public_ip = false
+    {% elif environment_config.use_subnets_cd %}
+      subnets = [aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
+      assign_public_ip = true
+    {% else %}
+      subnets = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+      assign_public_ip = true
     {% endif %}
 
     # lb_port
@@ -299,6 +310,7 @@ module "monitoring-{{service_name}}" {
       lb_subnet_a = aws_subnet.public_subnet_a
       lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
+    private_subnets = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
     # lb_port
     # lb_protocol
