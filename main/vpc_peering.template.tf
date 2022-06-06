@@ -13,8 +13,8 @@
     # profile = var.aws_profile
     {% if assume_role_arn %}
     assume_role {
-      role_arn="{{assume_role_arn}}"
-      external_id="{{assume_role_external_id}}"
+      role_arn={{assume_role_arn}}
+      external_id={{assume_role_external_id}}
     }
     {% else %}
     access_key = var.aws_key
