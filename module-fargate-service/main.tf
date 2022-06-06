@@ -35,15 +35,28 @@ resource "aws_ecs_task_definition" "app" {
   # defined in role.tf
   # task_role_arn = aws_iam_role.app_role.arn
 
-  container_definitions = <<DEFINITION
+  container_definitions = <<EOT
 [
   {
     "name": "${var.container_name}",
     "image": "${var.default_backend_image}",
     "essential": true,
     "portMappings": [
+      {
+        "protocol": "tcp",
+        "containerPort": ${var.container_port},
+        "hostPort": ${var.container_port}
+      }
     ],
     "environment": [
+      {
+        "name": "PORT",
+        "value": "${var.container_port}"
+      },
+      {
+        "name": "HEALTHCHECK",
+        "value": "${var.health_check}"
+      }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
@@ -52,33 +65,66 @@ resource "aws_ecs_task_definition" "app" {
         "awslogs-region": "${var.region}",
         "awslogs-stream-prefix": "ecs"
       }
-    }
+    },
+    "mountPoints": [
+    %{ for mountPoint in var.mountPoints }
+      {
+        "containerPath": "${mountPoint.path}",
+        "sourceVolume": "${mountPoint.volume}"
+      }
+    %{ endfor }
+    ]
   }
 ]
-DEFINITION
+EOT
+  
+  dynamic "volume" {
+    for_each = var.volumes
+    content {
+      name = volume.value.name
 
+      efs_volume_configuration {
+        file_system_id          = volume.value.file_system_id
+        root_directory          = "/"
+        transit_encryption      = "ENABLED"
+      }
+    }
+  }
 
   tags = var.tags
 }
 
 resource "aws_ecs_service" "app" {
-  name                = var.service_name
-  cluster             = var.ecs_cluster.id
-  launch_type         = var.launch_type
-  task_definition     = aws_ecs_task_definition.app.arn
-  desired_count       = var.replicas
+  name            = var.service_name
+  cluster         = var.ecs_cluster.id
+  launch_type     = var.launch_type
+  task_definition = aws_ecs_task_definition.app.arn
+  desired_count   = var.ecs_autoscale_min_instances
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   network_configuration {
-    security_groups = []
+    security_groups = concat([aws_security_group.nsg_task.id], var.service_security_groups)
     subnets = [
       var.lb_subnet_a.id,
       var.lb_subnet_b.id
     ]
     assign_public_ip = true
+    # subnets         = split(",", var.private_subnets)
   }
 
+  load_balancer {
+    target_group_arn = aws_alb_target_group.main.id
+    container_name   = var.container_name
+    container_port   = var.container_port
+  }
+
+  # requires manual opt-in
+  # tags                    = var.tags
+  # enable_ecs_managed_tags = true
+  # propagate_tags          = "SERVICE"
+
   # workaround for https://github.com/hashicorp/terraform/issues/12634
-  depends_on = []
+  depends_on = [aws_alb_listener.http]
 
   # [after initial apply] don't override changes made to task_definition
   # from outside of terraform (i.e.; fargate cli)
@@ -114,6 +160,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_ssm_policy" {
   role       = aws_iam_role.ecsTaskExecutionRole.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
+
 
 resource "aws_cloudwatch_log_group" "logs" {
   name              = local.awsloggroup

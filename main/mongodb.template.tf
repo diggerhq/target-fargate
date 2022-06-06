@@ -30,9 +30,9 @@ resource "random_password" "mongodb" {
 }
 
 resource "aws_security_group" "mongodb" {
-  name_prefix = "${var.app}-${var.environment}-rabbitmq-sg"
+  name_prefix = "${var.app}-${var.environment}-mongodb-sg"
   vpc_id = local.vpc.id
-  description = "RabbitMQ security group"
+  description = "mongodb security group"
 
   # Only postgres in
   ingress {

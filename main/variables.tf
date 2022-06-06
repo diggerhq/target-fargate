@@ -24,6 +24,9 @@ variable "environment" {
 # ecs derived variable names
 variable "ecs_cluster_name" {}
 
+variable "alarms_sns_topic_arn" {}
+
+variable "monitoring_enabled" {}
 
 # Network configuration
 

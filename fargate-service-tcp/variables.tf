@@ -12,9 +12,15 @@ variable "image_tag_mutability" {
 
 variable "service_vpc" {}
 
+variable "service_security_groups" {
+  default = []
+}
+
 variable "region" {}
 
-variable "tags" {}
+variable "tags" {
+  default = null
+}
 
 # === Load Balancer ===
 
@@ -22,11 +28,52 @@ variable "tags" {}
 variable "lb_subnet_a" {}
 variable "lb_subnet_b" {}
 
+variable "vpcCIDRblock" {
+  default = "10.0.0.0/16"
+}
+
+# The port the load balancer will listen on
+variable "lb_port" {
+  default = "80"
+}
+
+# The load balancer protocol
+variable "lb_protocol" {
+  default = "TCP"
+}
+
+
+# variable "lb_ssl_certificate_arn" {
+# }
+
 # Whether the application is available on the public internet,
 # also will determine which subnets will be used (public or private)
 variable "internal" {
   default = true
 }
+
+# The amount time for Elastic Load Balancing to wait before changing the state of a deregistering target from draining to unused
+variable "deregistration_delay" {
+  default = "30"
+}
+
+# The path to the health check for the load balancer to know if the container(s) are ready
+variable "health_check" {
+}
+
+variable "health_check_protocol" {
+  default = "TCP"
+}
+
+# How often to check the liveliness of the container
+variable "health_check_interval" {
+  default = "30"
+}
+
+variable "lb_access_logs_expiration_days" {
+  default = "3"
+}
+
 
 
 # === Container ===
@@ -46,6 +93,9 @@ variable "replicas" {
 # The name of the container to run
 variable "container_name" {
 }
+
+# Container port listening
+variable "container_port" {}
 
 variable "launch_type" {
 }
@@ -81,6 +131,15 @@ variable "task_cpu" {
 
 variable "task_memory" {
   default = "512"
+}
+
+# == for EFS ==
+variable "volumes" {
+  default = []
+}
+
+variable "mountPoints" {
+  default = []
 }
 
 # == Cloudwatch ==

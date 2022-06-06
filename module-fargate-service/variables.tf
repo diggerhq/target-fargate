@@ -12,6 +12,10 @@ variable "image_tag_mutability" {
 
 variable "service_vpc" {}
 
+variable "service_security_groups" {
+  default = []
+}
+
 variable "region" {}
 
 variable "tags" {}
@@ -22,11 +26,74 @@ variable "tags" {}
 variable "lb_subnet_a" {}
 variable "lb_subnet_b" {}
 
+# The port the load balancer will listen on
+variable "lb_port" {
+  default = "80"
+}
+
+# The load balancer protocol
+variable "lb_protocol" {
+  default = "HTTP"
+}
+
+variable "lb_ssl_port" {
+  default = "443"
+}
+
+variable "lb_ssl_protocol" {
+  default = "HTTPS"
+}
+
+variable "lb_ssl_certificate_arn" {
+  default = null
+}
+
+variable "dggr_acm_certificate_arn" {
+  default = null
+}
+
 # Whether the application is available on the public internet,
 # also will determine which subnets will be used (public or private)
 variable "internal" {
   default = true
 }
+
+# The amount time for Elastic Load Balancing to wait before changing the state of a deregistering target from draining to unused
+variable "deregistration_delay" {
+  default = "30"
+}
+
+# The path to the health check for the load balancer to know if the container(s) are ready
+variable "health_check" {
+}
+
+variable "health_check_enabled" {
+  default = true
+}
+
+# How often to check the liveliness of the container
+variable "health_check_interval" {
+  default = "30"
+}
+
+# How long to wait for the response on the health check path
+variable "health_check_timeout" {
+  default = "10"
+}
+
+variable "health_check_grace_period_seconds" {
+  default = "1"
+}
+
+# What HTTP response code to listen for
+variable "health_check_matcher" {
+  default = "200"
+}
+
+variable "lb_access_logs_expiration_days" {
+  default = "3"
+}
+
 
 
 # === Container ===
@@ -38,14 +105,12 @@ variable "internal" {
 # isn't running at root.
 
 
-# How many containers to run
-variable "replicas" {
-  default = "1"
-}
-
 # The name of the container to run
 variable "container_name" {
 }
+
+# Container port listening
+variable "container_port" {}
 
 variable "launch_type" {
 }
@@ -83,6 +148,15 @@ variable "task_memory" {
   default = "512"
 }
 
+# == for EFS ==
+variable "volumes" {
+  default = []
+}
+
+variable "mountPoints" {
+  default = []
+}
+
 # == Cloudwatch ==
 
 
@@ -91,3 +165,4 @@ variable "logs_retention_in_days" {
   default     = 90
   description = "Specifies the number of days you want to retain log events"
 }
+

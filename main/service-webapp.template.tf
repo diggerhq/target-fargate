@@ -2,7 +2,6 @@
 {% if service_type == "webapp" %}
 
 locals {
-  {{service_name}}_website_domain = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
   {{service_name}}_dggr_website_domain = "{{app_name}}-{{environment}}-{{service_name}}.{{environment_config.dggr_hostname}}"
 }
 
@@ -10,7 +9,6 @@ locals {
 # bucket for logs
 resource "aws_s3_bucket" "{{service_name}}_website_logs" {
   bucket_prefix = "{{app_name}}-{{environment}}-{{service_name}}-logs"
-  acl    = "log-delivery-write"
 
   # allow terraform to destroy non-empty bucket
   force_destroy = true
@@ -18,31 +16,52 @@ resource "aws_s3_bucket" "{{service_name}}_website_logs" {
   lifecycle {
     ignore_changes = [tags["Changed"]]
   }
+}
+
+resource "aws_s3_bucket_acl" "{{service_name}}_website_logs_acl" {
+  bucket = aws_s3_bucket.{{service_name}}_website_logs.id
+  acl    = "log-delivery-write"
 }
 
 
 # Creates bucket to store the static website
 resource "aws_s3_bucket" "{{service_name}}_website_root" {
   bucket_prefix = "{{app_name}}-{{environment}}-{{service_name}}-root"
-  acl    = "public-read"
 
   # allow terraform to destroy non-empty bucket
   force_destroy = true
-
-  logging {
-    target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
-    target_prefix = "${local.{{service_name}}_website_domain}/"
-  }
-
-  website {
-    index_document = "index.html"
-    error_document = "404.html"
-  }
 
   lifecycle {
     ignore_changes = [tags["Changed"]]
   }
 }
+
+resource "aws_s3_bucket_logging" "{{service_name}}_website_root_logging" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+
+  target_bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket
+  target_prefix = "{{service_name}}/"
+}
+
+resource "aws_s3_bucket_website_configuration" "{{service_name}}_website_root_website" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
+  }
+}
+
+
+
+resource "aws_s3_bucket_acl" "{{service_name}}_website_root_acl" {
+  bucket = aws_s3_bucket.{{service_name}}_website_root.id
+  acl    = "public-read"
+}
+
 
 ## CloudFront
 # Creates the CloudFront distribution to serve the static website
@@ -50,11 +69,15 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
   enabled     = true
   price_class = "PriceClass_All"
   # Select the correct PriceClass depending on who the CDN is supposed to serve (https://docs.aws.amazon.com/AmazonCloudFront/ladev/DeveloperGuide/PriceClass.html)
-  aliases = [local.{{service_name}}_website_domain, local.{{service_name}}_dggr_website_domain]
-
+  {% if environment_config.cloudfront_altname_value %}
+  aliases = ["{{ environment_config.cloudfront_altname_value }}"]
+  {% elif environment_config.dggr_hostname %}
+  aliases = [local.{{service_name}}_dggr_website_domain]
+  {% endif %}
+   
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.{{service_name}}_website_root.id}"
-    domain_name = aws_s3_bucket.{{service_name}}_website_root.website_endpoint
+    domain_name = aws_s3_bucket_website_configuration.{{service_name}}_website_root_website.website_endpoint
 
     custom_origin_config {
       origin_protocol_policy = "http-only"
@@ -69,7 +92,7 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
 
   logging_config {
     bucket = aws_s3_bucket.{{service_name}}_website_logs.bucket_domain_name
-    prefix = "${local.{{service_name}}_website_domain}/"
+    prefix = "{{service_name}}/"
   }
 
   default_cache_behavior {
@@ -120,13 +143,13 @@ resource "aws_cloudfront_distribution" "{{service_name}}_website_cdn_root" {
 
   lifecycle {
     ignore_changes = [
-      tags["Changed"],
-      viewer_certificate,
+      tags["Changed"]
     ]
   }
+  depends_on = [aws_s3_bucket.{{service_name}}_website_root]
 }
 
-{% if environment_config.acm_certificate_arn_virginia %}
+{% if environment_config.dns_zone_id %}
   # Creates the DNS record to point on the main CloudFront distribution ID
   resource "aws_route53_record" "{{service_name}}_website_cdn_root_record" {
     zone_id = "{{environment_config.dns_zone_id}}"
@@ -193,7 +216,7 @@ POLICY
 
 
 output "{{service_name}}_bucket_main" {
-  value = aws_s3_bucket.{{service_name}}_website_logs.bucket
+  value = aws_s3_bucket.{{service_name}}_website_root.bucket
 }
 
 output "{{service_name}}_docker_registry" {

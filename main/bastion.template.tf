@@ -43,4 +43,8 @@ resource "aws_security_group" "bastion_sg" {
     }
   }
 
+  output "bastion_public_ip" {
+    value = aws_eip.bastion.public_ip
+  }
+
 {% endif %}
