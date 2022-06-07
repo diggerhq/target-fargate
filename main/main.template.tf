@@ -45,8 +45,15 @@ terraform {
 provider "aws" {
   region  = var.region
   # profile = var.aws_profile
+  {% if assume_role_arn %}
+  assume_role {
+    role_arn="{{assume_role_arn}}"
+    external_id="{{assume_role_external_id}}"
+  }
+  {% else %}
   access_key = var.aws_key
-  secret_key = var.aws_secret  
+  secret_key = var.aws_secret
+  {% endif %}
 }
 
 # digger account provider
@@ -57,4 +64,3 @@ provider "aws" {
   access_key = var.digger_aws_key
   secret_key = var.digger_aws_secret  
 }
-
