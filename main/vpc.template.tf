@@ -177,3 +177,53 @@ resource "aws_route_table_association" "publicb" {
   subnet_id      = aws_subnet.public_subnet_b.id
   route_table_id = aws_route_table.route_table_public.id
 }
+
+
+resource "aws_route_table_association" "publicc" {
+  subnet_id      = aws_subnet.public_subnet_c.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicd" {
+  subnet_id      = aws_subnet.public_subnet_d.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+# output the vpc ids
+output "vpc_id" {
+  value = local.vpc.id
+}
+
+output "public_subnet_a_id" {
+  value = aws_subnet.public_subnet_a.id
+}
+
+output "public_subnet_b_id" {
+  value = aws_subnet.public_subnet_b.id
+}
+
+output "public_subnet_c_id" {
+  value = aws_subnet.public_subnet_c.id
+}
+
+output "public_subnet_d_id" {
+  value = aws_subnet.public_subnet_d.id
+}
+
+output "private_subnet_ids" {
+  value = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+}
+
+{%- if environment_config.use_subnets_cd %}
+output "public_subnet_ids" {
+  value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id, aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
+}
+{% else %}
+output "public_subnet_ids" {
+  value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+}
+{% endif %}
+
+output "security_group_ids" {
+  value = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
+}
