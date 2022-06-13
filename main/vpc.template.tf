@@ -254,5 +254,5 @@ output "public_subnet_ids" {
 {% endif %}
 
 output "security_group_ids" {
-  value = [aws_security_group.ecs_service_sg.id]
+  value = [aws_security_group.ecs_service_sg.id, aws_security_group.bastion_sg.id]
 }
