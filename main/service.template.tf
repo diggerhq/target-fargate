@@ -290,6 +290,7 @@ module "monitoring-{{service_name}}" {
     service_name = "{{service_name}}"
     region = var.region
     service_vpc = local.vpc
+    service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
