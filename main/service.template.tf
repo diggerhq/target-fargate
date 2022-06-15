@@ -64,6 +64,10 @@ module "monitoring-{{service_name}}" {
     value = module.service-{{service_name}}.lb_dns
   }
 
+  output "{{service_name}}_task_security_group_id" {
+    value = module.service-{{service_name}}.task_security_group_id
+  }
+
 {% elif load_balancer %}
   module "service-{{service_name}}" {
     source = "../module-fargate-service"
@@ -190,6 +194,10 @@ module "monitoring-{{service_name}}" {
     value = module.service-{{service_name}}.lb_dns
   }
 
+  output "{{service_name}}_task_security_group_id" {
+    value = module.service-{{service_name}}.task_security_group_id
+  }
+
   output "{{service_name}}_lb_arn" {
     value = module.service-{{service_name}}.lb_arn
   }
@@ -248,6 +256,10 @@ module "monitoring-{{service_name}}" {
 
   output "{{service_name}}_lb_dns" {
     value = ""
+  }
+
+  output "{{service_name}}_task_security_group_id" {
+    value = module.service-{{service_name}}.task_security_group_id
   }
 
 {% endif %}

@@ -69,8 +69,12 @@ resource "aws_ecs_service" "app" {
   desired_count       = var.replicas
 
   network_configuration {
-    security_groups = []
-    subnets = var.subnet_ids
+
+    security_groups = [aws_security_group.nsg_task.id]
+    subnets = [
+      var.lb_subnet_a.id,
+      var.lb_subnet_b.id
+    ]
     assign_public_ip = true
   }
 
