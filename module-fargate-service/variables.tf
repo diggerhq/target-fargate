@@ -23,8 +23,7 @@ variable "tags" {}
 # === Load Balancer ===
 
 # The loadbalancer subnets
-variable "lb_subnet_a" {}
-variable "lb_subnet_b" {}
+variable "subnet_ids" {}
 
 # The port the load balancer will listen on
 variable "lb_port" {

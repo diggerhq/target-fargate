@@ -9,17 +9,8 @@ resource "aws_alb" "main" {
   name = "${var.ecs_cluster.name}-${var.service_name}"
 
   # launch lbs in public or private subnets based on "internal" variable
-  internal = var.internal
-  subnets = [
-    var.lb_subnet_a.id,
-    var.lb_subnet_b.id
-    # aws_subnet.public_subnet_a.id,
-    # aws_subnet.public_subnet_b.id
-  ]
-  # subnets = split(
-  #   ",",
-  #   var.internal == true ? var.private_subnets : var.public_subnets,
-  # )
+  internal        = var.internal
+  subnets         = var.subnet_ids
   security_groups = [aws_security_group.nsg_lb.id]
   tags            = var.tags
 

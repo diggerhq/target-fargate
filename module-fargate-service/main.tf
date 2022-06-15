@@ -67,26 +67,26 @@ resource "aws_ecs_task_definition" "app" {
       }
     },
     "mountPoints": [
-    %{ for mountPoint in var.mountPoints }
+    %{for mountPoint in var.mountPoints}
       {
         "containerPath": "${mountPoint.path}",
         "sourceVolume": "${mountPoint.volume}"
       }
-    %{ endfor }
+    %{endfor}
     ]
   }
 ]
 EOT
-  
+
   dynamic "volume" {
     for_each = var.volumes
     content {
       name = volume.value.name
 
       efs_volume_configuration {
-        file_system_id          = volume.value.file_system_id
-        root_directory          = "/"
-        transit_encryption      = "ENABLED"
+        file_system_id     = volume.value.file_system_id
+        root_directory     = "/"
+        transit_encryption = "ENABLED"
       }
     }
   }
@@ -95,19 +95,16 @@ EOT
 }
 
 resource "aws_ecs_service" "app" {
-  name            = var.service_name
-  cluster         = var.ecs_cluster.id
-  launch_type     = var.launch_type
-  task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = var.ecs_autoscale_min_instances
+  name                              = var.service_name
+  cluster                           = var.ecs_cluster.id
+  launch_type                       = var.launch_type
+  task_definition                   = aws_ecs_task_definition.app.arn
+  desired_count                     = var.ecs_autoscale_min_instances
   health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   network_configuration {
-    security_groups = concat([aws_security_group.nsg_task.id], var.service_security_groups)
-    subnets = [
-      var.lb_subnet_a.id,
-      var.lb_subnet_b.id
-    ]
+    security_groups  = concat([aws_security_group.nsg_task.id], var.service_security_groups)
+    subnets          = var.subnet_ids
     assign_public_ip = true
     # subnets         = split(",", var.private_subnets)
   }

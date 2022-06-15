@@ -19,13 +19,7 @@ module "monitoring-{{service_name}}" {
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
 
-    {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
-    {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
-    {% endif %}
+    subnet_ids = var.public_subnets
 
     vpcCIDRblock = var.vpcCIDRblock
     # lb_port
@@ -59,39 +53,7 @@ module "monitoring-{{service_name}}" {
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
-
-    {% if environment_config.include_efs_volume %}
-      volumes = [
-        {
-          name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-          file_system_id = module.{{service_name}}_efs_mount.fs_id
-        }
-      ]
-
-      mountPoints = [{
-        path = "{{environment_config.efs_volume_path}}"
-        volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      }]
-
-    {% endif %}
   }
-
-  
-  {% if environment_config.include_efs_volume %}
-    module "{{service_name}}_efs_mount" {
-      source = "../efs_mount"
-      service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      vpc_id = local.vpc.id
-      {% if environment_config.use_subnets_cd %}
-        subnet_a_id = aws_subnet.public_subnet_c.id
-        subnet_b_id = aws_subnet.public_subnet_d.id
-      {% else %}
-        subnet_a_id = aws_subnet.public_subnet_a.id
-        subnet_b_id = aws_subnet.public_subnet_b.id
-      {% endif %}
-      ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
-    }
-  {% endif %}
 
 
   output "{{service_name}}_docker_registry" {
@@ -117,16 +79,7 @@ module "monitoring-{{service_name}}" {
     service_security_groups = [aws_security_group.ecs_service_sg.id]
     # image_tag_mutability
 
-    {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
-    {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
-    {% endif %}
-
-    # lb_port
-    # lb_protocol
+    subnet_ids = var.public_subnets
 
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
@@ -190,39 +143,8 @@ module "monitoring-{{service_name}}" {
 
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
-
-    {% if environment_config.include_efs_volume %}
-      volumes = [
-        {
-          name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-          file_system_id = module.{{service_name}}_efs_mount.fs_id
-        }
-      ]
-
-      mountPoints = [{
-        path = "{{environment_config.efs_volume_path}}"
-        volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      }]
-
-    {% endif %}
   }
 
-  
-  {% if environment_config.include_efs_volume %}
-    module "{{service_name}}_efs_mount" {
-      source = "../efs_mount"
-      service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
-      vpc_id = local.vpc.id
-      {% if environment_config.use_subnets_cd %}
-        subnet_a_id = aws_subnet.public_subnet_c.id
-        subnet_b_id = aws_subnet.public_subnet_d.id
-      {% else %}
-        subnet_a_id = aws_subnet.public_subnet_a.id
-        subnet_b_id = aws_subnet.public_subnet_b.id
-      {% endif %}
-      ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
-    }
-  {% endif %}
 
   {% if environment_config.create_dns_record %} 
     resource "aws_route53_record" "{{service_name}}_r53" {
@@ -300,14 +222,7 @@ module "monitoring-{{service_name}}" {
     service_vpc = local.vpc
     # image_tag_mutability
 
-    {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
-    {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
-    {% endif %}
-
+    subnet_ids = var.public_subnets
     # lb_port
     # lb_protocol
     internal = false

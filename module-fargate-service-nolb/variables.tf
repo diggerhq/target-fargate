@@ -19,8 +19,7 @@ variable "tags" {}
 # === Load Balancer ===
 
 # The loadbalancer subnets
-variable "lb_subnet_a" {}
-variable "lb_subnet_b" {}
+variable "subnet_ids" {}
 
 # Whether the application is available on the public internet,
 # also will determine which subnets will be used (public or private)

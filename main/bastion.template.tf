@@ -1,4 +1,3 @@
-
 resource "aws_security_group" "bastion_sg" {
   name_prefix   = "bastion-security-group"
   vpc_id = local.vpc.id
@@ -53,3 +52,4 @@ resource "aws_security_group" "bastion_sg" {
 output "bastion_security_group_id" {
   value = aws_security_group.bastion_sg.id  
 }
+

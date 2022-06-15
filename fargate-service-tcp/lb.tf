@@ -6,24 +6,15 @@
 
 
 resource "aws_lb" "main" {
-  name = "${var.ecs_cluster.name}-${var.service_name}"
+  name               = "${var.ecs_cluster.name}-${var.service_name}"
   load_balancer_type = "network"
   # launch lbs in public or private subnets based on "internal" variable
-  internal = var.internal
+  internal                         = var.internal
   enable_cross_zone_load_balancing = "true"
 
 
-  subnets = [
-    var.lb_subnet_a.id,
-    var.lb_subnet_b.id
-    # aws_subnet.public_subnet_a.id,
-    # aws_subnet.public_subnet_b.id
-  ]
-  # subnets = split(
-  #   ",",
-  #   var.internal == true ? var.private_subnets : var.public_subnets,
-  # )
-  tags            = var.tags
+  subnets = var.subnet_ids
+  tags    = var.tags
 
   # enable access logs in order to get support from aws
   access_logs {
@@ -60,13 +51,13 @@ resource "aws_lb_target_group" "main" {
 
   stickiness {
     enabled = false
-    type = "source_ip"
+    type    = "source_ip"
   }
 
   lifecycle {
     create_before_destroy = true
   }
-    
+
   tags = var.tags
 }
 

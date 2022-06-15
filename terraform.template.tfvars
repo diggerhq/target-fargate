@@ -25,15 +25,5 @@ tags = {
   contact-email = "me@domain.com"
 }
 
-{% if environment_config.vpcCIDRblock %}
-vpcCIDRblock = "{{environment_config.vpcCIDRblock}}"
-publicSubnetaCIDRblock = "{{environment_config.publicSubnetaCIDRblock}}"
-publicSubnetbCIDRblock = "{{environment_config.publicSubnetbCIDRblock}}"
-privateSubnetaCIDRblock = "{{environment_config.privateSubnetaCIDRblock}}"
-privateSubnetbCIDRblock = "{{environment_config.privateSubnetbCIDRblock}}"
-{% endif %}
-# internal = false
-
-# launch_type = "{{launch_type}}"
-
-# default_backend_image = "{{backend_image}}"
+public_subnets = {{public_subnets | tojson}}
+private_subnets = {{private_subnets | tojson}}
