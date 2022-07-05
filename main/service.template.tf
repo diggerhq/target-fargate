@@ -1,7 +1,7 @@
 
 module "monitoring-{{service_name}}" {
   count = var.monitoring_enabled ? 1 : 0
-  source = "cpu_mem_monitoring"
+  source = "./cpu_mem_monitoring"
   ecs_cluster_name = aws_ecs_cluster.app.name
   ecs_service_name = "{{service_name}}"
   alarms_sns_topic_arn = var.alarms_sns_topic_arn
@@ -200,7 +200,7 @@ module "monitoring-{{service_name}}" {
 
   module "monitoring-{{service_name}}" {
     count = var.monitoring_enabled ? 1 : 0
-    source = "lb_monitoring"
+    source = "./lb_monitoring"
     ecs_cluster_name = aws_ecs_cluster.app.name
     ecs_service_name = "{{service_name}}"
     alarms_sns_topic_arn = var.alarms_sns_topic_arn
