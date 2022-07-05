@@ -1,5 +1,5 @@
 
-module "monitoring-{{service_name}}" {
+module "monitoring-{{service_name}}-mem-cpu" {
   count = var.monitoring_enabled ? 1 : 0
   source = "./cpu_mem_monitoring"
   ecs_cluster_name = aws_ecs_cluster.app.name
@@ -198,7 +198,7 @@ module "monitoring-{{service_name}}" {
     {% endif %}
   }
 
-  module "monitoring-{{service_name}}" {
+  module "monitoring-{{service_name}}-elb" {
     count = var.monitoring_enabled ? 1 : 0
     source = "./lb_monitoring"
     ecs_cluster_name = aws_ecs_cluster.app.name
