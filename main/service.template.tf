@@ -204,8 +204,8 @@ module "monitoring-{{service_name}}-mem-cpu" {
     ecs_cluster_name = aws_ecs_cluster.app.name
     ecs_service_name = "{{service_name}}"
     alarms_sns_topic_arn = var.alarms_sns_topic_arn
-    target_group_arn = ""
-    alb_arn = ""
+    target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
+    alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
   }
 
   
