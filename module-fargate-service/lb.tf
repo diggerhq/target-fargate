@@ -13,13 +13,8 @@ resource "aws_alb" "main" {
   subnets = [
     var.lb_subnet_a.id,
     var.lb_subnet_b.id
-    # aws_subnet.public_subnet_a.id,
-    # aws_subnet.public_subnet_b.id
   ]
-  # subnets = split(
-  #   ",",
-  #   var.internal == true ? var.private_subnets : var.public_subnets,
-  # )
+
   security_groups = [aws_security_group.nsg_lb.id]
   tags            = var.tags
 
@@ -140,4 +135,12 @@ output "lb_http_listener_arn" {
 
 output "lb_zone_id" {
   value = aws_alb.main.zone_id
+}
+
+output "alb_arn_suffix" {
+  value = aws_alb.main.arn_suffix
+}
+
+output "target_group_arn_suffix" {
+  value = aws_alb_target_group.main.arn_suffix
 }

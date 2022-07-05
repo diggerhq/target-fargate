@@ -4,3 +4,5 @@ variable "ecs_service_name" {}
 
 variable "alarms_sns_topic_arn" {}
 
+variable "tags" {}
+
