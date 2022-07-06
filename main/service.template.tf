@@ -1,10 +1,11 @@
 
-module "monitoring-{{service_name}}" {
+module "monitoring-{{service_name}}-mem-cpu" {
   count = var.monitoring_enabled ? 1 : 0
-  source = "./monitoring"
+  source = "./cpu_mem_monitoring"
   ecs_cluster_name = aws_ecs_cluster.app.name
   ecs_service_name = "{{service_name}}"
   alarms_sns_topic_arn = var.alarms_sns_topic_arn
+  tags = var.tags
 }
 
 {% if environment_config.tcp_service %}
@@ -164,16 +165,9 @@ module "monitoring-{{service_name}}" {
       ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
     {% endif %}
 
-    # health_check_interval
-    # health_check_timeout
-    # health_check_matcher
-    # lb_access_logs_expiration_days
     container_port = "{{container_port}}"
-    # replicas
     container_name = "{{app_name}}-{{environment}}-{{service_name}}"
     launch_type = "{{launch_type}}"
-    # ecs_autoscale_min_instances
-    # ecs_autoscale_max_instances
     default_backend_image = "quay.io/turner/turner-defaultbackend:0.2.0"
     tags = var.tags
 
@@ -181,12 +175,10 @@ module "monitoring-{{service_name}}" {
       lb_ssl_certificate_arn = "{{environment_config.lb_ssl_certificate_arn}}"
     {% endif %}
 
-
     # for *.dggr.app listeners
     {% if environment_config.dggr_acm_certificate_arn %}
       dggr_acm_certificate_arn = "{{environment_config.dggr_acm_certificate_arn}}"
     {% endif %}
-
 
     {% if task_cpu %}task_cpu = "{{task_cpu}}" {% endif %}
     {% if task_memory %}task_memory = "{{task_memory}}" {% endif %}
@@ -205,6 +197,17 @@ module "monitoring-{{service_name}}" {
       }]
 
     {% endif %}
+  }
+
+  module "monitoring-{{service_name}}-elb" {
+    count = var.monitoring_enabled ? 1 : 0
+    source = "./lb_monitoring"
+    ecs_cluster_name = aws_ecs_cluster.app.name
+    ecs_service_name = "{{service_name}}"
+    alarms_sns_topic_arn = var.alarms_sns_topic_arn
+    target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
+    alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
+    tags = var.tags
   }
 
   
