@@ -16,14 +16,6 @@ locals {
   awsloggroup = "/ecs/service/${var.ecs_cluster.name}-${var.service_name}"
 }
 
-resource "aws_appautoscaling_target" "app_scale_target" {
-  service_namespace  = "ecs"
-  resource_id        = "service/${var.ecs_cluster.name}/${aws_ecs_service.app.name}"
-  scalable_dimension = "ecs:service:DesiredCount"
-  max_capacity       = var.ecs_autoscale_max_instances
-  min_capacity       = var.ecs_autoscale_min_instances
-}
-
 resource "aws_ecs_task_definition" "app" {
   family                   = var.container_name
   requires_compatibilities = [var.launch_type]
