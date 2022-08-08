@@ -208,20 +208,20 @@ module "monitoring-{{service_name}}-mem-cpu" {
     target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
     alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
 
-    {% if disable_target_response_time_average_high_alarm is defined and disable_target_response_time_average_high_alarm|length %}
-    disable_target_response_time_average_high_alarm={{ disable_target_response_time_average_high_alarm }}
+    {% if environment_config.disable_target_response_time_average_high_alarm is defined and environment_config.disable_target_response_time_average_high_alarm|length %}
+    disable_target_response_time_average_high_alarm={{ environment_config.disable_target_response_time_average_high_alarm }}
     {% endif %}
-    {% if disable_httpcode_elb_5xx_count_high_alarm is defined and disable_httpcode_elb_5xx_count_high_alarm|length %}
-    disable_httpcode_elb_5xx_count_high_alarm={{ disable_httpcode_elb_5xx_count_high_alarm }}
+    {% if environment_config.disable_httpcode_elb_5xx_count_high_alarm is defined and environment_config.disable_httpcode_elb_5xx_count_high_alarm|length %}
+    disable_httpcode_elb_5xx_count_high_alarm={{ environment_config.disable_httpcode_elb_5xx_count_high_alarm }}
     {% endif %}
-    {% if disable_httpcode_target_5xx_count_high_alarm is defined and disable_httpcode_target_5xx_count_high_alarm|length %}
-    disable_httpcode_target_5xx_count_high_alarm={{ disable_httpcode_target_5xx_count_high_alarm }}
+    {% if environment_config.disable_httpcode_target_5xx_count_high_alarm is defined and environment_config.disable_httpcode_target_5xx_count_high_alarm|length %}
+    disable_httpcode_target_5xx_count_high_alarm={{ environment_config.disable_httpcode_target_5xx_count_high_alarm }}
     {% endif %}
-    {% if disable_httpcode_target_4xx_count_high_alarm is defined and disable_httpcode_target_4xx_count_high_alarm|length %}
-    disable_httpcode_target_4xx_count_high_alarm={{ disable_httpcode_target_4xx_count_high_alarm }}
+    {% if environment_config.disable_httpcode_target_4xx_count_high_alarm is defined and environment_config.disable_httpcode_target_4xx_count_high_alarm|length %}
+    disable_httpcode_target_4xx_count_high_alarm={{ environment_config.disable_httpcode_target_4xx_count_high_alarm }}
     {% endif %}
-    {% if disable_httpcode_target_3xx_count_high_alarm is defined and disable_httpcode_target_3xx_count_high_alarm|length %}
-    disable_httpcode_target_3xx_count_high_alarm={{ disable_httpcode_target_3xx_count_high_alarm }}
+    {% if environment_config.disable_httpcode_target_3xx_count_high_alarm is defined and environment_config.disable_httpcode_target_3xx_count_high_alarm|length %}
+    disable_httpcode_target_3xx_count_high_alarm={{ environment_config.disable_httpcode_target_3xx_count_high_alarm }}
     {% endif %}
 
     tags = var.tags
