@@ -207,6 +207,9 @@ module "monitoring-{{service_name}}-mem-cpu" {
     alarms_sns_topic_arn = var.alarms_sns_topic_arn
     target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
     alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
+
+    disable_target_response_time_average_high_alarm={{ disable_target_response_time_average_high_alarm }}
+
     tags = var.tags
   }
 
