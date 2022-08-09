@@ -38,11 +38,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
   count               = var.use_cpu_scaling ? 1 : 0
   alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-High-${var.ecs_scaling_cpu_high_threshold}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.cpu_utilization_high_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
+  period              = var.cpu_utilization_high_alarm_period
+  statistic           = var.cpu_utilization_high_alarm_statistic
   threshold           = var.ecs_scaling_cpu_high_threshold
 
   dimensions = {
@@ -57,11 +57,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
   count               = var.use_cpu_scaling ? 1 : 0
   alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-Low-${var.ecs_scaling_cpu_low_threshold}"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.cpu_utilization_low_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
+  period              = var.cpu_utilization_low_alarm_period
+  statistic           = var.cpu_utilization_low_alarm_statistic
   threshold           = var.ecs_scaling_cpu_low_threshold
 
   dimensions = {
@@ -110,14 +110,14 @@ resource "aws_appautoscaling_policy" "app_down" {
 
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_high" {
   count               = var.use_mem_scaling ? 1 : 0
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-High-${var.ecs_scaling_cpu_high_threshold}"
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-High-${var.ecs_scaling_memory_high_threshold}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.memory_utilization_high_alarm_evaluation_periods
   metric_name         = "MemoryUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = var.ecs_scaling_cpu_high_threshold
+  period              = var.memory_utilization_high_alarm_period
+  statistic           = var.memory_utilization_high_alarm_statistic
+  threshold           = var.ecs_scaling_memory_high_threshold
 
   dimensions = {
     ClusterName = var.ecs_cluster.name
@@ -129,14 +129,14 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization_high" {
 
 resource "aws_cloudwatch_metric_alarm" "memory_utilization_low" {
   count               = var.use_mem_scaling ? 1 : 0
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-Low-${var.ecs_scaling_cpu_low_threshold}"
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-Low-${var.ecs_scaling_memory_low_threshold}"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.memory_utilization_low_alarm_evaluation_periods
   metric_name         = "MemoryUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = var.ecs_scaling_cpu_low_threshold
+  period              = var.memory_utilization_low_alarm_period
+  statistic           = var.memory_utilization_low_alarm_statistic
+  threshold           = var.ecs_scaling_memory_low_threshold
 
   dimensions = {
     ClusterName = var.ecs_cluster.name

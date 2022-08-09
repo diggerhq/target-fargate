@@ -94,12 +94,7 @@ variable "lb_access_logs_expiration_days" {
   default = "3"
 }
 
-
-
 # === Container ===
-
-
-
 # The port the container will listen on, used for load balancer health check
 # Best practice is that this value is higher than 1024 so the container processes
 # isn't running at root.
@@ -192,4 +187,52 @@ variable "ecs_scaling_memory_low_threshold" {
 
 variable "ecs_scaling_memory_high_threshold" {
   default = 80
+}
+
+variable "cpu_utilization_high_alarm_period" {
+  default = 60
+}
+
+variable "cpu_utilization_high_alarm_evaluation_periods" {
+  default = 1
+}
+
+variable "cpu_utilization_high_alarm_statistic" {
+  default = "Average"
+}
+
+variable "cpu_utilization_low_alarm_period" {
+  default = 60
+}
+
+variable "cpu_utilization_low_alarm_evaluation_periods" {
+  default = 1
+}
+
+variable "cpu_utilization_low_alarm_statistic" {
+  default = "Average"
+}
+
+variable "memory_utilization_high_alarm_period" {
+  default = 60
+}
+
+variable "memory_utilization_high_alarm_evaluation_periods" {
+  default = 1
+}
+
+variable "memory_utilization_high_alarm_statistic" {
+  default = "Average"
+}
+
+variable "memory_utilization_low_alarm_period" {
+  default = 60
+}
+
+variable "memory_utilization_low_alarm_evaluation_periods" {
+  default = 1
+}
+
+variable "memory_utilization_low_alarm_statistic" {
+  default = "Average"
 }
