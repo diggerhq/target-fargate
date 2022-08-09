@@ -30,3 +30,27 @@ variable "alb_arn_suffix" {}
 
 variable "tags" {}
 
+variable "disable_target_response_time_average_high_alarm" {
+  default=false
+  type = bool
+}
+
+variable "disable_httpcode_elb_5xx_count_high_alarm" {
+  default=false
+  type = bool
+}
+
+variable "disable_httpcode_target_5xx_count_high_alarm" {
+  default=false
+  type = bool
+}
+
+variable "disable_httpcode_target_4xx_count_high_alarm" {
+  default=false
+  type = bool
+}
+
+variable "disable_httpcode_target_3xx_count_high_alarm" {
+  default=false
+  type = bool
+}

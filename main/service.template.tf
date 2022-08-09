@@ -207,6 +207,23 @@ module "monitoring-{{service_name}}-mem-cpu" {
     alarms_sns_topic_arn = var.alarms_sns_topic_arn
     target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
     alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
+
+    {% if environment_config.disable_target_response_time_average_high_alarm is defined %}
+    disable_target_response_time_average_high_alarm={{ environment_config.disable_target_response_time_average_high_alarm }}
+    {% endif %}
+    {% if environment_config.disable_httpcode_elb_5xx_count_high_alarm is defined %}
+    disable_httpcode_elb_5xx_count_high_alarm={{ environment_config.disable_httpcode_elb_5xx_count_high_alarm }}
+    {% endif %}
+    {% if environment_config.disable_httpcode_target_5xx_count_high_alarm is defined %}
+    disable_httpcode_target_5xx_count_high_alarm={{ environment_config.disable_httpcode_target_5xx_count_high_alarm }}
+    {% endif %}
+    {% if environment_config.disable_httpcode_target_4xx_count_high_alarm is defined %}
+    disable_httpcode_target_4xx_count_high_alarm={{ environment_config.disable_httpcode_target_4xx_count_high_alarm }}
+    {% endif %}
+    {% if environment_config.disable_httpcode_target_3xx_count_high_alarm is defined %}
+    disable_httpcode_target_3xx_count_high_alarm={{ environment_config.disable_httpcode_target_3xx_count_high_alarm }}
+    {% endif %}
+
     tags = var.tags
   }
 

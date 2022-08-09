@@ -22,6 +22,7 @@ locals {
 }
 
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_3xx_count_high" {
+  count               = var.disable_httpcode_target_3xx_count_high_alarm ? 0 : 1
   alarm_name          = "${var.ecs_service_name}_lb_target_3xx_count_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = local.http_error_code_count_high_evaluation_periods
@@ -40,6 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_target_3xx_count_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_4xx_count_high" {
+  count               = var.disable_httpcode_target_4xx_count_high_alarm ? 0 : 1
   alarm_name          = "${var.ecs_service_name}_lb_target_4xx_count_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = local.http_error_code_count_high_evaluation_periods
@@ -58,6 +60,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_target_4xx_count_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_5xx_count_high" {
+  count               = var.disable_httpcode_target_5xx_count_high_alarm ? 0 : 1
   alarm_name          = "${var.ecs_service_name}_lb_target_5xx_count_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = local.http_error_code_count_high_evaluation_periods
@@ -76,6 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_target_5xx_count_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "httpcode_elb_5xx_count_high" {
+  count               = var.disable_httpcode_elb_5xx_count_high_alarm ? 0 : 1
   alarm_name          = "${var.ecs_service_name}_elb_5xx_count_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = local.http_error_code_count_high_evaluation_periods
@@ -94,6 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_elb_5xx_count_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "target_response_time_average_high" {
+  count               = var.disable_target_response_time_average_high_alarm ? 0 : 1
   alarm_name          = "${var.ecs_service_name}_lb_target_response_time_average_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = local.http_error_code_count_high_evaluation_periods
