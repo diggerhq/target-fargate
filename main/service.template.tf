@@ -153,14 +153,6 @@ module "monitoring-{{service_name}}-mem-cpu" {
     health_check_matcher = "{{health_check_matcher}}"
     {% endif %}
 
-    {% if environment_config.ecs_autoscale_min_instances %}
-      ecs_autoscale_min_instances = "{{environment_config.ecs_autoscale_min_instances}}"
-    {% endif %}
-
-    {% if environment_config.ecs_autoscale_max_instances %}
-      ecs_autoscale_max_instances = "{{environment_config.ecs_autoscale_max_instances}}"
-    {% endif %}
-
     container_port = "{{container_port}}"
     container_name = "{{app_name}}-{{environment}}-{{service_name}}"
     launch_type = "{{launch_type}}"
@@ -201,8 +193,6 @@ module "monitoring-{{service_name}}-mem-cpu" {
     {%- if environment_config.use_cpu_scaling is defined %}
     use_cpu_scaling={{ environment_config.use_cpu_scaling }}
     {%- endif %}
-
-
     {%- if environment_config.ecs_autoscale_min_instances is defined %}
     ecs_autoscale_min_instances={{ environment_config.ecs_autoscale_min_instances }}
     {%- endif %}
