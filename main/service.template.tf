@@ -195,68 +195,68 @@ module "monitoring-{{service_name}}-mem-cpu" {
     {% endif %}
 
     #autoscaling configuration
-    {%- if environment_config.use_mem_scaling is defined -%}
+    {%- if environment_config.use_mem_scaling is defined %}
     use_mem_scaling={{ environment_config.use_mem_scaling }}
-    {% endif %}
-    {%- if environment_config.use_cpu_scaling is defined -%}
+    {%- endif %}
+    {%- if environment_config.use_cpu_scaling is defined %}
     use_cpu_scaling={{ environment_config.use_cpu_scaling }}
-    {% endif %}
+    {%- endif %}
 
 
-    {%- if environment_config.ecs_autoscale_min_instances is defined -%}
+    {%- if environment_config.ecs_autoscale_min_instances is defined %}
     ecs_autoscale_min_instances={{ environment_config.ecs_autoscale_min_instances }}
-    {% endif %}
-    {%- if environment_config.ecs_autoscale_max_instances is defined -%}
+    {%- endif %}
+    {%- if environment_config.ecs_autoscale_max_instances is defined %}
     ecs_autoscale_max_instances={{ environment_config.ecs_autoscale_max_instances }}
-    {% endif %}
-    {%- if environment_config.ecs_scaling_cpu_low_threshold is defined -%}
+    {%- endif %}
+    {%- if environment_config.ecs_scaling_cpu_low_threshold is defined %}
     ecs_scaling_cpu_low_threshold={{ environment_config.ecs_scaling_cpu_low_threshold }}
-    {% endif %}
-    {%- if environment_config.ecs_scaling_cpu_high_threshold is defined -%}
+    {%- endif %}
+    {%- if environment_config.ecs_scaling_cpu_high_threshold is defined %}
     ecs_scaling_cpu_high_threshold={{ environment_config.ecs_scaling_cpu_high_threshold }}
-    {% endif %}
-    {%- if environment_config.ecs_scaling_memory_low_threshold is defined -%}
+    {%- endif %}
+    {%- if environment_config.ecs_scaling_memory_low_threshold is defined %}
     ecs_scaling_memory_low_threshold={{ environment_config.ecs_scaling_memory_low_threshold }}
-    {% endif %}
-    {%- if environment_config.ecs_scaling_memory_high_threshold is defined -%}
+    {%- endif %}
+    {%- if environment_config.ecs_scaling_memory_high_threshold is defined %}
     ecs_scaling_memory_high_threshold={{ environment_config.ecs_scaling_memory_high_threshold }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_high_alarm_period is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_high_alarm_period is defined %}
     cpu_utilization_high_alarm_period={{ environment_config.cpu_utilization_high_alarm_period }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_high_alarm_evaluation_periods is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_high_alarm_evaluation_periods is defined %}
     cpu_utilization_high_alarm_evaluation_periods={{ environment_config.cpu_utilization_high_alarm_evaluation_periods }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_high_alarm_statistic is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_high_alarm_statistic is defined %}
     cpu_utilization_high_alarm_statistic={{ environment_config.cpu_utilization_high_alarm_statistic }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_low_alarm_period is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_low_alarm_period is defined %}
     cpu_utilization_low_alarm_period={{ environment_config.cpu_utilization_low_alarm_period }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_low_alarm_evaluation_periods is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_low_alarm_evaluation_periods is defined %}
     cpu_utilization_low_alarm_evaluation_periods={{ environment_config.cpu_utilization_low_alarm_evaluation_periods }}
-    {% endif %}
-    {%- if environment_config.cpu_utilization_low_alarm_statistic is defined -%}
+    {%- endif %}
+    {%- if environment_config.cpu_utilization_low_alarm_statistic is defined %}
     cpu_utilization_low_alarm_statistic={{ environment_config.cpu_utilization_low_alarm_statistic }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_high_alarm_period is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_high_alarm_period is defined %}
     memory_utilization_high_alarm_period={{ environment_config.memory_utilization_high_alarm_period }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_high_alarm_evaluation_periods is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_high_alarm_evaluation_periods is defined %}
     memory_utilization_high_alarm_evaluation_periods={{ environment_config.memory_utilization_high_alarm_evaluation_periods }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_high_alarm_statistic is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_high_alarm_statistic is defined %}
     memory_utilization_high_alarm_statistic={{ environment_config.memory_utilization_high_alarm_statistic }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_low_alarm_period is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_low_alarm_period is defined %}
     memory_utilization_low_alarm_period={{ environment_config.memory_utilization_low_alarm_period }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_low_alarm_evaluation_periods is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_low_alarm_evaluation_periods is defined %}
     memory_utilization_low_alarm_evaluation_periods={{ environment_config.memory_utilization_low_alarm_evaluation_periods }}
-    {% endif %}
-    {%- if environment_config.memory_utilization_low_alarm_statistic is defined -%}
+    {%- endif %}
+    {%- if environment_config.memory_utilization_low_alarm_statistic is defined %}
     memory_utilization_low_alarm_statistic={{ environment_config.memory_utilization_low_alarm_statistic }}
-    {% endif %}
+    {%- endif %}
   }
 
   module "monitoring-{{service_name}}-elb" {
@@ -268,21 +268,21 @@ module "monitoring-{{service_name}}-mem-cpu" {
     target_group_arn_suffix = module.service-{{service_name}}.target_group_arn_suffix
     alb_arn_suffix = module.service-{{service_name}}.alb_arn_suffix
 
-    {%- if environment_config.disable_target_response_time_average_high_alarm is defined -%}
+    {%- if environment_config.disable_target_response_time_average_high_alarm is defined %}
     disable_target_response_time_average_high_alarm={{ environment_config.disable_target_response_time_average_high_alarm }}
-    {% endif %}
-    {%- if environment_config.disable_httpcode_elb_5xx_count_high_alarm is defined -%}
+    {%- endif %}
+    {%- if environment_config.disable_httpcode_elb_5xx_count_high_alarm is defined %}
     disable_httpcode_elb_5xx_count_high_alarm={{ environment_config.disable_httpcode_elb_5xx_count_high_alarm }}
-    {% endif %}
-    {%- if environment_config.disable_httpcode_target_5xx_count_high_alarm is defined -%}
+    {%- endif %}
+    {%- if environment_config.disable_httpcode_target_5xx_count_high_alarm is defined %}
     disable_httpcode_target_5xx_count_high_alarm={{ environment_config.disable_httpcode_target_5xx_count_high_alarm }}
-    {% endif %}
-    {%- if environment_config.disable_httpcode_target_4xx_count_high_alarm is defined -%}
+    {%- endif %}
+    {%- if environment_config.disable_httpcode_target_4xx_count_high_alarm is defined %}
     disable_httpcode_target_4xx_count_high_alarm={{ environment_config.disable_httpcode_target_4xx_count_high_alarm }}
-    {% endif %}
-    {%- if environment_config.disable_httpcode_target_3xx_count_high_alarm is defined -%}
+    {%- endif %}
+    {%- if environment_config.disable_httpcode_target_3xx_count_high_alarm is defined %}
     disable_httpcode_target_3xx_count_high_alarm={{ environment_config.disable_httpcode_target_3xx_count_high_alarm }}
-    {% endif %}
+    {%- endif %}
 
     tags = var.tags
   }
