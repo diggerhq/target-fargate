@@ -73,7 +73,6 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
 }
 
 resource "aws_appautoscaling_policy" "app_up" {
-  count              = var.use_cpu_scaling ? 1 : 0
   name               = "app-scale-up"
   service_namespace  = aws_appautoscaling_target.app_scale_target.service_namespace
   resource_id        = aws_appautoscaling_target.app_scale_target.resource_id
@@ -92,7 +91,6 @@ resource "aws_appautoscaling_policy" "app_up" {
 }
 
 resource "aws_appautoscaling_policy" "app_down" {
-  count              = var.use_cpu_scaling ? 1 : 0
   name               = "app-scale-down"
   service_namespace  = aws_appautoscaling_target.app_scale_target.service_namespace
   resource_id        = aws_appautoscaling_target.app_scale_target.resource_id
