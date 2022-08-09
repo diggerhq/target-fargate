@@ -166,3 +166,30 @@ variable "logs_retention_in_days" {
   description = "Specifies the number of days you want to retain log events"
 }
 
+variable "use_cpu_scaling" {
+  default = true
+}
+
+variable "use_mem_scaling" {
+  default = false
+}
+
+# If the average CPU utilization over a minute drops to this threshold,
+# the number of containers will be reduced (but not below ecs_autoscale_min_instances).
+variable "ecs_scaling_cpu_low_threshold" {
+  default = 20
+}
+
+# If the average CPU utilization over a minute rises to this threshold,
+# the number of containers will be increased (but not above ecs_autoscale_max_instances).
+variable "ecs_scaling_cpu_high_threshold" {
+  default = 80
+}
+
+variable "ecs_scaling_memory_low_threshold" {
+  default = 20
+}
+
+variable "ecs_scaling_memory_high_threshold" {
+  default = 80
+}

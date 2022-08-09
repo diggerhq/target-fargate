@@ -126,9 +126,6 @@ module "monitoring-{{service_name}}-mem-cpu" {
       lb_subnet_b = aws_subnet.public_subnet_b
     {% endif %}
 
-    # lb_port
-    # lb_protocol
-
     # override by environmentconfig but also possible to have service internal be true
     {% if environment_config.internal is sameas True %}
       internal = true
@@ -138,7 +135,6 @@ module "monitoring-{{service_name}}-mem-cpu" {
       internal = false
     {% endif %}
 
-    # deregistration_delay
     health_check = "{{health_check}}"
 
     {% if environment_config.health_check_disabled %}
@@ -196,6 +192,14 @@ module "monitoring-{{service_name}}-mem-cpu" {
         volume = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
       }]
 
+    {% endif %}
+
+    #autoscaling configuration
+    {% if environment_config.use_mem_scaling is defined %}
+    use_mem_scaling={{ environment_config.use_mem_scaling }}
+    {% endif %}
+    {% if environment_config.use_cpu_scaling is defined %}
+    use_cpu_scaling={{ environment_config.use_cpu_scaling }}
     {% endif %}
   }
 
