@@ -82,14 +82,6 @@ data "aws_subnet" "public_subnet_b" {
   id = "{{environment_config.public_subnet_b}}"
 }
 
-data "aws_subnet" "public_subnet_c" {
-  id = "{{environment_config.public_subnet_c}}"
-}
-
-data "aws_subnet" "public_subnet_d" {
-  id = "{{environment_config.public_subnet_d}}"
-}
-
 data "aws_subnet" "private_subnet_a" {
   id = "{{environment_config.private_subnet_a}}"
 }
@@ -102,8 +94,10 @@ locals {
   vpc = data.aws_vpc.vpc
   public_subnet_a = data.aws_subnet.public_subnet_a
   public_subnet_b = data.aws_subnet.public_subnet_b
-  public_subnet_c = data.aws_subnet.public_subnet_c
-  public_subnet_d = data.aws_subnet.public_subnet_d
+
+  // public_subnet_c and public_subnet_d are not being used if custom vpc_id is being provided
+  public_subnet_c = data.aws_subnet.public_subnet_a
+  public_subnet_d = data.aws_subnet.public_subnet_b
   private_subnet_a = data.aws_subnet.private_subnet_a
   private_subnet_b = data.aws_subnet.private_subnet_b
 }
