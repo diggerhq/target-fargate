@@ -74,6 +74,30 @@ data "aws_vpc" "vpc" {
   id = "{{environment_config.vpc_id}}"
 }
 
+data "aws_subnet" "public_subnet_a" {
+  id = "{{environment_config.public_subnet_a}}"
+}
+
+data "aws_subnet" "public_subnet_b" {
+  id = "{{environment_config.public_subnet_b}}"
+}
+
+data "aws_subnet" "public_subnet_c" {
+  id = "{{environment_config.public_subnet_c}}"
+}
+
+data "aws_subnet" "public_subnet_d" {
+  id = "{{environment_config.public_subnet_d}}"
+}
+
+data "aws_subnet" "private_subnet_a" {
+  id = "{{environment_config.private_subnet_a}}"
+}
+
+data "aws_subnet" "private_subnet_b" {
+  id = "{{environment_config.private_subnet_b}}"
+}
+
 locals {
   vpc = data.aws_vpc.vpc
 }
@@ -91,11 +115,6 @@ resource "aws_vpc" "vpc" {
     ignore_changes = [tags["Changed"]]
   }  
 }
-
-locals {
-  vpc = aws_vpc.vpc
-}
-{% endif %}
 
 resource "aws_subnet" "public_subnet_a" {
   vpc_id                  = local.vpc.id
@@ -156,6 +175,13 @@ resource "aws_subnet" "private_subnet_b" {
     Name = "${var.app}-${var.environment}-private_vpc_subnetb"
   }
 }
+
+locals {
+  vpc = aws_vpc.vpc
+}
+{% endif %}
+
+
 
 # if user is attaching to existing VPC we assume they already have a gateway attached!
 {% if environment_config.vpc_id %}
