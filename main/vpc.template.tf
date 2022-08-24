@@ -182,6 +182,42 @@ resource "aws_subnet" "private_subnet_b" {
   }
 }
 
+
+resource "aws_route_table" "route_table_public" {
+  vpc_id = local.vpc.id
+
+  # Note: "local" VPC record is implicitly specified
+  tags = {
+    Name = "${var.app}-${var.environment} Public Route Table"
+  }
+}
+
+resource "aws_route" "gateway_route" {
+  route_table_id = aws_route_table.route_table_public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = local.vpc_ig.id
+}
+
+resource "aws_route_table_association" "publica" {
+  subnet_id      = local.public_subnet_a.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicb" {
+  subnet_id      = local.public_subnet_b.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicc" {
+  subnet_id      = local.public_subnet_c.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicd" {
+  subnet_id      = local.public_subnet_d.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
 locals {
   vpc = aws_vpc.vpc
   public_subnet_a = aws_subnet.public_subnet_a
@@ -221,41 +257,6 @@ locals {
 
   }
 {% endif %}
-
-resource "aws_route_table" "route_table_public" {
-  vpc_id = local.vpc.id
-
-  # Note: "local" VPC record is implicitly specified
-  tags = {
-    Name = "${var.app}-${var.environment} Public Route Table"
-  }
-}
-
-resource "aws_route" "gateway_route" {
-  route_table_id = aws_route_table.route_table_public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id = local.vpc_ig.id
-}
-
-resource "aws_route_table_association" "publica" {
-  subnet_id      = local.public_subnet_a.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicb" {
-  subnet_id      = local.public_subnet_b.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicc" {
-  subnet_id      = local.public_subnet_c.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicd" {
-  subnet_id      = local.public_subnet_d.id
-  route_table_id = aws_route_table.route_table_public.id
-}
 
 # output the vpc ids
 output "vpc_id" {
