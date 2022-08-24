@@ -38,7 +38,7 @@
     name               = "${var.app}-${var.environment}-db-lb"
     internal           = false
     load_balancer_type = "network"
-    subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+    subnets            = [local.public_subnet_a.id, local.public_subnet_b.id]
     # security_groups    = [aws_security_group.nsg_lb.id]
     enable_deletion_protection = false
 
@@ -73,7 +73,7 @@
   }
 
   resource "aws_instance" "postgres" {
-    subnet_id                   = aws_subnet.public_subnet_a.id
+    subnet_id                   = local.public_subnet_a.id
     ami                         = "ami-0c2b8ca1dad447f8a"
     # key_name                    = aws_key_pair.bastion_key.key_name
     # {% if environment_config.rds_instance_type %}

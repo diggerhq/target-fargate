@@ -31,7 +31,7 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   resource "aws_instance" "bastion" {
-    subnet_id                   = aws_subnet.public_subnet_a.id
+    subnet_id                   = local.public_subnet_a.id
     ami                         = "{{environment_config.bastion_ami}}"
     key_name                    = aws_key_pair.bastion_key.key_name
     instance_type               = "t2.micro"

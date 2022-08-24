@@ -21,11 +21,11 @@ module "monitoring-{{service_name}}-mem-cpu" {
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+      lb_subnet_a = local.public_subnet_c
+      lb_subnet_b = local.public_subnet_d
     {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
+      lb_subnet_a = local.public_subnet_a
+      lb_subnet_b = local.public_subnet_b
     {% endif %}
 
     vpcCIDRblock = var.vpcCIDRblock
@@ -84,11 +84,11 @@ module "monitoring-{{service_name}}-mem-cpu" {
       service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
       vpc_id = local.vpc.id
       {% if environment_config.use_subnets_cd %}
-        subnet_a_id = aws_subnet.public_subnet_c.id
-        subnet_b_id = aws_subnet.public_subnet_d.id
+        subnet_a_id = local.public_subnet_c.id
+        subnet_b_id = local.public_subnet_d.id
       {% else %}
-        subnet_a_id = aws_subnet.public_subnet_a.id
-        subnet_b_id = aws_subnet.public_subnet_b.id
+        subnet_a_id = local.public_subnet_a.id
+        subnet_b_id = local.public_subnet_b.id
       {% endif %}
       ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
     }
@@ -119,11 +119,11 @@ module "monitoring-{{service_name}}-mem-cpu" {
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+      lb_subnet_a = local.public_subnet_c
+      lb_subnet_b = local.public_subnet_d
     {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
+      lb_subnet_a = local.public_subnet_a
+      lb_subnet_b = local.public_subnet_b
     {% endif %}
 
     # lb_port
@@ -234,11 +234,11 @@ module "monitoring-{{service_name}}-mem-cpu" {
       service_name = "${var.app}_${var.environment}_{{service_name}}_{{environment_config.efs_volume_name}}"
       vpc_id = local.vpc.id
       {% if environment_config.use_subnets_cd %}
-        subnet_a_id = aws_subnet.public_subnet_c.id
-        subnet_b_id = aws_subnet.public_subnet_d.id
+        subnet_a_id = local.public_subnet_c.id
+        subnet_b_id = local.public_subnet_d.id
       {% else %}
-        subnet_a_id = aws_subnet.public_subnet_a.id
-        subnet_b_id = aws_subnet.public_subnet_b.id
+        subnet_a_id = local.public_subnet_a.id
+        subnet_b_id = local.public_subnet_b.id
       {% endif %}
       ecs_securitygroup_id = aws_security_group.ecs_service_sg.id
     }
@@ -321,11 +321,11 @@ module "monitoring-{{service_name}}-mem-cpu" {
     # image_tag_mutability
 
     {% if environment_config.use_subnets_cd %}
-      lb_subnet_a = aws_subnet.public_subnet_c
-      lb_subnet_b = aws_subnet.public_subnet_d      
+      lb_subnet_a = local.public_subnet_c
+      lb_subnet_b = local.public_subnet_d
     {% else %}
-      lb_subnet_a = aws_subnet.public_subnet_a
-      lb_subnet_b = aws_subnet.public_subnet_b
+      lb_subnet_a = local.public_subnet_a
+      lb_subnet_b = local.public_subnet_b
     {% endif %}
 
     # lb_port
