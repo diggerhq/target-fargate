@@ -11,6 +11,7 @@ resource "aws_alb_listener" "http" {
     type             = "forward"
   }
 
+
   lifecycle {
     ignore_changes = [port, protocol, default_action]
   }
