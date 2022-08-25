@@ -74,8 +74,32 @@ data "aws_vpc" "vpc" {
   id = "{{environment_config.vpc_id}}"
 }
 
+data "aws_subnet" "public_subnet_a" {
+  id = "{{environment_config.public_subnet_a}}"
+}
+
+data "aws_subnet" "public_subnet_b" {
+  id = "{{environment_config.public_subnet_b}}"
+}
+
+data "aws_subnet" "private_subnet_a" {
+  id = "{{environment_config.private_subnet_a}}"
+}
+
+data "aws_subnet" "private_subnet_b" {
+  id = "{{environment_config.private_subnet_b}}"
+}
+
 locals {
   vpc = data.aws_vpc.vpc
+  public_subnet_a = data.aws_subnet.public_subnet_a
+  public_subnet_b = data.aws_subnet.public_subnet_b
+
+  // public_subnet_c and public_subnet_d are not being used if custom vpc_id is being provided
+  public_subnet_c = data.aws_subnet.public_subnet_a
+  public_subnet_d = data.aws_subnet.public_subnet_b
+  private_subnet_a = data.aws_subnet.private_subnet_a
+  private_subnet_b = data.aws_subnet.private_subnet_b
 }
 {% else %}
 resource "aws_vpc" "vpc" {
@@ -91,11 +115,6 @@ resource "aws_vpc" "vpc" {
     ignore_changes = [tags["Changed"]]
   }  
 }
-
-locals {
-  vpc = aws_vpc.vpc
-}
-{% endif %}
 
 resource "aws_subnet" "public_subnet_a" {
   vpc_id                  = local.vpc.id
@@ -157,6 +176,55 @@ resource "aws_subnet" "private_subnet_b" {
   }
 }
 
+
+resource "aws_route_table" "route_table_public" {
+  vpc_id = local.vpc.id
+
+  # Note: "local" VPC record is implicitly specified
+  tags = {
+    Name = "${var.app}-${var.environment} Public Route Table"
+  }
+}
+
+resource "aws_route" "gateway_route" {
+  route_table_id = aws_route_table.route_table_public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = local.vpc_ig.id
+}
+
+resource "aws_route_table_association" "publica" {
+  subnet_id      = local.public_subnet_a.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicb" {
+  subnet_id      = local.public_subnet_b.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicc" {
+  subnet_id      = local.public_subnet_c.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+resource "aws_route_table_association" "publicd" {
+  subnet_id      = local.public_subnet_d.id
+  route_table_id = aws_route_table.route_table_public.id
+}
+
+locals {
+  vpc = aws_vpc.vpc
+  public_subnet_a = aws_subnet.public_subnet_a
+  public_subnet_b = aws_subnet.public_subnet_b
+  public_subnet_c = aws_subnet.public_subnet_c
+  public_subnet_d = aws_subnet.public_subnet_d
+  private_subnet_a = aws_subnet.private_subnet_a
+  private_subnet_b = aws_subnet.private_subnet_b
+}
+{% endif %}
+
+
+
 # if user is attaching to existing VPC we assume they already have a gateway attached!
 {% if environment_config.vpc_id %}
   data "aws_internet_gateway" "vpc_ig" {
@@ -180,43 +248,9 @@ resource "aws_subnet" "private_subnet_b" {
 
   locals {
     vpc_ig = aws_internet_gateway.vpc_ig
+
   }
 {% endif %}
-
-resource "aws_route_table" "route_table_public" {
-  vpc_id = local.vpc.id
-
-  # Note: "local" VPC record is implicitly specified
-  tags = {
-    Name = "${var.app}-${var.environment} Public Route Table"
-  }
-}
-
-resource "aws_route" "gateway_route" {
-  route_table_id = aws_route_table.route_table_public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id = local.vpc_ig.id
-}
-
-resource "aws_route_table_association" "publica" {
-  subnet_id      = aws_subnet.public_subnet_a.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicb" {
-  subnet_id      = aws_subnet.public_subnet_b.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicc" {
-  subnet_id      = aws_subnet.public_subnet_c.id
-  route_table_id = aws_route_table.route_table_public.id
-}
-
-resource "aws_route_table_association" "publicd" {
-  subnet_id      = aws_subnet.public_subnet_d.id
-  route_table_id = aws_route_table.route_table_public.id
-}
 
 # output the vpc ids
 output "vpc_id" {
@@ -224,31 +258,31 @@ output "vpc_id" {
 }
 
 output "public_subnet_a_id" {
-  value = aws_subnet.public_subnet_a.id
+  value = local.public_subnet_a.id
 }
 
 output "public_subnet_b_id" {
-  value = aws_subnet.public_subnet_b.id
+  value = local.public_subnet_b.id
 }
 
 output "public_subnet_c_id" {
-  value = aws_subnet.public_subnet_c.id
+  value = local.public_subnet_c.id
 }
 
 output "public_subnet_d_id" {
-  value = aws_subnet.public_subnet_d.id
+  value = local.public_subnet_d.id
 }
 
 output "private_subnet_ids" {
-  value = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+  value = [local.private_subnet_a.id, local.private_subnet_b.id]
 }
 
 {%- if environment_config.use_subnets_cd %}
 output "public_subnet_ids" {
-  value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id, aws_subnet.public_subnet_c.id, aws_subnet.public_subnet_d.id]
+  value = [local.public_subnet_a.id, local.public_subnet_b.id, local.public_subnet_c.id, local.public_subnet_d.id]
 }
 {% else %}
 output "public_subnet_ids" {
-  value = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+  value = [local.public_subnet_a.id, local.public_subnet_b.id]
 }
 {% endif %}
