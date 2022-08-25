@@ -113,7 +113,8 @@ resource "aws_vpc" "vpc" {
 
   lifecycle {
     ignore_changes = [tags["Changed"]]
-  }  
+    create_before_destroy = true
+  }
 }
 
 resource "aws_subnet" "public_subnet_a" {
@@ -123,6 +124,10 @@ resource "aws_subnet" "public_subnet_a" {
   availability_zone       = local.availabilityZone_a
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subneta"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -134,6 +139,10 @@ resource "aws_subnet" "public_subnet_b" {
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetb"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_subnet" "public_subnet_c" {
@@ -143,6 +152,9 @@ resource "aws_subnet" "public_subnet_c" {
   availability_zone       = local.availabilityZone_c
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetc"
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -154,6 +166,9 @@ resource "aws_subnet" "public_subnet_d" {
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetd"
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_subnet" "private_subnet_a" {
@@ -163,6 +178,9 @@ resource "aws_subnet" "private_subnet_a" {
   availability_zone       = local.availabilityZone_a
   tags = {
     Name = "${var.app}-${var.environment}-private_vpc_subneta"
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -174,6 +192,9 @@ resource "aws_subnet" "private_subnet_b" {
   tags = {
     Name = "${var.app}-${var.environment}-private_vpc_subnetb"
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 
@@ -184,32 +205,50 @@ resource "aws_route_table" "route_table_public" {
   tags = {
     Name = "${var.app}-${var.environment} Public Route Table"
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route" "gateway_route" {
   route_table_id = aws_route_table.route_table_public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = local.vpc_ig.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route_table_association" "publica" {
   subnet_id      = local.public_subnet_a.id
   route_table_id = aws_route_table.route_table_public.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route_table_association" "publicb" {
   subnet_id      = local.public_subnet_b.id
   route_table_id = aws_route_table.route_table_public.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route_table_association" "publicc" {
   subnet_id      = local.public_subnet_c.id
   route_table_id = aws_route_table.route_table_public.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route_table_association" "publicd" {
   subnet_id      = local.public_subnet_d.id
   route_table_id = aws_route_table.route_table_public.id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 locals {
