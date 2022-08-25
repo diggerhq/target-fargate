@@ -44,11 +44,9 @@ resource "aws_alb_target_group" "main" {
     unhealthy_threshold = 5
   }
 
-  /*
   lifecycle {
     create_before_destroy = true
   }
-  */
 
   tags = var.tags
 }
