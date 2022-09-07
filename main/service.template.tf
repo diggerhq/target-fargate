@@ -244,7 +244,7 @@ module "monitoring-{{service_name}}-mem-cpu" {
     }
   {% endif %}
 
-  {% if environment_config.create_dns_record is defined and environment_config.create_dns_record != "false" %} 
+  {% if environment_config.create_dns_record %} 
     resource "aws_route53_record" "{{service_name}}_r53" {
       zone_id = "{{environment_config.dns_zone_id}}"
       name    = "{{environment}}-{{service_name}}.{{environment_config.hostname}}"
