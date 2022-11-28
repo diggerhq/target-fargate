@@ -34,27 +34,16 @@
  *
  */
 
-# If the average CPU utilization over a minute drops to this threshold,
-# the number of containers will be reduced (but not below ecs_autoscale_min_instances).
-variable "ecs_as_cpu_low_threshold_per" {
-  default = "20"
-}
-
-# If the average CPU utilization over a minute rises to this threshold,
-# the number of containers will be increased (but not above ecs_autoscale_max_instances).
-variable "ecs_as_cpu_high_threshold_per" {
-  default = "80"
-}
-
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPU-Utilization-High-${var.ecs_as_cpu_high_threshold_per}"
+  count               = var.use_cpu_scaling ? 1 : 0
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-High-${var.ecs_scaling_cpu_high_threshold}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.cpu_utilization_high_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = var.ecs_as_cpu_high_threshold_per
+  period              = var.cpu_utilization_high_alarm_period
+  statistic           = var.cpu_utilization_high_alarm_statistic
+  threshold           = var.ecs_scaling_cpu_high_threshold
 
   dimensions = {
     ClusterName = var.ecs_cluster.name
@@ -65,14 +54,15 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPU-Utilization-Low-${var.ecs_as_cpu_low_threshold_per}"
+  count               = var.use_cpu_scaling ? 1 : 0
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-Low-${var.ecs_scaling_cpu_low_threshold}"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = var.cpu_utilization_low_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = var.ecs_as_cpu_low_threshold_per
+  period              = var.cpu_utilization_low_alarm_period
+  statistic           = var.cpu_utilization_low_alarm_statistic
+  threshold           = var.ecs_scaling_cpu_low_threshold
 
   dimensions = {
     ClusterName = var.ecs_cluster.name
@@ -116,4 +106,42 @@ resource "aws_appautoscaling_policy" "app_down" {
       scaling_adjustment          = -1
     }
   }
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory_utilization_high" {
+  count               = var.use_mem_scaling ? 1 : 0
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-High-${var.ecs_scaling_memory_high_threshold}"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = var.memory_utilization_high_alarm_evaluation_periods
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.memory_utilization_high_alarm_period
+  statistic           = var.memory_utilization_high_alarm_statistic
+  threshold           = var.ecs_scaling_memory_high_threshold
+
+  dimensions = {
+    ClusterName = var.ecs_cluster.name
+    ServiceName = var.service_name
+  }
+
+  alarm_actions = [aws_appautoscaling_policy.app_up.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory_utilization_low" {
+  count               = var.use_mem_scaling ? 1 : 0
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-MemoryUtilization-Low-${var.ecs_scaling_memory_low_threshold}"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = var.memory_utilization_low_alarm_evaluation_periods
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.memory_utilization_low_alarm_period
+  statistic           = var.memory_utilization_low_alarm_statistic
+  threshold           = var.ecs_scaling_memory_low_threshold
+
+  dimensions = {
+    ClusterName = var.ecs_cluster.name
+    ServiceName = var.service_name
+  }
+
+  alarm_actions = [aws_appautoscaling_policy.app_down.arn]
 }
