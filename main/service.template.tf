@@ -5,6 +5,26 @@ module "monitoring-{{service_name}}-mem-cpu" {
   ecs_cluster_name = aws_ecs_cluster.app.name
   ecs_service_name = "{{service_name}}"
   alarms_sns_topic_arn = var.alarms_sns_topic_arn
+
+  {% if environment_config.cpu_utilization_high_threshold is defined %}
+  cpu_utilization_high_threshold={{ environment_config.cpu_utilization_high_threshold }}
+  {% endif %}
+  {% if environment_config.memory_utilization_high_threshold is defined %}
+  memory_utilization_high_threshold={{ environment_config.memory_utilization_high_threshold }}
+  {% endif %}
+  {% if environment_config.cpu_utilization_high_evaluation_periods is defined %}
+  cpu_utilization_high_evaluation_periods={{ environment_config.cpu_utilization_high_evaluation_periods }}
+  {% endif %}
+  {% if environment_config.cpu_utilization_high_period is defined %}
+  cpu_utilization_high_period={{ environment_config.cpu_utilization_high_period }}
+  {% endif %}
+  {% if environment_config.memory_utilization_high_evaluation_periods is defined %}
+  memory_utilization_high_evaluation_periods={{ environment_config.memory_utilization_high_evaluation_periods }}
+  {% endif %}
+  {% if environment_config.memory_utilization_high_period is defined %}
+  memory_utilization_high_period={{ environment_config.memory_utilization_high_period }}
+  {% endif %}
+
   tags = var.tags
 }
 
