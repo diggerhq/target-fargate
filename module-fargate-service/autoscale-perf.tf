@@ -36,7 +36,7 @@
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
   count               = var.use_cpu_scaling ? 1 : 0
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-High-${var.ecs_scaling_cpu_high_threshold}"
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPU-Utilization-High-${var.ecs_scaling_cpu_high_threshold}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = var.cpu_utilization_high_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
@@ -55,7 +55,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_high" {
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_low" {
   count               = var.use_cpu_scaling ? 1 : 0
-  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPUUtilization-Low-${var.ecs_scaling_cpu_low_threshold}"
+  alarm_name          = "${var.ecs_cluster.name}-${var.service_name}-CPU-Utilization-Low-${var.ecs_scaling_cpu_low_threshold}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = var.cpu_utilization_low_alarm_evaluation_periods
   metric_name         = "CPUUtilization"
