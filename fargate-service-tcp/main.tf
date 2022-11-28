@@ -128,7 +128,7 @@ resource "aws_ecs_service" "app" {
   # [after initial apply] don't override changes made to task_definition
   # from outside of terraform (i.e.; fargate cli)
   lifecycle {
-    ignore_changes = [task_definition]
+    ignore_changes = [task_definition, desired_count]
   }
 }
 
