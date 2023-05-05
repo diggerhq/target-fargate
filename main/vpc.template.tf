@@ -121,6 +121,7 @@ resource "aws_subnet" "public_subnet_a" {
   cidr_block              = var.publicSubnetaCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_a
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subneta"
   }
@@ -131,6 +132,7 @@ resource "aws_subnet" "public_subnet_b" {
   cidr_block              = var.publicSubnetbCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_b
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetb"
   }
@@ -141,6 +143,7 @@ resource "aws_subnet" "public_subnet_c" {
   cidr_block              = var.publicSubnetcCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_c
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetc"
   }
@@ -151,6 +154,7 @@ resource "aws_subnet" "public_subnet_d" {
   cidr_block              = var.publicSubnetdCIDRblock
   map_public_ip_on_launch = true
   availability_zone       = local.availabilityZone_d
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-public_vpc_subnetd"
   }
@@ -161,6 +165,7 @@ resource "aws_subnet" "private_subnet_a" {
   cidr_block              = var.privateSubnetaCIDRblock
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_a
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-private_vpc_subneta"
   }
@@ -171,6 +176,7 @@ resource "aws_subnet" "private_subnet_b" {
   cidr_block              = var.privateSubnetbCIDRblock
   map_public_ip_on_launch = false
   availability_zone       = local.availabilityZone_b
+  enable_dns64 = false
   tags = {
     Name = "${var.app}-${var.environment}-private_vpc_subnetb"
   }
