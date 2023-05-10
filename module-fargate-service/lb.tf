@@ -61,9 +61,17 @@ resource "aws_s3_bucket" "lb_access_logs" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_ownership_controls" "lb_access_logs_ownership_controls" {
+  bucket = aws_s3_bucket.lb_access_logs.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "lb_access_logs_acl" {
   bucket = aws_s3_bucket.lb_access_logs.id
   acl    = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.lb_access_logs_ownership_controls]
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "lb_access_logs_lifecycle_rule" {
